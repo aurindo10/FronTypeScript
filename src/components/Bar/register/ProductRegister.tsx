@@ -49,7 +49,7 @@ export  function FormPropsTextFields() {
     sx={{ padding: '40px', paddingLeft: '15px', flexGrow: 1 }}> 
       <form onSubmit={handleSubmit(onSubmit)} style={{flexGrow: 1}} >
       <div>
-        <Box sx={{display: "flex" }}>
+        <Box sx={{display: "flex", alignItems: "center" }}>
         <Controller
             name="nome"
             control={control}

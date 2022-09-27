@@ -23,7 +23,4 @@ export const ImgContainer = styled.img`
     text-align: center;
     align-items: center;
     margin-bottom: 1rem;
-
-
-
 `
