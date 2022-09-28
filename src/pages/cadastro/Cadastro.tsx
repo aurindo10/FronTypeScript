@@ -12,13 +12,12 @@ export const productsContext = createContext([{}] as any)
 
 export function Cadastro (){
     const [product, setProducts] = useState(0)
+    const [productList, setProductList] = useState([{}])
     return (
-        <productsContext.Provider value={{product, setProducts}}>
+        <productsContext.Provider value={{product, setProducts, productList, setProductList}}>
             <CadastroContainer>
-                
                     <FormPropsTextFields></FormPropsTextFields>
                     <BasicTable></BasicTable>
-                
             </CadastroContainer>
         </productsContext.Provider>
     )

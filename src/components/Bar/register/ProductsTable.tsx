@@ -15,19 +15,19 @@ import { useContext} from 'react'
 
 
 export function BasicTable() {
-    const {product, setProducts} = useContext(productsContext)
+    const {product, setProducts, setProductList, productList} = useContext(productsContext)
     const [data, setData] = useState([])
     const getData = async ()=>{await fetch("http://localhost:3002/produto/productslist", {
     headers: {"Content-Type": "application/json"},
     method: "GET"})
-    .then(response => response.json()).then((response=>setData(response)))
+    .then(response => response.json()).then((response)=>setProductList(response))
     .then(response => console.log("Success:", response))
     .catch(error => console.error("Error:", error))};
     
     React.useEffect(()=>{
         getData()
-        console.log(product)
-    }, [product]);
+        console.log(productList)
+    },[]);
     interface data {
       _id: string,
       nome: string,
@@ -41,7 +41,7 @@ export function BasicTable() {
         }).then(response => console.log("Deletado com Sucesso:", response))
         .catch(error => console.error("Error:", error))
        
-        setData(data.filter((row: {_id: string}) => row._id !== id));   
+        setData(productList.filter((row: {_id: string}) => row._id !== id));   
     } 
     
   return (
@@ -58,7 +58,7 @@ export function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row: data ) => (
+          {productList.map((row: data ) => (
             <TableRow
               key={row.nome}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

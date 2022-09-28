@@ -11,6 +11,8 @@ import styled from "styled-components"
 import { productsContext } from '../../../pages/cadastro/Cadastro';
 import { FormEvent, ChangeEvent, useContext } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
+import {zodResolver} from '@hookform/resolvers/zod'
+import * as zod from 'zod'
 
 type Inputs = {
   _id: string,
@@ -18,10 +20,15 @@ nome: string,
 marca: string,
 unidade: string,
 };
-
+const productSchema = zod.object({
+  nome: zod.string().min(3, 'Informe o nome do produto'),
+  marca: zod.string().min(2, 'Informe o nome da marca'),
+  unidade:zod.string().min(2, 'Informe o nome da marca')
+})
 export  function FormPropsTextFields() {
-  const {product, setProducts} = useContext(productsContext)
-  const { control, handleSubmit, reset, formState: { errors } } = useForm<Inputs>({
+  const {product, setProducts, setProductList, productList} = useContext(productsContext)
+  const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
+    resolver: zodResolver(productSchema),
     defaultValues: {
       _id: "",
       nome:"" ,
@@ -35,8 +42,8 @@ export  function FormPropsTextFields() {
       headers: {"Content-Type": "application/json"},
       method: "POST",
       body: JSON.stringify(data)}).then(response => response.json())
-      .then(response => console.log("Success:", JSON.stringify(response))).then(()=>{
-        setProducts(product+1)})
+      .then(response => console.log("Success:", JSON.stringify(response))).then((info)=>{
+        setProductList((info)=> {return {...info, info}})
       .catch(error => console.error("Error:", error))
       reset()
     }
@@ -55,6 +62,7 @@ export  function FormPropsTextFields() {
             control={control}
             render={({ field }) =><TextField
             {...field}
+            required
             placeholder = {"Descrição"}
             sx={{paddingRight: '15px'}}
             />}/>
@@ -63,6 +71,7 @@ export  function FormPropsTextFields() {
             control={control}
             render={({ field }) =><TextField
             {...field}
+            required
             placeholder = {"Marca"}
             sx={{paddingRight: '15px'}}
             />}/>
@@ -70,7 +79,9 @@ export  function FormPropsTextFields() {
          name="unidade"
          control={control}
          render={({ field }) => <Select {...field} 
-            sx={{width: '100px'}}>
+            sx={{width: '100px'}}
+            required
+            >
             <MenuItem value={"m"}>metros</MenuItem>
             <MenuItem value={"uni"}>unidade</MenuItem>
             <MenuItem value={"kg"}>peso</MenuItem>
@@ -90,7 +101,5 @@ export  function FormPropsTextFields() {
     </form>
     
     </Box>
-    
-    
     )
 }
