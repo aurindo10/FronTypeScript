@@ -12,11 +12,16 @@ import { BasicModal } from './modal';
 import { productsContext } from '../../../pages/cadastro/Cadastro'; 
 import { useContext} from 'react'
 
-
+export interface data {
+  _id: string,
+  nome: string,
+  marca: string,
+  unidade: string, 
+  createdAt: string
+}
 
 export function BasicTable() {
-    const {product, setProducts, setProductList, productList} = useContext(productsContext)
-    const [data, setData] = useState([])
+    const {setProductList, productList} = useContext(productsContext)
     const getData = async ()=>{await fetch("http://localhost:3002/produto/productslist", {
     headers: {"Content-Type": "application/json"},
     method: "GET"})
@@ -26,29 +31,20 @@ export function BasicTable() {
     
     React.useEffect(()=>{
         getData()
-        console.log(productList)
     },[]);
-    interface data {
-      _id: string,
-      nome: string,
-      marca: string,
-      unidade: string, 
-      createdAt: string
-    }
     const DeleteProduct = async (id:string)=>{
         await fetch ("http://localhost:3002/produto/cadastro/"+id, {
         method: "DELETE"
         }).then(response => console.log("Deletado com Sucesso:", response))
         .catch(error => console.error("Error:", error))
        
-        setData(productList.filter((row: {_id: string}) => row._id !== id));   
+        setProductList(productList.filter((row: {_id: string}) => row._id !== id));   
     } 
     
   return (
     <div> 
-
-    <TableContainer component={Paper} sx={{ maxWidth: 800 }}>
-      <Table sx={{ maxWidth: 800 }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
+      <Table sx={{ maxWidth: 800 }} aria-label="simple table"  key='table'>
         <TableHead>
           <TableRow>
             <TableCell>Nome</TableCell> 
@@ -63,7 +59,7 @@ export function BasicTable() {
               key={row.nome}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" >
                 {row.nome}
               </TableCell>
               <TableCell align="right">{row.marca}</TableCell>
@@ -74,7 +70,7 @@ export function BasicTable() {
               >Deletar</Button>
               </TableCell>
               <TableCell>
-                <BasicModal></BasicModal>
+                <BasicModal dasdas={row} ></BasicModal>
               </TableCell>
             </TableRow>
           ))}

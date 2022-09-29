@@ -1,15 +1,10 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import styled from "styled-components"
 import { productsContext } from '../../../pages/cadastro/Cadastro';
-import { FormEvent, ChangeEvent, useContext } from 'react';
+import { useContext } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
@@ -19,6 +14,7 @@ type Inputs = {
 nome: string,
 marca: string,
 unidade: string,
+
 };
 const productSchema = zod.object({
   nome: zod.string().min(3, 'Informe o nome do produto'),
@@ -41,9 +37,9 @@ export  function FormPropsTextFields() {
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastro", {
       headers: {"Content-Type": "application/json"},
       method: "POST",
-      body: JSON.stringify(data)}).then(response => response.json())
-      .then(response => console.log("Success:", JSON.stringify(response))).then((info)=>{
-        setProductList((info)=> {return {...info, info}})
+      body: JSON.stringify(data)}).then(response => response.json()).then((info)=>{ 
+        setProductList([...productList, info])})
+      .then(response => console.log("Sucess:", JSON.stringify(response)))
       .catch(error => console.error("Error:", error))
       reset()
     }

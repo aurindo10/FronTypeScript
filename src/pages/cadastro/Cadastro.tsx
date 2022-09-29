@@ -3,6 +3,7 @@ import { CadastroContainer } from './style'
 import { BasicTable } from '../../components/Bar/register/ProductsTable'
 import { FormPropsTextFields } from '../../components/Bar/register/ProductRegister'
 import { createContext, useState } from 'react'
+import { data } from '../../components/Bar/register/ProductsTable'
 
 
 
@@ -11,10 +12,9 @@ export const productsContext = createContext([{}] as any)
 
 
 export function Cadastro (){
-    const [product, setProducts] = useState(0)
-    const [productList, setProductList] = useState([{}])
+    const [productList, setProductList] = useState([{nome:''}])
     return (
-        <productsContext.Provider value={{product, setProducts, productList, setProductList}}>
+        <productsContext.Provider value={{productList, setProductList}}>
             <CadastroContainer>
                     <FormPropsTextFields></FormPropsTextFields>
                     <BasicTable></BasicTable>
