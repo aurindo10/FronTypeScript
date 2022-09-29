@@ -1,5 +1,15 @@
 import { Modal } from "./ModalForm";
-import { useForm, SubmitHandler } from "react-hook-form";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { productsContext } from '../../../../pages/cadastro/Cadastro';
+import { useContext } from 'react';
+import { useForm, Controller,  SubmitHandler } from "react-hook-form";
+import {zodResolver} from '@hookform/resolvers/zod'
+import * as zod from 'zod'
+
 
 type Inputs = {
     _id: string,
@@ -8,36 +18,108 @@ type Inputs = {
   unidade: string,
 };
 
-export  function ModalForm() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>(
-    
-  );
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
-//   console.log(watch("nome")) // watch input value by passing the name of it
-  return (
-    <Modal>
+const productSchema = zod.object({
+  nome: zod.string().min(3, 'Informe o nome do produto'),
+  marca: zod.string().min(2, 'Informe o nome da marca'),
+  unidade:zod.string().min(1, 'Informe o nome da marca')
+})
 
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* register your input into the hook by invoking the "register" function */}
-      <input defaultValue="test" {...register("nome")} />
+export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
+  const productToBeUpdated = props.productInfotoUpdateOnModal
+  const {setProductList, productList} = useContext(productsContext)
+  const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      _id: productToBeUpdated.info.row._id,
+      nome: productToBeUpdated.info.row.nome,
+      marca: productToBeUpdated.info.row.marca,
+      unidade: productToBeUpdated.info.row.unidade,
+    }
+  });
+  console.log(productToBeUpdated)
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/editproduct/"+productToBeUpdated.info.row._id, {
+      headers: {"Content-Type": "application/json"},
+      method: "POST",
+      body: JSON.stringify(data)}).then(response => response.json())
+      .then((e)=>{
+        const index = productList.findIndex((x: { _id: any; })=>{ return (x._id === productToBeUpdated.info.row._id)});
+        if (index === -1)
+          console.log('falhou')
+        else {
+        console.log(productList)
+        setProductList(
+             [
+               ...productList.slice(0,index),
+               Object.assign({}, productList[index], e),
+               ...productList.slice(index+1)
+            ]
+        )}})
       
-      {/* include validation with required or other standard HTML validation rules */}
-      <input {...register("marca", { required: true })} />
-      {/* errors will return when field validation fails  */}
-      {errors.marca && <span>This field is required</span>}
-
-      <select
-        {...register("unidade")}
-      >
-        <option value="m">m</option>
-        <option value="uni">uni</option>
-        <option value="kg">kg</option>
-
-      </select>
-
-      <input type="submit" value={"Atualizar"}/> 
-
+      .then(response => console.log("Sucess:", JSON.stringify(response)))
+      .catch(error => console.error("Error:", error))
+      reset()
+    }
+      
+  return (
+    
+    
+    <Box
+    component="span"
+    sx={{ padding: '40px', paddingLeft: '15px', flexGrow: 1 }}> 
+      <form onSubmit={handleSubmit(onSubmit)} style={{flexGrow: 1}} >
+      <div>
+        <Box sx={{display: "flex", alignItems: "center" }}>
+        <Controller
+            name="nome"
+            control={control}
+            render={({ field }) =><TextField
+            {...field}
+            required
+            placeholder = {"Descrição"}
+            sx={{paddingRight: '15px'}}
+            />}/>
+        <Controller
+            name="marca"
+            control={control}
+            render={({ field }) =><TextField
+            {...field}
+            required
+            placeholder = {"Marca"}
+            sx={{paddingRight: '15px'}}
+            />}/>
+        <Controller
+         name="unidade"
+         control={control}
+         render={({ field }) => <Select {...field} 
+            sx={{width: '100px'}}
+            required
+            
+            >
+            <MenuItem value={"m"}>metros</MenuItem>
+            <MenuItem value={"uni"}>unidade</MenuItem>
+            <MenuItem value={"kg"}>peso</MenuItem>
+          </Select>}
+        />
+    
+      <Button 
+            
+            type="submit"
+            variant="contained"
+            sx={{ width: '100px', left: "1.5rem", height: "3.2rem" }}
+          > Atualizar 
+          </Button>
+        </Box>
+        
+    </div>
     </form>
-    </Modal>
-  );
+    
+    </Box>
+    )
 }
+
+
+
+
+
+
+  

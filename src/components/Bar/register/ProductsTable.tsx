@@ -70,7 +70,7 @@ export function BasicTable() {
               >Deletar</Button>
               </TableCell>
               <TableCell>
-                <BasicModal productInfotoDelete={{row}} ></BasicModal>
+                <BasicModal productInfotoUpdate={{row}} ></BasicModal>
               </TableCell>
             </TableRow>
           ))}

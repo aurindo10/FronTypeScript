@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { ModalForm } from './ModalForm/Modal';
+import { data } from './ProductsTable';
 
 
 
@@ -19,12 +20,12 @@ const style = {
   p: 4,
 };
 
-export  function BasicModal(props: { productInfotoDelete: any; }) {
+export  function BasicModal(props: { productInfotoUpdate: any; }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
  
-  const info = props.productInfotoDelete;
+  const info = props.productInfotoUpdate;
   return (
     <div>
       <Button onClick={handleOpen}>Editar</Button>
@@ -35,7 +36,7 @@ export  function BasicModal(props: { productInfotoDelete: any; }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ModalForm></ModalForm>
+          <ModalForm productInfotoUpdateOnModal={{info}} ></ModalForm>
         </Box>
       </Modal>  
     </div>

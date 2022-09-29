@@ -19,21 +19,19 @@ unidade: string,
 const productSchema = zod.object({
   nome: zod.string().min(3, 'Informe o nome do produto'),
   marca: zod.string().min(2, 'Informe o nome da marca'),
-  unidade:zod.string().min(2, 'Informe o nome da marca')
+  unidade:zod.string().min(1, 'Informe o nome da marca')
 })
 export  function FormPropsTextFields() {
-  const {product, setProducts, setProductList, productList} = useContext(productsContext)
+  const {setProductList, productList} = useContext(productsContext)
   const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       _id: "",
-      nome:"" ,
+      nome: "" ,
       marca: "",
       unidade: "",
     }
   });
-
-
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastro", {
       headers: {"Content-Type": "application/json"},
       method: "POST",
