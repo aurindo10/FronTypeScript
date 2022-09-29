@@ -12,7 +12,7 @@ import { BasicModal } from './modal';
 import { productsContext } from '../../../pages/cadastro/Cadastro'; 
 import { useContext} from 'react'
 
-export interface data {
+export interface data{
   _id: string,
   nome: string,
   marca: string,
@@ -70,7 +70,7 @@ export function BasicTable() {
               >Deletar</Button>
               </TableCell>
               <TableCell>
-                <BasicModal dasdas={row} ></BasicModal>
+                <BasicModal productInfotoDelete={{row}} ></BasicModal>
               </TableCell>
             </TableRow>
           ))}

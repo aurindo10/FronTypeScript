@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import { ModalForm } from './ModalForm/Modal';
 
 
+
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -18,12 +19,12 @@ const style = {
   p: 4,
 };
 
-export  function BasicModal({dasdas}) {
+export  function BasicModal(props: { productInfotoDelete: any; }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
  
-
+  const info = props.productInfotoDelete;
   return (
     <div>
       <Button onClick={handleOpen}>Editar</Button>
