@@ -137,6 +137,16 @@ export  function DefaultLayout() {
                 </ListItemButton>
               </ListItem>
               </NavLink>
+              <NavLink to ="/cotacoes"  style={{ textDecoration: 'none', color:'black' }}>
+              <ListItem key="Cotações" disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <InventoryIcon/>
+                  </ListItemIcon>
+                  <ListItemText primary="Cotações" />
+                </ListItemButton>
+              </ListItem>
+              </NavLink>
         </List>
         <Divider />
         <List>

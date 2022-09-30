@@ -64,7 +64,7 @@ export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
     
     <Box
     component="span"
-    sx={{ padding: '40px', paddingLeft: '15px', flexGrow: 1 }}> 
+    sx={{ padding: '40px', paddingLeft: '15px' }}> 
       <form onSubmit={handleSubmit(onSubmit)} style={{flexGrow: 1}} >
       <div>
         <Box sx={{display: "flex", alignItems: "center" }}>
