@@ -36,7 +36,7 @@ export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
       unidade: productToBeUpdated.info.row.unidade,
     }
   });
-  console.log(productToBeUpdated)
+ 
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/editproduct/"+productToBeUpdated.info.row._id, {
       headers: {"Content-Type": "application/json"},
       method: "POST",
@@ -46,7 +46,6 @@ export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
         if (index === -1)
           console.log('falhou')
         else {
-        console.log(productList)
         setProductList(
              [
                ...productList.slice(0,index),
