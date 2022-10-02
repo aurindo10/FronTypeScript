@@ -10,6 +10,8 @@ import { Button } from '@mui/material';
 import {cotacaoListContext} from '../Cotacoes'
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useReducer } from 'react';
+import {reducerCotacao} from '../EditScreenCotacao/reducer'
 
 export interface data{
   _id: string,
@@ -17,13 +19,16 @@ export interface data{
   products: [{}], 
   createdAt: string
 }
+const inicialState = {
+  cotacao: []
+}
 
 export function CotacaoList() {
-    const {cotacaoList, setCotacaoList} = useContext(cotacaoListContext)
+    const [state, dispatch] = useReducer(reducerCotacao, inicialState )
     const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/", {
     headers: {"Content-Type": "application/json"},
     method: "GET"})
-    .then(response => response.json()).then((response)=>setCotacaoList(response))
+    .then(response => response.json()).then((response)=>dispatch({type: "SetCotacao", payload: response}))
     .then(response => console.log("Success:", response))
     .catch(error => console.error("Error:", error))};
     
@@ -36,7 +41,7 @@ export function CotacaoList() {
         }).then(response => console.log("Deletado com Sucesso:", response))
         .catch(error => console.error("Error:", error))
        
-        setCotacaoList(cotacaoList.filter((row: {_id: string}) => row._id !== id));   
+        dispatch({type: "SetCotacao", payload: state.cotacao.filter((row: {_id: string}) => row._id !== id)}) 
     } 
     
   return (
@@ -50,7 +55,7 @@ export function CotacaoList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cotacaoList.map((row: data ) => (
+          {state.cotacao.map((row: data ) => (
             <TableRow
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

@@ -3,24 +3,31 @@ import Button from '@mui/material/Button';
 import { useContext, useEffect } from 'react';
 import { cotacaoListContext } from '../Cotacoes'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { BasicModal } from './Modal/modal copy'
+import { BasicModal } from './Modal/modal copy';
+import { useReducer } from 'react';
+import { reducerCotacao} from './reducer'
 
+const inicialState = {
+  cotacao: [],
+  productsOfCotacao: []
+}
 
 
 
 export  function EditPageCotacao() {
-  const {setProductsOfCotacao, productsOfCotacao} = useContext(cotacaoListContext)
+  const [state, dispatch] = useReducer(reducerCotacao, inicialState )
   // const [productsOfCotacao, setProductsOfCotacao] = React.useState([{}])
   const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/63377d982399d5278975988e", {
   headers: {"Content-Type": "application/json"},
   method: "GET"})
-  .then(response => response.json()).then((response)=>setProductsOfCotacao(response.products))
+  .then(response => response.json()).then((response)=>dispatch({type: "SetProductsOfCotacao", payload: response.products }))
   .then(response => console.log("Success:", response))
   .catch(error => console.error("Error:", error))};
   
 
   useEffect(()=>{
     getData()
+    console.log(state.productsOfCotacao)
   },[]);
   const DeleteProduct = async (id:string)=>{
       await fetch ("http://localhost:3002/produto/cadastro/"+id, {
@@ -28,9 +35,8 @@ export  function EditPageCotacao() {
       }).then(response => console.log("Deletado com Sucesso:", response))
       .catch(error => console.error("Error:", error))
      
-      setProductsOfCotacao(productsOfCotacao.filter((row: {_id: string}) => row._id !== id));   
+      dispatch({type: "setProductsOfCotacao", payload: state.productsOfCotacao.filter((row: {_id: string}) => row._id !== id)});   
   } 
-  
 return (
   <div> 
   <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
@@ -44,7 +50,7 @@ return (
         </TableRow>
       </TableHead>
       <TableBody>
-        {productsOfCotacao.map((row: any ) => (
+        {state.productsOfCotacao.map((row: any ) => (
           <TableRow
             key={row._id}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
