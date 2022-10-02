@@ -13,7 +13,9 @@
     "@emotion/styled": "^11.10.4",
     "@hookform/resolvers": "^2.9.8",
     "@mui/icons-material": "^5.10.6",
-    "@mui/material": "^5.10.6",
+    "@mui/material": "^5.10.7",
+    "@mui/styled-engine-sc": "^5.10.6",
+    "@mui/x-data-grid": "^5.17.5",
     "@types/styled-components": "^5.1.26",
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
@@ -22,7 +24,7 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
     "redux": "^4.2.0",
-    "styled-components": "^5.3.5",
+    "styled-components": "^5.3.6",
     "zod": "^3.19.1"
   },
   "devDependencies": {

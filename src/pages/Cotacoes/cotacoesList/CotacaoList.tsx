@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 import {cotacaoListContext} from '../Cotacoes'
 import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
 
 export interface data{
   _id: string,
@@ -62,6 +63,7 @@ export function CotacaoList() {
               <Button onClick={()=>DeleteProduct(row._id)}
               >Deletar</Button>
               </TableCell>
+              <TableCell><NavLink to = '/cotacoes/edit' style={{ textDecoration: 'none', color:'black' }}><Button>Editar</Button></NavLink></TableCell>
             </TableRow>
           ))}
         </TableBody>
