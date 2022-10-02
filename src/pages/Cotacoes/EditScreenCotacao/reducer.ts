@@ -1,13 +1,31 @@
-export function reducerCotacao (state: any, action: {
-    payload: any; type: any; 
-}) {
+import { produce } from 'immer'
+import { data } from '../cotacoesList/CotacaoList';
+
+
+
+
+
+export interface state {
+  cotacao?: data[],
+  productsOfCotacao?: [{}]
+}
+
+
+
+export function reducerCotacao (state: state, action: any) {
     switch (action.type) {
       case 'SetCotacao':
-        return {state.cotacao.push(action.payload)};
-      case 'SetProductsOfCotacao':
-        return {...state, productsOfCotacao: action.payload};
+        // console.log(action.payload)
+        return produce(state, (draft)=>{
+          draft.cotacao=action.payload
+          console.log(state.cotacao)
+        });
+      case 'SetProductsOfCotacao':  
+        return produce(state, draft => {
+          draft.productsOfCotacao!=action.payload
+        })
       default:
-        throw new Error();
+        return state
     }
   }
   

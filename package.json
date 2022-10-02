@@ -17,6 +17,7 @@
     "@mui/styled-engine-sc": "^5.10.6",
     "@mui/x-data-grid": "^5.17.5",
     "@types/styled-components": "^5.1.26",
+    "immer": "^9.0.15",
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

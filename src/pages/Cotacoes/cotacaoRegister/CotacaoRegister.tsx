@@ -8,8 +8,10 @@ import {cotacaoListContext} from '../Cotacoes'
 import * as zod from 'zod'
 import { reducerCotacao} from '../EditScreenCotacao/reducer'
 import { useReducer } from 'react';
+
 const inicialState = {
-  cotacao: []
+  cotacao: [{}],
+  productsOfCotacao: [{}]
 }
 
 type Inputs = {
@@ -21,7 +23,10 @@ const productSchema = zod.object({
 })
 
 export  function CotacaoRegister() {
-  const [state, dispatch] = useReducer(reducerCotacao, inicialState )
+  const [state, dispatch] = useReducer(reducerCotacao, {
+    cotacao: [],
+    productsOfCotacao: [{}]
+  } )
   
   const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
@@ -35,7 +40,7 @@ export  function CotacaoRegister() {
       method: "POST",
       body: JSON.stringify(data)}).then(response => response.json()).then((info)=>{ 
         dispatch({type:'SetCotacao',  payload: info})})
-      .then(response => console.log("Sucess:", JSON.stringify(response)))
+      .then(response => console.log(state.cotacao))
       .catch(error => console.error("Error:", error))
       reset()
     }

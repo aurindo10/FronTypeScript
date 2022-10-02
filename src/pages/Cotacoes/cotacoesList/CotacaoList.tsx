@@ -12,19 +12,18 @@ import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useReducer } from 'react';
 import {reducerCotacao} from '../EditScreenCotacao/reducer'
-
+import { state } from '../EditScreenCotacao/reducer';
 export interface data{
   _id: string,
   cotacaoName: string,
   products: [{}], 
   createdAt: string
 }
-const inicialState = {
-  cotacao: []
-}
+
+
 
 export function CotacaoList() {
-    const [state, dispatch] = useReducer(reducerCotacao, inicialState )
+    const [state, dispatch] = useReducer(reducerCotacao, {cotacao:[], })
     const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/", {
     headers: {"Content-Type": "application/json"},
     method: "GET"})
@@ -34,6 +33,7 @@ export function CotacaoList() {
     
     React.useEffect(()=>{
         getData()
+
     },[]);
     const DeleteProduct = async (id:string)=>{
         await fetch ("http://localhost:3002/produto/cotacoes/"+id, {
@@ -41,9 +41,10 @@ export function CotacaoList() {
         }).then(response => console.log("Deletado com Sucesso:", response))
         .catch(error => console.error("Error:", error))
        
-        dispatch({type: "SetCotacao", payload: state.cotacao.filter((row: {_id: string}) => row._id !== id)}) 
+        dispatch({type: "SetCotacao", payload: state.cotacao!.filter((row: any)=> row._id !== id)}) 
     } 
-    
+    const {cotacao} = state
+    console.log(cotacao)
   return (
     <div> 
     <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
@@ -55,7 +56,7 @@ export function CotacaoList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {state.cotacao.map((row: data ) => (
+          {cotacao!.map((row:any ) => (
             <TableRow
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
