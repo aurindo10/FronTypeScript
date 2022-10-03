@@ -7,12 +7,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
-import {cotacaoListContext} from '../Cotacoes'
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useReducer } from 'react';
 import {reducerCotacao} from '../EditScreenCotacao/reducer'
-import { state } from '../EditScreenCotacao/reducer';
+import { ContacaoContext } from '../CotacaoContext';
+
+
 export interface data{
   _id: string,
   cotacaoName: string,
@@ -23,7 +24,7 @@ export interface data{
 
 
 export function CotacaoList() {
-    const [state, dispatch] = useReducer(reducerCotacao, {cotacao:[], })
+    const {cotacaoState, dispatch} = useContext(ContacaoContext)
     const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/", {
     headers: {"Content-Type": "application/json"},
     method: "GET"})
@@ -41,10 +42,9 @@ export function CotacaoList() {
         }).then(response => console.log("Deletado com Sucesso:", response))
         .catch(error => console.error("Error:", error))
        
-        dispatch({type: "SetCotacao", payload: state.cotacao!.filter((row: any)=> row._id !== id)}) 
+        dispatch({type: "SetCotacao", payload: cotacaoState.cotacao!.filter((row: any)=> row._id !== id)}) 
     } 
-    const {cotacao} = state
-    console.log(cotacao)
+    const {cotacao} = cotacaoState
   return (
     <div> 
     <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>

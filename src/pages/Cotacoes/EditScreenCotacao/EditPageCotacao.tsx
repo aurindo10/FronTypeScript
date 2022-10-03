@@ -1,11 +1,8 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import { useContext, useEffect } from 'react';
-import { cotacaoListContext } from '../Cotacoes'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { BasicModal } from './Modal/modal copy';
-import { useReducer } from 'react';
-import { reducerCotacao} from './reducer'
+import { ContacaoContext } from '../CotacaoContext';
+import { AddProductOnListOfCotacao } from './AddProductOnListCota/AddProductOnListCota'
 
 const inicialState = {
   cotacao: [],
@@ -15,9 +12,8 @@ const inicialState = {
 
 
 export  function EditPageCotacao() {
-  const [state, dispatch] = useReducer(reducerCotacao, inicialState )
-  // const [productsOfCotacao, setProductsOfCotacao] = React.useState([{}])
-  const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/63377d982399d5278975988e", {
+  const {cotacaoState, dispatch} = useContext(ContacaoContext)
+  const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/633b331dd8ba4bb864d6a54c", {
   headers: {"Content-Type": "application/json"},
   method: "GET"})
   .then(response => response.json()).then((response)=>dispatch({type: "SetProductsOfCotacao", payload: response.products }))
@@ -27,7 +23,7 @@ export  function EditPageCotacao() {
 
   useEffect(()=>{
     getData()
-    console.log(state.productsOfCotacao)
+    console.log(cotacaoState)
   },[]);
   const DeleteProduct = async (id:string)=>{
       await fetch ("http://localhost:3002/produto/cadastro/"+id, {
@@ -35,10 +31,11 @@ export  function EditPageCotacao() {
       }).then(response => console.log("Deletado com Sucesso:", response))
       .catch(error => console.error("Error:", error))
      
-      dispatch({type: "setProductsOfCotacao", payload: state.productsOfCotacao.filter((row: {_id: string}) => row._id !== id)});   
+      dispatch({type: "setProductsOfCotacao", payload: cotacaoState.productsOfCotacao.filter((row: {_id: string}) => row._id !== id)});   
   } 
 return (
   <div> 
+  <AddProductOnListOfCotacao ></AddProductOnListOfCotacao>
   <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
     <Table sx={{ maxWidth: 800 }} aria-label="simple table"  key='table'>
       <TableHead>
@@ -50,7 +47,7 @@ return (
         </TableRow>
       </TableHead>
       <TableBody>
-        {state.productsOfCotacao.map((row: any ) => (
+        {cotacaoState.productsOfCotacao.map((row: any ) => (
           <TableRow
             key={row._id}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -64,9 +61,6 @@ return (
             <TableCell>
             <Button onClick={()=>DeleteProduct(row._id)}
             >Deletar</Button>
-            </TableCell>
-            <TableCell>
-              <BasicModal productInfotoUpdate={{row}} ></BasicModal>
             </TableCell>
           </TableRow>
         ))}

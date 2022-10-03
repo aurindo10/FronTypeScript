@@ -1,14 +1,18 @@
-import { Modal } from "./ModalForm";
+import { Modal } from "./style";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { productsContext } from '../../../../pages/cadastro/Cadastro';
-import { useContext } from 'react';
+import { productsContext } from '../../../cadastro/Cadastro';
+import { useContext, useState } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
+import Autocomplete from "@mui/material/Autocomplete";
+import React from "react";
+import { AnyIfEmpty } from "react-redux";
+import { skSK } from "@mui/material/locale";
 
 
 type Inputs = {
@@ -24,41 +28,50 @@ const productSchema = zod.object({
   unidade:zod.string().min(1, 'Informe o nome da marca')
 })
 
-export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
-  const productToBeUpdated = props.productInfotoUpdateOnModal
-  const {setProductList, productList} = useContext(productsContext)
-  const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
+export  function AddProductOnListOfCotacao () {
+ 
+  const [prodctsList, SetProductsList] = useState([{}])
+  const [selected, setSelected] = useState<Inputs>({_id: '',
+    nome:'' ,
+    marca:'' ,
+    unidade: ''});
+  const { control, handleSubmit, reset, watch, formState: { errors }, setValue} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      _id: productToBeUpdated.info.row._id,
-      nome: productToBeUpdated.info.row.nome,
-      marca: productToBeUpdated.info.row.marca,
-      unidade: productToBeUpdated.info.row.unidade,
+      _id: '',
+      nome: '',
+      marca: '',
+      unidade: '',
     }
   });
- 
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/editproduct/"+productToBeUpdated.info.row._id, {
+
+
+  const getData = async ()=>{await fetch("http://localhost:3002/produto/productslist", {
+    headers: {"Content-Type": "application/json"},
+    method: "GET"})
+    .then(response => response.json()).then((response)=>SetProductsList(response))
+    .then(response => console.log("Success:", response))
+    .catch(error => console.error("Error:", error))}
+
+    
+  React.useEffect(()=>{
+      getData()
+
+  },[]);
+
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/editproduct/", {
       headers: {"Content-Type": "application/json"},
       method: "POST",
       body: JSON.stringify(data)}).then(response => response.json())
-      .then((e)=>{
-        const index = productList.findIndex((x: { _id: any; })=>{ return (x._id === productToBeUpdated.info.row._id)});
-        if (index === -1)
-          console.log('falhou')
-        else {
-        setProductList(
-             [
-               ...productList.slice(0,index),
-               Object.assign({}, productList[index], e),
-               ...productList.slice(index+1)
-            ]
-        )}})
-      
       .then(response => console.log("Sucess:", JSON.stringify(response)))
       .catch(error => console.error("Error:", error))
       reset()
     }
-      
+    const defaultProps = {
+      options: prodctsList,
+      getOptionLabel: (option: any) => option.nome
+    };
+
   return (
     
     
@@ -68,15 +81,23 @@ export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
       <form onSubmit={handleSubmit(onSubmit)} style={{flexGrow: 1}} >
       <div>
         <Box sx={{display: "flex", alignItems: "center" }}>
-        <Controller
-            name="nome"
-            control={control}
-            render={({ field }) =><TextField
-            {...field}
-            required
+        
+        <Autocomplete
             placeholder = {"Descrição"}
-            sx={{paddingRight: '15px'}}
-            />}/>
+            onChange = {(event, value:any)=>{setSelected(value), console.log(value), setValue('marca', value.marca),setValue('unidade', value.unidade)}}
+            {...defaultProps}
+            sx={{paddingRight: '30px' , width: '300px'}}
+            renderInput={(params) =>
+              <Controller
+              name="nome"
+              control={control}
+              render={({ field }) => <TextField
+                {...params}
+                {...field}
+                required
+                placeholder={"Produto"}
+                sx={{ paddingRight: '15px' }} />} />}/>
+
         <Controller
             name="marca"
             control={control}

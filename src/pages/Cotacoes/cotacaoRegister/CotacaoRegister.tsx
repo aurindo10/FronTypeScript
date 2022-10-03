@@ -4,10 +4,8 @@ import Button from '@mui/material/Button';
 import { useContext } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
-import {cotacaoListContext} from '../Cotacoes'
 import * as zod from 'zod'
-import { reducerCotacao} from '../EditScreenCotacao/reducer'
-import { useReducer } from 'react';
+import { ContacaoContext } from '../CotacaoContext';
 
 const inicialState = {
   cotacao: [{}],
@@ -23,11 +21,7 @@ const productSchema = zod.object({
 })
 
 export  function CotacaoRegister() {
-  const [state, dispatch] = useReducer(reducerCotacao, {
-    cotacao: [],
-    productsOfCotacao: [{}]
-  } )
-  
+  const {cotacaoState, dispatch} = useContext(ContacaoContext)  
   const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
     defaultValues: {
@@ -38,9 +32,9 @@ export  function CotacaoRegister() {
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastrodelista", {
       headers: {"Content-Type": "application/json"},
       method: "POST",
-      body: JSON.stringify(data)}).then(response => response.json()).then((info)=>{ 
-        dispatch({type:'SetCotacao',  payload: info})})
-      .then(response => console.log(state.cotacao))
+      body: JSON.stringify(data)}).then(response => response.json()).then((info)=>{ console.log(info)
+        dispatch({type:'UPDATE_COTACAO',  payload: info})})
+      .then(response => console.log(cotacaoState.cotacao))
       .catch(error => console.error("Error:", error))
       reset()
     }
@@ -70,6 +64,7 @@ export  function CotacaoRegister() {
             sx={{ width: '100px', left: "1.5rem", height: "3.2rem" }}
           > Cadastrar 
           </Button>
+          
         </Box>
         
     </div>
