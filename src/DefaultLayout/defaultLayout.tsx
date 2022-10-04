@@ -20,7 +20,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { solTheme } from './style';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import img from '../components/Bar/register/LOGOMENOR.png'
+import img from '../components/Bar/register/sol.svg'
 import { ImgContainer } from './style';
 import { Barcode } from 'phosphor-react';
 
