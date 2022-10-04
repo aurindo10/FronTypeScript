@@ -11,37 +11,41 @@ import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
-import { AnyIfEmpty } from "react-redux";
-import { skSK } from "@mui/material/locale";
+
+import ReactSelect from "react-select";
 
 
 type Inputs = {
     _id: string,
-  nome: string,
+    name: string,
   marca: string,
   unidade: string,
+  quantidade: string
 };
 
 const productSchema = zod.object({
-  nome: zod.string().min(3, 'Informe o nome do produto'),
+  name: zod.string().min(3, 'Informe o nome do produto'),
   marca: zod.string().min(2, 'Informe o nome da marca'),
-  unidade:zod.string().min(1, 'Informe o nome da marca')
+  unidade:zod.string().min(1, 'Informe o nome da marca'),
+  quantidade:zod.string().min(1, 'Informe o nome da marca')
 })
 
 export  function AddProductOnListOfCotacao () {
  
   const [prodctsList, SetProductsList] = useState([{}])
   const [selected, setSelected] = useState<Inputs>({_id: '',
-    nome:'' ,
+    name:'' ,
     marca:'' ,
-    unidade: ''});
-  const { control, handleSubmit, reset, watch, formState: { errors }, setValue} = useForm<Inputs>({
+    unidade: '',
+    quantidade:''});
+  const { control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       _id: '',
-      nome: '',
+      name: '',
       marca: '',
       unidade: '',
+      quantidade: ''
     }
   });
 
@@ -52,6 +56,7 @@ export  function AddProductOnListOfCotacao () {
     .then(response => response.json()).then((response)=>SetProductsList(response))
     .then(response => console.log("Success:", response))
     .catch(error => console.error("Error:", error))}
+    console.log(errors)
 
     
   React.useEffect(()=>{
@@ -59,13 +64,14 @@ export  function AddProductOnListOfCotacao () {
 
   },[]);
 
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/editproduct/", {
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastrodelista/633b331dd8ba4bb864d6a54c", {
       headers: {"Content-Type": "application/json"},
       method: "POST",
       body: JSON.stringify(data)}).then(response => response.json())
       .then(response => console.log("Sucess:", JSON.stringify(response)))
       .catch(error => console.error("Error:", error))
       reset()
+      setValue('name', '')
     }
     const defaultProps = {
       options: prodctsList,
@@ -84,17 +90,18 @@ export  function AddProductOnListOfCotacao () {
         
         <Autocomplete
             placeholder = {"Descrição"}
-            onChange = {(event, value:any)=>{setSelected(value), console.log(value), setValue('marca', value.marca),setValue('unidade', value.unidade)}}
+            onChange = {(event, value:any)=>{setSelected(value), console.log(value), setValue('marca', value.marca),setValue('unidade', value.unidade), setValue('name', value.nome)}}
             {...defaultProps}
             sx={{paddingRight: '30px' , width: '300px'}}
             renderInput={(params) =>
               <Controller
-              name="nome"
+              name="name"
               control={control}
               render={({ field }) => <TextField
                 {...params}
                 {...field}
                 required
+                value={"ok"}
                 placeholder={"Produto"}
                 sx={{ paddingRight: '15px' }} />} />}/>
 
@@ -105,6 +112,15 @@ export  function AddProductOnListOfCotacao () {
             {...field}
             required
             placeholder = {"Marca"}
+            sx={{paddingRight: '15px'}}
+            />}/>
+        <Controller
+            name="quantidade"
+            control={control}
+            render={({ field }) =><TextField
+            {...field}
+            required
+            placeholder = {"Quantidade"}
             sx={{paddingRight: '15px'}}
             />}/>
         <Controller
@@ -120,7 +136,6 @@ export  function AddProductOnListOfCotacao () {
             <MenuItem value={"kg"}>peso</MenuItem>
           </Select>}
         />
-    
       <Button 
             
             type="submit"
