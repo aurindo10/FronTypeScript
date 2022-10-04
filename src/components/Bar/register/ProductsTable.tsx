@@ -56,7 +56,7 @@ export function BasicTable() {
         <TableBody>
           {productList.map((row: data ) => (
             <TableRow
-              key={row.nome}
+              key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row" >

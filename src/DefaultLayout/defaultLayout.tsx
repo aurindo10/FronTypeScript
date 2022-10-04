@@ -22,6 +22,7 @@ import { solTheme } from './style';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import img from '../components/Bar/register/LOGOMENOR.png'
 import { ImgContainer } from './style';
+import { Barcode } from 'phosphor-react';
 
 
 const drawerWidth = 240;
@@ -141,7 +142,7 @@ export  function DefaultLayout() {
               <ListItem key="Cotações" disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
-                    <InventoryIcon/>
+                    <Barcode size={28} />
                   </ListItemIcon>
                   <ListItemText primary="Cotações" />
                 </ListItemButton>
@@ -150,7 +151,7 @@ export  function DefaultLayout() {
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          {/* {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
@@ -159,7 +160,7 @@ export  function DefaultLayout() {
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
-          ))}
+          ))} */}
         </List>
       </Drawer>
       <Main open={open}>
