@@ -8,6 +8,7 @@ import { data } from '../cotacoesList/CotacaoList';
 export interface state {
   cotacao: data[],
   productsOfCotacao?: [{}]
+
 }
 
 
@@ -28,7 +29,12 @@ export function reducerCotacao (state: state, action: any) {
           console.log(action.payload)
           console.log(state.cotacao)  
           draft.cotacao.push(action.payload);
-        });      
+        });
+      case 'UPDATE_ONE_COTACAO':
+          return produce(state, (draft)=>{
+            draft.productsOfCotacao!.push(action.payload);
+            console.log(action.payload)
+          });       
 
       default:
         return state
