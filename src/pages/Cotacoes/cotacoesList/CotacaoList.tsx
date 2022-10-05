@@ -69,7 +69,7 @@ export function CotacaoList() {
               <Button onClick={()=>DeleteProduct(row._id)}
               >Deletar</Button>
               </TableCell>
-              <TableCell><NavLink to = '/cotacoes/edit' style={{ textDecoration: 'none', color:'black' }}><Button>Editar</Button></NavLink></TableCell>
+              <TableCell ><NavLink to = {{pathname: '/cotacoes/edit'}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button> Editar</Button></NavLink></TableCell>
             </TableRow>
           ))}
         </TableBody>

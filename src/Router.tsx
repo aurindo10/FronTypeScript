@@ -23,7 +23,7 @@ export function Router() {
             <Route path="/home" element={<HomeComponent />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/cotacoes" element={<Cotacoes />} />
-            <Route path="/cotacoes/edit" element={<EditPageCotacao/>} />
+            <Route path="/cotacoes/edit" element={<EditPageCotacao state={''}/>} />
 
           </Route>
           

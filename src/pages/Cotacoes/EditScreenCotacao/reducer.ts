@@ -3,11 +3,18 @@ import { data } from '../cotacoesList/CotacaoList';
 
 
 
-
+export interface productOfListCotation {
+  _id: string,
+  name: string,
+  marca: string,
+  unidade: string,
+  quantidade: string,
+  produto_id: string
+}
 
 export interface state {
   cotacao: data[],
-  productsOfCotacao?: [{}]
+  productsOfCotacao: productOfListCotation[]
 
 }
 
@@ -23,6 +30,7 @@ export function reducerCotacao (state: state, action: any) {
       case 'SetProductsOfCotacao':  
         return produce(state, (draft) => {
           draft.productsOfCotacao=action.payload
+          console.log(action.payload)
         });      
       case 'UPDATE_COTACAO':
         return produce(state, (draft)=>{

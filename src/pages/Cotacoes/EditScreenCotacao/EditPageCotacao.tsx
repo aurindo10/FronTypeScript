@@ -3,6 +3,8 @@ import { useContext, useEffect } from 'react';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { ContacaoContext } from '../CotacaoContext';
 import { AddProductOnListOfCotacao } from './AddProductOnListCota/AddProductOnListCota'
+import { useLocation } from 'react-router-dom';
+
 
 const inicialState = {
   cotacao: [],
@@ -12,6 +14,7 @@ const inicialState = {
 
 
 export  function EditPageCotacao() {
+  const location = useLocation()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
   const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/633b331dd8ba4bb864d6a54c", {
   headers: {"Content-Type": "application/json"},
@@ -24,15 +27,18 @@ export  function EditPageCotacao() {
   useEffect(()=>{
     getData()
     console.log(cotacaoState)
+    
   },[]);
-  const DeleteProduct = async (id:string)=>{
-      await fetch ("http://localhost:3002/produto/cadastro/"+id, {
+  const DeleteProduct = async (idProduct:string)=>{
+      await fetch ('http://localhost:3002/produto/cotacoes/'+location.state.idd+'/'+idProduct, {
       method: "DELETE"
       }).then(response => console.log("Deletado com Sucesso:", response))
       .catch(error => console.error("Error:", error))
-     
-      dispatch({type: "setProductsOfCotacao", payload: cotacaoState.productsOfCotacao.filter((row: {_id: string}) => row._id !== id)});   
+      dispatch({type: "SetProductsOfCotacao", payload: cotacaoState.productsOfCotacao!.filter((row: any) => row._id !== idProduct)})
+
+       
   } 
+  const {productsOfCotacao} = cotacaoState
 return (
   <div> 
   <AddProductOnListOfCotacao ></AddProductOnListOfCotacao>
@@ -43,23 +49,21 @@ return (
           <TableCell>Nome</TableCell> 
           <TableCell align="right">Unidade</TableCell>
           <TableCell align="right">Quantidade</TableCell>
-          <TableCell align="right">Data de criacao</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {cotacaoState.productsOfCotacao.map((row: any ) => (
+        {productsOfCotacao.map((cell: any ) => (
           <TableRow
-            key={row._id}
+            key={cell._id}
             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
           >
             <TableCell component="th" scope="row" >
-              {row.name}
+              {cell.name}
             </TableCell>
-            <TableCell align="right">{row.unidade}</TableCell>
-            <TableCell align="right">{row.quantidade}</TableCell>
-            <TableCell align="right">{row.createdAt}</TableCell>
+            <TableCell align="right">{cell.unidade}</TableCell>
+            <TableCell align="right">{cell.quantidade}</TableCell>
             <TableCell>
-            <Button onClick={()=>DeleteProduct(row._id)}
+            <Button onClick={()=>DeleteProduct(cell._id)}
             >Deletar</Button>
             </TableCell>
           </TableRow>
