@@ -11,6 +11,7 @@ import * as zod from 'zod'
 import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
 import { ContacaoContext } from '../../CotacaoContext'
+import { useLocation } from 'react-router-dom';
 
 type Inputs = {
     _id: string,
@@ -29,6 +30,7 @@ const productSchema = zod.object({
 })
 
 export  function AddProductOnListOfCotacao () {
+  const location = useLocation()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
   const [prodctsList, SetProductsList] = useState([{}])
   const [selected, setSelected] = useState<Inputs>({_id: '',
@@ -56,7 +58,7 @@ export  function AddProductOnListOfCotacao () {
     .then(response => response.json()).then((response)=>SetProductsList(response))
     .then(response => console.log("Success:", response))
     .catch(error => console.error("Error:", error))}
-    console.log(errors)
+
 
     
   React.useEffect(()=>{
@@ -64,11 +66,11 @@ export  function AddProductOnListOfCotacao () {
 
   },[]);
 
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastrodelista/633b331dd8ba4bb864d6a54c", {
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastrodelista/"+location.state.idd, {
       headers: {"Content-Type": "application/json"},
       method: "POST",
       body: JSON.stringify(data)}).then(response => response.json()).then((info)=>
-      {dispatch({type:'UPDATE_ONE_COTACAO', payload: info}), console.log(info)})
+      {dispatch({type:'UPDATE_ONE_COTACAO', payload: info})})
       .then(response => console.log("Sucess:", JSON.stringify(response)))
       .catch(error => console.error("Error:", error))
       reset()
@@ -88,8 +90,8 @@ export  function AddProductOnListOfCotacao () {
         
         <Autocomplete
             placeholder = {"Descrição"}
-            onChange = {(event, value:any)=>{setSelected(value), console.log(value),
-               setValue('marca', value.marca),setValue('unidade', value.unidade),
+            onChange = {(event, value:any)=>{setSelected(value),
+              setValue('marca', value.marca),setValue('unidade', value.unidade),
               setValue('name', value.nome), setValue('produto_id', value._id)}}
             {...defaultProps}
             inputValue={getValues('name')}

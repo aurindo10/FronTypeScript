@@ -1,5 +1,6 @@
 import { reducerCotacao } from "./EditScreenCotacao/reducer"
 import { useReducer, ReactNode, createContext } from "react"
+import { state } from '../Cotacoes/EditScreenCotacao/reducer'
 
 
 
@@ -14,7 +15,7 @@ export function CyclesContextProvider({
   }: CyclesContextProviderProps) {
     const [cotacaoState, dispatch] = useReducer(reducerCotacao, {
         cotacao: [],
-        productsOfCotacao: [{}]
+        productsOfCotacao: []
       } )
 
       return (

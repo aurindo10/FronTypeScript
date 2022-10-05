@@ -23,25 +23,20 @@ export interface state {
 export function reducerCotacao (state: state, action: any) {
     switch (action.type) {
       case 'SetCotacao':
-        // console.log(action.payload)
         return produce(state, (draft)=>{
           draft.cotacao=action.payload
         });
       case 'SetProductsOfCotacao':  
         return produce(state, (draft) => {
           draft.productsOfCotacao=action.payload
-          console.log(action.payload)
         });      
       case 'UPDATE_COTACAO':
         return produce(state, (draft)=>{
-          console.log(action.payload)
-          console.log(state.cotacao)  
           draft.cotacao.push(action.payload);
         });
       case 'UPDATE_ONE_COTACAO':
           return produce(state, (draft)=>{
             draft.productsOfCotacao!.push(action.payload);
-            console.log(action.payload)
           });       
 
       default:

@@ -12,7 +12,7 @@ export const productsContext = createContext([{}] as any)
 
 
 export function Cadastro (){
-    const [productList, setProductList] = useState([{nome:''}])
+    const [productList, setProductList] = useState([{_id:''}])
     return (
         <productsContext.Provider value={{productList, setProductList}}>
             <CadastroContainer>

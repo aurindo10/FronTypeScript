@@ -4,6 +4,8 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import { ContacaoContext } from '../CotacaoContext';
 import { AddProductOnListOfCotacao } from './AddProductOnListCota/AddProductOnListCota'
 import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+ 
 
 
 const inicialState = {
@@ -15,8 +17,9 @@ const inicialState = {
 
 export  function EditPageCotacao() {
   const location = useLocation()
+  const {idList} = useParams()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
-  const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/633b331dd8ba4bb864d6a54c", {
+  const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/"+idList, {
   headers: {"Content-Type": "application/json"},
   method: "GET"})
   .then(response => response.json()).then((response)=>dispatch({type: "SetProductsOfCotacao", payload: response.products }))
@@ -26,8 +29,6 @@ export  function EditPageCotacao() {
 
   useEffect(()=>{
     getData()
-    console.log(cotacaoState)
-    
   },[]);
   const DeleteProduct = async (idProduct:string)=>{
       await fetch ('http://localhost:3002/produto/cotacoes/'+location.state.idd+'/'+idProduct, {
