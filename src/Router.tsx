@@ -5,6 +5,7 @@ import { Cadastro } from './pages/cadastro/Cadastro'
 import { Cotacoes } from './pages/Cotacoes/Cotacoes'
 import { EditPageCotacao } from './pages/Cotacoes/EditScreenCotacao/EditPageCotacao'
 import { CyclesContextProvider } from './pages/Cotacoes/CotacaoContext' 
+import { PriceList } from './pages/PriceList/PriceList'
 
 
 
@@ -26,6 +27,7 @@ export function Router() {
             <Route path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
 
           </Route>
+          <Route path='/pricelist' element={<PriceList/>}></Route>
           
       </Routes>
     </CyclesContextProvider>
