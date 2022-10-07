@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
@@ -25,50 +25,38 @@ export type Inputs = {
 };
 
 const productSchema = zod.object({
-    productName: zod.string().min(1, 'Informe o nome do produto'),
-    produto_id: zod.string().min(1, ''),
-    unidade:zod.string().min(1, ''),
+   
+
     valorUnitario: zod.string().min(1, 'Informe o valor unitario'),
     quantidadeMínima:zod.string().min(1, 'Informe a quantidade minima'),
-    quantidade:zod.string().min(1, ''),
+
 })
 
 export  function FormPriceList (props:Inputs) {
   const location = useLocation()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
-  const { priceList } = cotacaoState
+  // const { priceList } = cotacaoState
 
   const { control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>({
-    resolver: zodResolver(productSchema),
-    defaultValues: {
-        productName: props.productName,
-        produto_id: props.produto_id,
-        unidade: props.unidade,
-        valorUnitario: props.valorUnitario,
-        quantidadeMínima: props.quantidadeMínima,
-        quantidade:props.quantidade,
-    }
   });
 
 
   setValue("productName", props.productName)
   setValue("produto_id", props.produto_id)
-  setValue("unidade",props.unidade)
+  setValue("quantidadeMínima",props.quantidadeMínima )
+  setValue('unidade',props.unidade)
   setValue("quantidade", props.quantidade)
-
-
-
+  setValue("valorUnitario",props.valorUnitario)
 
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
-      dispatch({type:'UPDATE_PRODUCT_PRICE_LIST', payload: data})
-      console.log(priceList)
-    }
-    
+    dispatch({type:'UPDATE_PRODUCT_PRICE_LIST', payload: data})
+}
+ 
   return (
     <Box
     component="span"
     sx={{ padding: '40px', paddingLeft: '15px', }}> 
-      <form style={{flexGrow: 1}} onSubmit={handleSubmit(onSubmit)}>
+      <form style={{flexGrow: 1}} onChange={handleSubmit(onSubmit)} >
       <div>
         <Box sx={{display: "flex", alignItems: "center" }}>
 
@@ -118,13 +106,6 @@ export  function FormPriceList (props:Inputs) {
             sx={{paddingRight: '15px'}}
             />}/>
 
-      <Button 
-            
-            type="submit"
-            variant="contained"
-            sx={{ width: '100px', left: "1.5rem", height: "3.2rem" }}
-          > Salvar 
-          </Button>
         </Box>
         
     </div>
@@ -133,14 +114,3 @@ export  function FormPriceList (props:Inputs) {
     </Box>
     )
 }
-
-
-
-
-
-
-  
-function dispatch(arg0: { type: string; payload: Inputs; }) {
-    throw new Error('Function not implemented.');
-}
-

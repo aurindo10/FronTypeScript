@@ -29,8 +29,8 @@ export interface state {
   quantidade: '',
   _id: '',
   valorUnitario: '',
-  quantidadeMínima: ''}]
-
+  quantidadeMínima: ''}],
+  activeStep:number
 }
 
 
@@ -55,20 +55,24 @@ export function reducerCotacao (state: state, action: any) {
           }); 
       case 'SET_PRODUCT_PRICE_LIST':
           return produce(state, (draft)=>{
-            console.log(action.payload)
             draft.priceList = action.payload;
             });
       case 'UPDATE_PRODUCT_PRICE_LIST':
           return produce(state, (draft)=>{
-            const objIndex = state.priceList.findIndex((obj) => {obj._id = action.payload.produto_id});
-
-            console.log(state.priceList[0]._id)
-            console.log(action.payload.produto_id)
-            console.log(objIndex)
-            console.log(draft.priceList[objIndex].quantidadeMínima)
-            draft.priceList[objIndex].quantidadeMínima = action.payload.quantidadeMínima
-            draft.priceList[objIndex].valorUnitario = action.payload.valorUnitario
-            });         
+            draft.priceList[draft.activeStep].quantidadeMínima = action.payload.quantidadeMínima
+            draft.priceList[draft.activeStep].valorUnitario = action.payload.valorUnitario
+            });    
+      case 'HANDLE_SCREAN':
+          return produce(state, (draft)=>{
+            if (action.payload==='handleNext')
+                    {
+                      draft.activeStep = draft.activeStep + 1
+                    }         
+            else 
+              { 
+                  draft.activeStep = draft.activeStep - 1 
+              }
+           })         
 
       default:
         return state
