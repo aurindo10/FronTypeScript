@@ -24,8 +24,8 @@ const productSchema = zod.object({
   unidade:zod.string().min(1, 'Informe o nome da marca')
 })
 
-export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
-  const productToBeUpdated = props.productInfotoUpdateOnModal
+export  function ModalForm({handleClose, productInfotoUpdateOnModal}: any) {
+  const productToBeUpdated = productInfotoUpdateOnModal
   const {setProductList, productList} = useContext(productsContext)
   const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
@@ -37,7 +37,10 @@ export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
     }
   });
  
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/editproduct/"+productToBeUpdated.info.row._id, {
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
+
+    handleClose(false)
+    await fetch("http://localhost:3002/produto/editproduct/"+productToBeUpdated.info.row._id, {
       headers: {"Content-Type": "application/json"},
       method: "POST",
       body: JSON.stringify(data)}).then(response => response.json())
@@ -46,6 +49,7 @@ export  function ModalForm(props: { productInfotoUpdateOnModal: any; }) {
         if (index === -1)
           console.log('falhou')
         else {
+        handleClose(false)
         setProductList(
              [
                ...productList.slice(0,index),

@@ -36,7 +36,7 @@ export  function BasicModal(props: { productInfotoUpdate: any; }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <ModalForm productInfotoUpdateOnModal={{info}} ></ModalForm>
+          <ModalForm productInfotoUpdateOnModal={{info}}  handleClose= {setOpen}></ModalForm>
         </Box>
       </Modal>  
     </div>
