@@ -1,7 +1,6 @@
 import { reducerCotacao } from "./EditScreenCotacao/reducer"
 import { useReducer, ReactNode, createContext } from "react"
-import { state } from '../Cotacoes/EditScreenCotacao/reducer'
-
+import { notNullish } from "react-select/dist/declarations/src/utils"
 
 
 
@@ -15,8 +14,14 @@ export function CyclesContextProvider({
   }: CyclesContextProviderProps) {
     const [cotacaoState, dispatch] = useReducer(reducerCotacao, {
         cotacao: [],
-        productsOfCotacao: []
-      } )
+        productsOfCotacao: [],
+        priceList:[{name:'',
+          unidade: '',
+          quantidade: '',
+          _id: '',
+          valorUnitario: '',
+          quantidadeMínima: ''}],
+      })
 
       return (
         <ContacaoContext.Provider

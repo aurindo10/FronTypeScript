@@ -10,11 +10,11 @@ import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
-// import { ContacaoContext } from '../../CotacaoContext'
+import { ContacaoContext } from '../../../src/pages/Cotacoes/CotacaoContext'
 import { useLocation } from 'react-router-dom';
 import { createProxyProxy } from 'immer/dist/internal';
 
-type Inputs = {
+export type Inputs = {
     
     productName: string,
     produto_id: string,
@@ -25,8 +25,8 @@ type Inputs = {
 };
 
 const productSchema = zod.object({
-    productName: zod.string().min(3, 'Informe o nome do produto'),
-    produto_id: zod.string().min(2, ''),
+    productName: zod.string().min(1, 'Informe o nome do produto'),
+    produto_id: zod.string().min(1, ''),
     unidade:zod.string().min(1, ''),
     valorUnitario: zod.string().min(1, 'Informe o valor unitario'),
     quantidadeMínima:zod.string().min(1, 'Informe a quantidade minima'),
@@ -35,7 +35,8 @@ const productSchema = zod.object({
 
 export  function FormPriceList (props:Inputs) {
   const location = useLocation()
-//   const {cotacaoState, dispatch} = useContext(ContacaoContext)
+  const {cotacaoState, dispatch} = useContext(ContacaoContext)
+  const { priceList } = cotacaoState
 
   const { control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
@@ -53,28 +54,21 @@ export  function FormPriceList (props:Inputs) {
   setValue("productName", props.productName)
   setValue("produto_id", props.produto_id)
   setValue("unidade",props.unidade)
-  setValue("valorUnitario", props.valorUnitario)
-  setValue("quantidadeMínima", props.quantidadeMínima)
   setValue("quantidade", props.quantidade)
 
 
 
 
-//   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastrodelista/"+location.state.idd, {
-//       headers: {"Content-Type": "application/json"},
-//       method: "POST",
-//       body: JSON.stringify(data)}).then(response => response.json()).then((info)=>
-//     //   {dispatch({type:'UPDATE_ONE_COTACAO', payload: info})})
-//       .then(response => console.log("Sucess:", JSON.stringify(response)))
-//       .catch(error => console.error("Error:", error))
-//       reset()
-//     }
-
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
+      dispatch({type:'UPDATE_PRODUCT_PRICE_LIST', payload: data})
+      console.log(priceList)
+    }
+    
   return (
     <Box
     component="span"
     sx={{ padding: '40px', paddingLeft: '15px', }}> 
-      <form style={{flexGrow: 1}} >
+      <form style={{flexGrow: 1}} onSubmit={handleSubmit(onSubmit)}>
       <div>
         <Box sx={{display: "flex", alignItems: "center" }}>
 
@@ -129,7 +123,7 @@ export  function FormPriceList (props:Inputs) {
             type="submit"
             variant="contained"
             sx={{ width: '100px', left: "1.5rem", height: "3.2rem" }}
-          > Atualizar 
+          > Salvar 
           </Button>
         </Box>
         
@@ -146,3 +140,7 @@ export  function FormPriceList (props:Inputs) {
 
 
   
+function dispatch(arg0: { type: string; payload: Inputs; }) {
+    throw new Error('Function not implemented.');
+}
+

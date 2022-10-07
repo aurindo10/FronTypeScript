@@ -8,35 +8,33 @@ import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { FormPriceList } from './FormPriceList';
-import { useState } from 'react';
+import { ContacaoContext } from '../Cotacoes/CotacaoContext'; 
+import { useContext, useState } from 'react';
+import { useEffect } from 'react';
 
-
-const steps = [
-  {
-    label: 'Select campaign settings',
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: 'Create an ad group',
-    description:
-      'An ad group contains one or more ads which target a shared set of keywords.',
-  },
-  {
-    label: 'Create an ad',
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-];
 
 export  function PriceList() {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const [prodctsList, SetProductsList] = useState<any>([{}])
-
+  const {cotacaoState, dispatch} = useContext(ContacaoContext)
+  const { priceList } = cotacaoState
+  const maxSteps = priceList.length;
+  
+  const getAllData = async ()=>{
+    await fetch("http://localhost:3002/produto/cotacoes/633dcd98b536b04f0a7f326e", {
+    headers: {"Content-Type": "application/json"},
+    method: "GET"})
+    .then(response => response.json())
+    .then((response)=>{ return dispatch({type:"SET_PRODUCT_PRICE_LIST", payload: response.products.map((e: any)=>{return {
+        name: e.name,
+        unidade: e.unidade,
+        quantidade: e.quantidade,
+        _id: e._id,
+        valorUnitario: '',
+        quantidadeMínima: ''
+    }})})})
+    .catch(error => console.error("Error:", error))
+  } 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -44,21 +42,13 @@ export  function PriceList() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-  const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/633dcd98b536b04f0a7f326e", {
-    headers: {"Content-Type": "application/json"},
-    method: "GET"})
-    .then(response => response.json()).then((response)=>{console.log(response),SetProductsList(response.products)})
-    .then(response => console.log("Success:", response))
-    .catch(error => console.error("Error:", error))} 
-  React.useEffect(()=>{
-      getData()
-      console.log(prodctsList)
-
+  useEffect(()=>{
+      console.log('hello from useEfect')
+      getAllData()
   },[]);
-  const maxSteps = prodctsList.length;
-  console.log(prodctsList[activeStep].name)
 
   return (
+    <div>
     <Box sx={{ maxWidth: 900, flexGrow: 1 }}>
       <Paper
         square
@@ -70,17 +60,20 @@ export  function PriceList() {
           pl: 2,
           bgcolor: 'background.default',
         }}
-      >
-        {/* <Typography>{prodctsList[activeStep].name}</Typography> */}
+        
+      > 
+        <Typography>{console.log(priceList)}{priceList[activeStep].name}</Typography>
       </Paper>
         <Box 
         
         sx={{ height: 255, maxWidth: 900, width: '100%', p: 2, display: "inline-block" }}>
             <FormPriceList 
-                productName= {prodctsList[activeStep].name}
-                produto_id = {prodctsList[activeStep]._id}
-                unidade = {prodctsList[activeStep].unidade}
-                quantidade= { prodctsList[activeStep].quantidade}
+                productName= {priceList[activeStep].name}
+                produto_id = {priceList[activeStep]._id}
+                unidade = {priceList[activeStep].unidade}
+                quantidade= { priceList[activeStep].quantidade}
+                valorUnitario={ priceList[activeStep].valorUnitario}
+                quantidadeMínima={ priceList[activeStep].quantidadeMínima}
             ></FormPriceList>
         </Box>
       <MobileStepper
@@ -114,5 +107,6 @@ export  function PriceList() {
         }
       />
     </Box>
+    </div>
   );
 }
