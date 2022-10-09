@@ -11,18 +11,19 @@ import { FormPriceList } from './FormPriceList';
 import { ContacaoContext } from '../Cotacoes/CotacaoContext'; 
 import { useContext } from 'react';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 
 export  function PriceList() {
   const theme = useTheme();
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
-
+  const {id} = useParams()
   const { priceList } = cotacaoState
   const maxSteps = priceList.length;
   
 
   const getAllData = async ()=>{
-    await fetch("http://localhost:3002/produto/cotacoes/633dcd98b536b04f0a7f326e", {
+    await fetch("http://localhost:3002/produto/cotacoes/"+id, {
     headers: {"Content-Type": "application/json"},
     method: "GET"})
     .then(response => response.json())

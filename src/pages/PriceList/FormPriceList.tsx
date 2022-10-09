@@ -14,12 +14,13 @@ import { ContacaoContext } from '../../../src/pages/Cotacoes/CotacaoContext'
 import { useLocation } from 'react-router-dom';
 import { createProxyProxy } from 'immer/dist/internal';
 
+
 export type Inputs = {
     
     productName: string,
     produto_id: string,
     unidade: string,
-    valorUnitario?: string,
+    valorUnitario?: number,
     quantidadeMínima?: number
     quantidade?: number,  
 };
@@ -27,15 +28,16 @@ export type Inputs = {
 const productSchema = zod.object({
    
 
-    valorUnitario: zod.string().min(1, 'Informe o valor unitario'),
-    quantidadeMínima:zod.string().min(1, 'Informe a quantidade minima'),
+    valorUnitario: zod.number().min(1, 'Informe o valor unitario'),
+    quantidadeMínima:zod.number().min(1, 'Informe a quantidade minima'),
 
 })
 
 export  function FormPriceList (props:Inputs) {
+
   const location = useLocation()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
-  // const { priceList } = cotacaoState
+
 
   const { control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>({
   });
@@ -66,6 +68,7 @@ export  function FormPriceList (props:Inputs) {
             render={({ field }) =><TextField
             {...field}
             required
+            label={'Nome do Produto'}
             placeholder = {"Nome do Produto"}
             sx={{paddingRight: '15px'}}
             />}/>
@@ -75,6 +78,7 @@ export  function FormPriceList (props:Inputs) {
             render={({ field }) =><TextField
             {...field}
             required
+            label={'Quantidade'}
             placeholder = {"Quantidade"}
             sx={{paddingRight: '15px'}}
             />}/>
@@ -84,6 +88,7 @@ export  function FormPriceList (props:Inputs) {
             render={({ field }) =><TextField
             {...field}
             required
+            label={'Unidade'}
             placeholder = {"Unidade"}
             sx={{paddingRight: '15px'}}
             />}/>
@@ -93,6 +98,7 @@ export  function FormPriceList (props:Inputs) {
             render={({ field }) =><TextField
             {...field}
             required
+            label={'Valor Unitário'}
             placeholder = {"Valor unitario"}
             sx={{paddingRight: '15px'}}
             />}/>        
@@ -102,6 +108,7 @@ export  function FormPriceList (props:Inputs) {
             render={({ field }) =><TextField
             {...field}
             required
+            label={'Quantidade Mínima'}
             placeholder = {"QTD Mínima"}
             sx={{paddingRight: '15px'}}
             />}/>
