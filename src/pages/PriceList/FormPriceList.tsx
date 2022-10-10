@@ -23,7 +23,7 @@ export type Inputs = {
     produto_id: string,
     unidade: string,
     valorUnitario?: number,
-    quantidadeMínima?: number
+    quantidadeMínima?: number,
     quantidade?: number,  
 };
 
@@ -98,20 +98,24 @@ export  function FormPriceList (props:Inputs) {
         <Controller
             name="valorUnitario"
             control={control}
-            render={({ field }) =><MyCustomNumberFormat
+            render={({ fieldState, field}) =><MyCustomNumberFormat
             customInput={TextField}
             {...field}
+            {...fieldState}
             required
             label={'Valor Unitário'}
-            allowLeadingZeros 
-            decimalScale={3}
             placeholder = {"Valor unitario"}
             sx={{paddingRight: '15px'}}
-            />}/>        
+            />}/>
         <Controller
             name="quantidadeMínima"
             control={control}
             render={({ field }) =><NumericFormat
+            prefix={'R$'}
+            allowLeadingZeros 
+            thousandSeparator="."
+            decimalScale={2}
+            decimalSeparator=","
             customInput={TextField}
             {...field}
             required
@@ -119,7 +123,9 @@ export  function FormPriceList (props:Inputs) {
             placeholder = {"QTD Mínima"}
             sx={{paddingRight: '15px'}}
             />}/>
+
         </Box>
+
         
     </div>
     </form>
