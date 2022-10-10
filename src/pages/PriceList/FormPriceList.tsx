@@ -13,6 +13,8 @@ import React from "react";
 import { ContacaoContext } from '../../../src/pages/Cotacoes/CotacaoContext'
 import { useLocation } from 'react-router-dom';
 import { createProxyProxy } from 'immer/dist/internal';
+import { NumericFormat } from 'react-number-format';
+import {MyCustomNumberFormat} from '../../Utils/Formatter'
 
 
 export type Inputs = {
@@ -52,6 +54,7 @@ export  function FormPriceList (props:Inputs) {
 
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
     dispatch({type:'UPDATE_PRODUCT_PRICE_LIST', payload: data})
+    console.log(data)
 }
  
   return (
@@ -95,24 +98,27 @@ export  function FormPriceList (props:Inputs) {
         <Controller
             name="valorUnitario"
             control={control}
-            render={({ field }) =><TextField
+            render={({ field }) =><MyCustomNumberFormat
+            customInput={TextField}
             {...field}
             required
             label={'Valor Unitário'}
+            allowLeadingZeros 
+            decimalScale={3}
             placeholder = {"Valor unitario"}
             sx={{paddingRight: '15px'}}
             />}/>        
         <Controller
             name="quantidadeMínima"
             control={control}
-            render={({ field }) =><TextField
+            render={({ field }) =><NumericFormat
+            customInput={TextField}
             {...field}
             required
             label={'Quantidade Mínima'}
             placeholder = {"QTD Mínima"}
             sx={{paddingRight: '15px'}}
             />}/>
-
         </Box>
         
     </div>
