@@ -16,7 +16,7 @@ export interface PriceList {
   productName: string,
   produto_id: string,
   unidade: string,
-  valorUnitario: string,
+  valorUnitario: number,
   quantidadeMínima: number
   quantidade: number,  
 };
@@ -28,7 +28,7 @@ export interface state {
   unidade: '',
   quantidade: '',
   _id: '',
-  valorUnitario: '',
+  valorUnitario: number,
   quantidadeMínima: ''}],
   activeStep:number
 }
