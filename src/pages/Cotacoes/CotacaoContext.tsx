@@ -15,12 +15,14 @@ export function CyclesContextProvider({
     const [cotacaoState, dispatch] = useReducer(reducerCotacao, {
         cotacao: [],
         productsOfCotacao: [],
-        priceList:[{name:'',
-          unidade: '',
-          quantidade: '',
+        priceList:[{
+          name:'',
           _id: '',
-          valorUnitario: '',
-          quantidadeMínima: ''}],
+          unidade: '',
+          valorUnitario: 0,
+          quantidadeMinima:0,
+          quantidade: 0,
+}],
           activeStep: 0
       })
   const [next, setNext] = useState()

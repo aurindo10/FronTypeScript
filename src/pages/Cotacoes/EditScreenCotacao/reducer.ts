@@ -17,19 +17,21 @@ export interface PriceList {
   produto_id: string,
   unidade: string,
   valorUnitario: number,
-  quantidadeMínima: number
+  quantidadeMinima: number
   quantidade: number,  
 };
 
 export interface state {
   cotacao: data[],
   productsOfCotacao: productOfListCotation[]
-  priceList: [{name:'',
-  unidade: '',
-  quantidade: '',
-  _id: '',
-  valorUnitario: number,
-  quantidadeMínima: ''}],
+  priceList: [{
+    name:'',
+    _id: '',
+    unidade: '',
+    valorUnitario: number,
+    quantidadeMinima: number,
+    quantidade: number,
+  }],
   activeStep:number
 }
 
@@ -59,7 +61,7 @@ export function reducerCotacao (state: state, action: any) {
             });
       case 'UPDATE_PRODUCT_PRICE_LIST':
           return produce(state, (draft)=>{
-            draft.priceList[draft.activeStep].quantidadeMínima = action.payload.quantidadeMínima
+            draft.priceList[draft.activeStep].quantidadeMinima = action.payload.quantidadeMinima
             draft.priceList[draft.activeStep].valorUnitario = action.payload.valorUnitario
             });    
       case 'HANDLE_SCREAN':

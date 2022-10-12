@@ -1,16 +1,14 @@
 // import { Modal } from "./style";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-
 import { useContext, useEffect, useState } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { ContacaoContext } from '../../../src/pages/Cotacoes/CotacaoContext'
 import { NumericFormat } from 'react-number-format';
-import { priceFormatter } from '../../Utils/Formatter';
-import { number } from 'zod';
-
+import { Button } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
 
 export type Inputs = {
@@ -19,7 +17,7 @@ export type Inputs = {
     produto_id: string,
     unidade: string,
     valorUnitario?: number,
-    quantidadeMínima?: number,
+    quantidadeMinima?: number,
     quantidade?: number,  
 };
 
@@ -29,7 +27,7 @@ export type Inputs = {
 // })
 
 export  function FormPriceList (props:Inputs) {
-
+  const {id, name, empresa} = useParams()
 
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
 
@@ -41,7 +39,7 @@ export  function FormPriceList (props:Inputs) {
         produto_id: props.produto_id,
         unidade: props.unidade,
         valorUnitario: props.valorUnitario,
-        quantidadeMínima: props.quantidadeMínima,
+        quantidadeMinima: props.quantidadeMinima,
         quantidade: props.quantidade
       }
   });
@@ -49,7 +47,7 @@ export  function FormPriceList (props:Inputs) {
 useEffect(()=>{
     setValue("productName", props.productName)
     setValue("produto_id", props.produto_id)
-    setValue("quantidadeMínima",props.quantidadeMínima )
+    setValue("quantidadeMinima",props.quantidadeMinima )
     setValue('unidade',props.unidade)
     setValue("quantidade", props.quantidade)
     setValue("valorUnitario",props.valorUnitario)
@@ -61,11 +59,31 @@ useEffect(()=>{
     dispatch({type:'UPDATE_PRODUCT_PRICE_LIST', payload: data})
     console.log(data)
 }
+  function HandleClick () {
+    const ProdutoNaoPreenchidos = cotacaoState.priceList.filter((e: any)=>{return (
+        e.valorUnitario == '')
+      })
+      console.log(ProdutoNaoPreenchidos)
+      console.log(cotacaoState.priceList[0].valorUnitario)
+      if (ProdutoNaoPreenchidos) {
+        fetch("http://localhost:3002/cotacoes/cadastrodelistadeprecos", {
+        headers: {"Content-Type": "application/json"},
+        method: "POST",
+        body: JSON.stringify({
+          vendedor: name,
+          empresa: empresa,
+          cotacao_id: id,
+          listOfProducts: cotacaoState.priceList
+        })}).then(response => response.json())
+      }
+      console.log("preencha tudo")
+  } 
  
   return (
     <Box
     component="span"
     sx={{ padding: '40px', paddingLeft: '15px', }}> 
+      <Button onClick={HandleClick}>Enviar</Button>
       <form style={{flexGrow: 1}} onChange={handleSubmit(onSubmit)} >
       <div>
         <Box sx={{display: "flex", alignItems: "center" }}>
@@ -122,7 +140,7 @@ useEffect(()=>{
             sx={{paddingRight: '15px'}}
             />}/>
         <Controller
-            name="quantidadeMínima"
+            name="quantidadeMinima"
             control={control}
             render={({field: {onChange, name, value}}) =><NumericFormat
             required
@@ -131,7 +149,7 @@ useEffect(()=>{
                 const {formattedValue, value, floatValue} = values;
                 onChange(floatValue)
               }}
-            value = {props.quantidadeMínima}
+            value = {props.quantidadeMinima}
             thousandSeparator="."
             decimalSeparator=","
             label={'Quantidade Mínima'}

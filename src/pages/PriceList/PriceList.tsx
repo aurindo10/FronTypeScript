@@ -33,7 +33,7 @@ export  function PriceList() {
           quantidade: e.quantidade,
           _id: e._id,
           valorUnitario: priceList[cotacaoState.activeStep].valorUnitario,
-          quantidadeMínima: priceList[cotacaoState.activeStep].quantidadeMínima
+          quantidadeMinima: priceList[cotacaoState.activeStep].quantidadeMinima
           }
           
         }
@@ -79,7 +79,7 @@ export  function PriceList() {
                 unidade = {priceList[cotacaoState.activeStep].unidade}
                 quantidade= { priceList[cotacaoState.activeStep].quantidade}
                 valorUnitario={ priceList[cotacaoState.activeStep].valorUnitario}
-                quantidadeMínima={ priceList[cotacaoState.activeStep].quantidadeMínima}
+                quantidadeMinima={ priceList[cotacaoState.activeStep].quantidadeMinima}
             ></FormPriceList>
         </Box>
       <MobileStepper
