@@ -28,10 +28,10 @@ export  function PriceList() {
     method: "GET"})
     .then(response => response.json())
     .then((response)=>{ return dispatch({type:"SET_PRODUCT_PRICE_LIST", payload: response.products.map((e: any)=>{return {
-          name: e.name,
+          productName: e.name,
+          product_id: e._id,
           unidade: e.unidade,
           quantidade: e.quantidade,
-          _id: e._id,
           valorUnitario: priceList[cotacaoState.activeStep].valorUnitario,
           quantidadeMinima: priceList[cotacaoState.activeStep].quantidadeMinima
           }
@@ -68,14 +68,14 @@ export  function PriceList() {
         }}
         
       > 
-        <Typography>{priceList[cotacaoState.activeStep].name}</Typography>
+        <Typography>{priceList[cotacaoState.activeStep].productName}</Typography>
       </Paper>
         <Box 
         
         sx={{ height: 255, maxWidth: 900, width: '100%', p: 2, display: "inline-block" }}>
             <FormPriceList 
-                productName= {priceList[cotacaoState.activeStep].name}
-                produto_id = {priceList[cotacaoState.activeStep]._id}
+                productName= {priceList[cotacaoState.activeStep].productName}
+                product_id = {priceList[cotacaoState.activeStep].product_id}
                 unidade = {priceList[cotacaoState.activeStep].unidade}
                 quantidade= { priceList[cotacaoState.activeStep].quantidade}
                 valorUnitario={ priceList[cotacaoState.activeStep].valorUnitario}

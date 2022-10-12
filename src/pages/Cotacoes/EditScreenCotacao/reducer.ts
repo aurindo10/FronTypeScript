@@ -14,7 +14,7 @@ export interface productOfListCotation {
 
 export interface PriceList {
   productName: string,
-  produto_id: string,
+  product_id: string,
   unidade: string,
   valorUnitario: number,
   quantidadeMinima: number
@@ -25,8 +25,8 @@ export interface state {
   cotacao: data[],
   productsOfCotacao: productOfListCotation[]
   priceList: [{
-    name:'',
-    _id: '',
+    productName:'',
+    product_id: '',
     unidade: '',
     valorUnitario: number,
     quantidadeMinima: number,

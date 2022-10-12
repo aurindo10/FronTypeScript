@@ -14,7 +14,7 @@ import { useParams } from 'react-router-dom';
 export type Inputs = {
     
     productName: string,
-    produto_id: string,
+    product_id: string,
     unidade: string,
     valorUnitario?: number,
     quantidadeMinima?: number,
@@ -36,7 +36,7 @@ export  function FormPriceList (props:Inputs) {
     // resolver: zodResolver(productSchema)
     defaultValues: {
         productName: props.productName,
-        produto_id: props.produto_id,
+        product_id: props.product_id,
         unidade: props.unidade,
         valorUnitario: props.valorUnitario,
         quantidadeMinima: props.quantidadeMinima,
@@ -46,7 +46,7 @@ export  function FormPriceList (props:Inputs) {
 
 useEffect(()=>{
     setValue("productName", props.productName)
-    setValue("produto_id", props.produto_id)
+    setValue("product_id", props.product_id)
     setValue("quantidadeMinima",props.quantidadeMinima )
     setValue('unidade',props.unidade)
     setValue("quantidade", props.quantidade)

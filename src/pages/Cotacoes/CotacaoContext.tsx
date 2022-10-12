@@ -16,8 +16,8 @@ export function CyclesContextProvider({
         cotacao: [],
         productsOfCotacao: [],
         priceList:[{
-          name:'',
-          _id: '',
+          productName:'',
+          product_id: '',
           unidade: '',
           valorUnitario: 0,
           quantidadeMinima:0,
