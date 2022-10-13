@@ -18,7 +18,8 @@ export interface PriceList {
   unidade: string,
   valorUnitario: number,
   quantidadeMinima: number
-  quantidade: number,  
+  quantidade: number,
+  vendedorId: string  
 };
 
 export interface state {
@@ -31,6 +32,7 @@ export interface state {
     valorUnitario: number,
     quantidadeMinima: number,
     quantidade: number,
+    vendedorId: ''
   }],
   activeStep:number
 }

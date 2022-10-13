@@ -19,6 +19,7 @@ export type Inputs = {
     valorUnitario?: number,
     quantidadeMinima?: number,
     quantidade?: number,  
+    vendedorId: string
 };
 
 // const productSchema = zod.object({
@@ -27,7 +28,7 @@ export type Inputs = {
 // })
 
 export  function FormPriceList (props:Inputs) {
-  const {id, name, empresa} = useParams()
+  const {id, name, empresa, sellerid} = useParams()
 
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
 
@@ -40,7 +41,8 @@ export  function FormPriceList (props:Inputs) {
         unidade: props.unidade,
         valorUnitario: props.valorUnitario,
         quantidadeMinima: props.quantidadeMinima,
-        quantidade: props.quantidade
+        quantidade: props.quantidade,
+        vendedorId: props.vendedorId
       }
   });
 
@@ -51,6 +53,7 @@ useEffect(()=>{
     setValue('unidade',props.unidade)
     setValue("quantidade", props.quantidade)
     setValue("valorUnitario",props.valorUnitario)
+    setValue("vendedorId", props.vendedorId)
 })
 
 

@@ -17,7 +17,7 @@ import { useParams } from 'react-router-dom';
 export  function PriceList() {
   const theme = useTheme();
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
-  const {id} = useParams()
+  const {id, sellerid} = useParams()
   const { priceList } = cotacaoState
   const maxSteps = priceList.length;
   
@@ -33,7 +33,8 @@ export  function PriceList() {
           unidade: e.unidade,
           quantidade: e.quantidade,
           valorUnitario: priceList[cotacaoState.activeStep].valorUnitario,
-          quantidadeMinima: priceList[cotacaoState.activeStep].quantidadeMinima
+          quantidadeMinima: priceList[cotacaoState.activeStep].quantidadeMinima,
+          vendedorId: sellerid
           }
           
         }
@@ -80,6 +81,7 @@ export  function PriceList() {
                 quantidade= { priceList[cotacaoState.activeStep].quantidade}
                 valorUnitario={ priceList[cotacaoState.activeStep].valorUnitario}
                 quantidadeMinima={ priceList[cotacaoState.activeStep].quantidadeMinima}
+                vendedorId = {priceList[cotacaoState.activeStep].vendedorId}
             ></FormPriceList>
         </Box>
       <MobileStepper

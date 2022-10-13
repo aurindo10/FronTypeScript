@@ -22,6 +22,7 @@ export function CyclesContextProvider({
           valorUnitario: 0,
           quantidadeMinima:0,
           quantidade: 0,
+          vendedorId: ''
 }],
           activeStep: 0
       })

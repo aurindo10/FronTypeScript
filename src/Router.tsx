@@ -26,7 +26,7 @@ export function Router() {
             <Route path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
           </Route>
           <Route path='/pricelist/:id/' element={<EntryPage/>}></Route>
-          <Route path='/pricelist/:id/:name/:empresa' element={<PriceList/>}></Route>
+          <Route path='/pricelist/:id/:name/:empresa/:sellerid' element={<PriceList/>}></Route>
           
       </Routes>
     </CyclesContextProvider>
