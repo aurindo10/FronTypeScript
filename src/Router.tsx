@@ -7,6 +7,7 @@ import { EditPageCotacao } from './pages/Cotacoes/EditScreenCotacao/EditPageCota
 import { CyclesContextProvider } from './pages/Cotacoes/CotacaoContext' 
 import { EntryPage } from './pages/PriceList/EntryPage'
 import { PriceList } from './pages/PriceList/PriceList'
+import { BuyList } from './pages/BuyList/BuyList'
 
 
 
@@ -24,6 +25,7 @@ export function Router() {
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/cotacoes" element={<Cotacoes />} />
             <Route path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
+            <Route path="/buylist" element = {<BuyList/>}/>
           </Route>
           <Route path='/pricelist/:id/' element={<EntryPage/>}></Route>
           <Route path='/pricelist/:id/:name/:empresa/:sellerid' element={<PriceList/>}></Route>

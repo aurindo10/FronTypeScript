@@ -22,7 +22,7 @@ import { solTheme } from './style';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import img from '../components/Bar/register/sol.svg'
 import { ImgContainer } from './style';
-import { Barcode } from 'phosphor-react';
+import { Barcode, ShoppingBag } from 'phosphor-react';
 
 
 const drawerWidth = 240;
@@ -145,6 +145,16 @@ export  function DefaultLayout() {
                     <Barcode size={28} />
                   </ListItemIcon>
                   <ListItemText primary="Cotações" />
+                </ListItemButton>
+              </ListItem>
+              </NavLink>
+              <NavLink to ="/buylist"  style={{ textDecoration: 'none', color:'black' }}>
+              <ListItem key="Cotações" disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <ShoppingBag size={28} />
+                  </ListItemIcon>
+                  <ListItemText primary="Lista de Compras" />
                 </ListItemButton>
               </ListItem>
               </NavLink>
