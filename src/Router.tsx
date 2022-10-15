@@ -9,11 +9,7 @@ import { EntryPage } from './pages/PriceList/EntryPage'
 import { PriceList } from './pages/PriceList/PriceList'
 import { BuyList } from './pages/BuyList/BuyList'
 import { PriceListByIdCotation } from './pages/Cotacoes/cotacoesList/PriceListPage'
-
-
-
-
-
+import { OneBuyList } from './pages/BuyList/OneBuyList'
 
 
 export function Router() {
@@ -26,6 +22,7 @@ export function Router() {
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/cotacoes" element={<Cotacoes />} />
             <Route path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
+            <Route path="/buylist/onebuylist/:idbuylist" element={<OneBuyList />}/>
             <Route path="/buylist" element = {<BuyList/>}/>
             <Route path="/pricelistbyidcotation/:idPriceList" element = {<PriceListByIdCotation/>}/>
           </Route>

@@ -1,5 +1,6 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { BasicModal } from "../../components/Bar/register/modal";
 
 
@@ -49,7 +50,9 @@ return(
               >Deletar</Button> */}
               </TableCell>
               <TableCell>
-                <BasicModal productInfotoUpdate={{row}} ></BasicModal>
+                <NavLink to={"/buylist/onebuylist/"+row.idCotacao}>
+                 <Button>Verificar Lista</Button>
+                </NavLink>
               </TableCell>
             </TableRow>
           ))}
