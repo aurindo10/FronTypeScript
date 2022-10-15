@@ -55,7 +55,7 @@ export function CotacaoList() {
           setLink("http://127.0.0.1:5173/pricelist/"+idCOtacao)
       }
       return (
-        <Box style={{display : 'flex'}}>
+        <Box style={{display : 'inline'}}>
           <TableCell> <Button 
             type="submit"
             variant="contained"
@@ -70,17 +70,43 @@ export function CotacaoList() {
 
     }
 
+    const ButtonToGenereteBuyList = (props:any)=>{
+
+      const HandleCLickGenerate = (idCOtacao:any)=>{
+        const getData = async ()=>{await fetch("http://localhost:3002/cotacoes/compara/"+idCOtacao, {
+          headers: {"Content-Type": "application/json"},
+          method: "GET"})
+          .then(response => response.json()).then(response => console.log("Success:", response))
+          .catch(error => console.error("Error:", error))};
+          getData()
+    }
+
+      return (
+      <Box style={{display : 'inline'}}>
+        <TableCell> <Button 
+          type="submit"
+          variant="contained"
+          sx={{ width: '125px', left: "0rem", height: "3.2rem", fontSize: '0.8rem'}}
+          onClick={()=> HandleCLickGenerate(props.idCotacao)}>Gerar Lista de Compra</Button></TableCell>
+        {/* {link && (<p>
+              Link: {link}
+            </p>)} */}
+      </Box>
+      )
+
+    }
+
   return (
     <div> 
     <TableContainer component={Paper} sx={{ maxWidth: 1200 }} key='tablecontainer'>
-      <Table sx={{ maxWidth: 800 }} aria-label="simple table"  key='table'>
+      <Table sx={{ maxWidth: 3000 }} aria-label="simple table"  key='table'>
         <TableHead>
           <TableRow>
             <TableCell>Nome da Lista</TableCell>
             <TableCell align="right">Data de criacao</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody sx={{ maxWidth: 3000 }}>
           {cotacao!.map((row:any ) => (
             <TableRow
               key={row._id}
@@ -98,12 +124,10 @@ export function CotacaoList() {
               <TableCell ><NavLink to = {{pathname: '/pricelistbyidcotation/'+row._id}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button
               type="submit"
               variant="contained"
-              sx={{ width: '100px', left: "0rem", height: "3.2rem" }}
-              
-              
-              
-              > Verificar Cotacoes</Button></NavLink></TableCell>
+              sx={{ width: '100px', left: "0rem", height: "3.2rem" }}> Verificar Cotacoes</Button></NavLink></TableCell>
+              <ButtonToGenereteBuyList idCotacao={row._id} ></ButtonToGenereteBuyList>
               <ComponentLink idCotacaoo={row._id}></ComponentLink>
+              
             </TableRow>
           ))}
         </TableBody>

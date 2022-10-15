@@ -2,6 +2,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { DownloadPdf } from './download'
 
 interface BuyList {
     _id: string,
@@ -60,55 +61,59 @@ export function OneBuyList (){
           field: 'productName',
           headerName: 'Nome do Produto',
           width: 150,
-          editable: true,
+          editable: false,
         },
         {
           field: 'unidade',
           headerName: 'Unidade',
           width: 150,
-          editable: true,
+          editable: false,
         },
         {
           field: 'quantidade',
           headerName: 'Quantidade',
           type: 'number',
           width: 110,
-          editable: true,
+          editable: false,
         },
         {
           field: 'valorUnitario',
           headerName: 'Valor Unitario',
           description: '',
           sortable: false,
-          width: 160
+          width: 160,
+          editable: false
         },
         {
             field: 'quantidadeMinima',
             headerName: 'Quantidade Minima',
             description: '',
             sortable: false,
-            width: 160
+            width: 160,
+            editable: false,
         }
       ];
       console.log(onListToBuy.listas)
-      const tsdasdas = onListToBuy.listas
+      const listToRender = onListToBuy.listas
 return (
     <div style={{ height: 400, width: '100%' }}>
-        {tsdasdas.map((oneList: any)=>{return (
-            <div style={{ display: 'flex', height: '100%' }}>
-            <div style={{ flexGrow: 1 }}>
-                <DataGrid 
+
+    {listToRender.map((oneList: any)=>{return (
+                    <div style={{ display: 'flex', height: '100%' }}>
+                    <div style={{ flexGrow: 1 }}>
+                    <h2>{'Vendedor:  '}{oneList.nomeDoVendedor}</h2>
+                    <h4>{'Empresa:  '}{oneList.empresa}</h4>
+                    <DataGrid 
                         getRowId={(r) => r._id}
                         rows={oneList.ProductListToBuy}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
-                        checkboxSelection
                         disableSelectionOnClick
-                />
-            </div>
-
-            </div>
+                            />
+                    
+                    </div>
+                    </div>
         )})}
     </div>
 
