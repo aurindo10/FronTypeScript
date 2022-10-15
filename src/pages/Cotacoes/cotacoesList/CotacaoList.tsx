@@ -6,12 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useReducer } from 'react';
 import {reducerCotacao} from '../EditScreenCotacao/reducer'
 import { ContacaoContext } from '../CotacaoContext';
+import { display } from '@mui/system';
 
 
 export interface data{
@@ -45,9 +46,33 @@ export function CotacaoList() {
         dispatch({type: "SetCotacao", payload: cotacaoState.cotacao!.filter((row: any)=> row._id !== id)}) 
     } 
     const {cotacao} = cotacaoState
+
+
+    const ComponentLink = (props:any)=>{
+      
+      const [link, setLink] = React.useState('')
+      const HandleCLick = (idCOtacao:any)=>{
+          setLink("http://127.0.0.1:5173/pricelist/"+idCOtacao)
+      }
+      return (
+        <Box style={{display : 'flex'}}>
+          <TableCell> <Button 
+            type="submit"
+            variant="contained"
+            sx={{ width: '100px', left: "0rem", height: "3.2rem" }}
+            onClick={()=> HandleCLick(props.idCotacaoo)}>Gerar Link</Button></TableCell>
+          {link && (<p>
+                Link: {link}
+              </p>)}
+        </Box>
+
+      )
+
+    }
+
   return (
     <div> 
-    <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
+    <TableContainer component={Paper} sx={{ maxWidth: 1200 }} key='tablecontainer'>
       <Table sx={{ maxWidth: 800 }} aria-label="simple table"  key='table'>
         <TableHead>
           <TableRow>
@@ -70,6 +95,15 @@ export function CotacaoList() {
               >Deletar</Button>
               </TableCell>
               <TableCell ><NavLink to = {{pathname: '/cotacoes/edit/'+row._id}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button> Editar</Button></NavLink></TableCell>
+              <TableCell ><NavLink to = {{pathname: '/pricelistbyidcotation/'+row._id}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button
+              type="submit"
+              variant="contained"
+              sx={{ width: '100px', left: "0rem", height: "3.2rem" }}
+              
+              
+              
+              > Verificar Cotacoes</Button></NavLink></TableCell>
+              <ComponentLink idCotacaoo={row._id}></ComponentLink>
             </TableRow>
           ))}
         </TableBody>
