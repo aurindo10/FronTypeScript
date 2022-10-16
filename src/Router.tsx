@@ -1,37 +1,41 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, RouteProps, Routes, useNavigate } from 'react-router-dom'
 import { HomeComponent } from './pages/Home/Home'
 import { DefaultLayout } from './DefaultLayout/defaultLayout'
 import { Cadastro } from './pages/cadastro/Cadastro'
 import { Cotacoes } from './pages/Cotacoes/Cotacoes'
 import { EditPageCotacao } from './pages/Cotacoes/EditScreenCotacao/EditPageCotacao'
-import { CyclesContextProvider } from './pages/Cotacoes/CotacaoContext' 
+import { ContacaoContext } from './pages/Cotacoes/CotacaoContext' 
 import { EntryPage } from './pages/PriceList/EntryPage'
 import { PriceList } from './pages/PriceList/PriceList'
 import { BuyList } from './pages/BuyList/BuyList'
 import { PriceListByIdCotation } from './pages/Cotacoes/cotacoesList/PriceListPage'
 import { OneBuyList } from './pages/BuyList/OneBuyList'
 import { RegistorDeUsuario } from './pages/Loggin/Register'
+import { Login } from './pages/Loggin/Login'
+import { useContext } from 'react'
+
+
 
 
 export function Router() {
   
   return (
-    <CyclesContextProvider>
+    
       <Routes>
+          <Route path='/login' element={<Login/>}></Route>
           <Route path="/register" element={<RegistorDeUsuario />} />
           <Route path="/" element={<DefaultLayout />}>
-            <Route path="/home" element={<HomeComponent />} />
-            <Route path="/cadastro" element={<Cadastro />} />
-            <Route path="/cotacoes" element={<Cotacoes />} />
-            <Route path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
-            <Route path="/buylist/onebuylist/:idbuylist" element={<OneBuyList />}/>
-            <Route path="/buylist" element = {<BuyList/>}/>
-            <Route path="/pricelistbyidcotation/:idPriceList" element = {<PriceListByIdCotation/>}/>
+            <Route  path="/home" element={<HomeComponent />} />
+            <Route  path="/cadastro" element={<Cadastro />} />
+            <Route  path="/cotacoes" element={<Cotacoes />} />
+            <Route  path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
+            <Route  path="/buylist/onebuylist/:idbuylist" element={<OneBuyList />}/>
+            <Route  path="/buylist" element = {<BuyList/>}/>
+            <Route  path="/pricelistbyidcotation/:idPriceList" element = {<PriceListByIdCotation/>}/>
           </Route>
           <Route path='/pricelist/:id/' element={<EntryPage/>}></Route>
           <Route path='/pricelist/:id/:name/:empresa/:sellerid' element={<PriceList/>}></Route>
-          
-      </Routes>
-    </CyclesContextProvider>
+      </Routes> 
+    
   )
 }
