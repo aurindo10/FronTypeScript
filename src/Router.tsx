@@ -10,6 +10,7 @@ import { PriceList } from './pages/PriceList/PriceList'
 import { BuyList } from './pages/BuyList/BuyList'
 import { PriceListByIdCotation } from './pages/Cotacoes/cotacoesList/PriceListPage'
 import { OneBuyList } from './pages/BuyList/OneBuyList'
+import { RegistorDeUsuario } from './pages/Loggin/Register'
 
 
 export function Router() {
@@ -17,6 +18,7 @@ export function Router() {
   return (
     <CyclesContextProvider>
       <Routes>
+          <Route path="/register" element={<RegistorDeUsuario />} />
           <Route path="/" element={<DefaultLayout />}>
             <Route path="/home" element={<HomeComponent />} />
             <Route path="/cadastro" element={<Cadastro />} />
