@@ -17,6 +17,7 @@
     "@mui/styled-engine-sc": "^5.10.6",
     "@mui/x-data-grid": "^5.17.5",
     "@react-pdf/renderer": "^3.0.0",
+    "@types/react-pdf": "^5.7.2",
     "@types/styled-components": "^5.1.26",
     "immer": "^9.0.15",
     "phosphor-react": "^1.4.1",
@@ -27,6 +28,7 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.1",
     "react-select": "^5.4.0",
+    "react-to-pdf": "^0.0.14",
     "redux": "^4.2.0",
     "styled-components": "^5.3.6",
     "zod": "^3.19.1"

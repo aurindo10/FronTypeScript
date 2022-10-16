@@ -1,39 +1,86 @@
-import React from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
-import { Button } from '@mui/material';
+import React, { useState } from 'react';
+import ReactPDF, { Page, Text, View, Document, StyleSheet, PDFDownloadLink, PDFViewer, usePDF } from '@react-pdf/renderer';
+import { Button, Divider } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Navigate } from 'react-router-dom';
+import ReactDOM from 'react-dom';
+;
 
-// Create styles
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4'
+
+const columns: GridColDef[] = [
+  {
+    field: 'productName',
+    headerName: 'Nome do Produto',
+    width: 150,
+    editable: false,
   },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1
+  {
+    field: 'unidade',
+    headerName: 'Unidade',
+    width: 150,
+    editable: false,
+  },
+  {
+    field: 'quantidade',
+    headerName: 'Quantidade',
+    type: 'number',
+    width: 110,
+    editable: false,
+  },
+  {
+    field: 'valorUnitario',
+    headerName: 'Valor Unitario',
+    description: '',
+    sortable: false,
+    width: 160,
+    editable: false
+  },
+  {
+      field: 'quantidadeMinima',
+      headerName: 'Quantidade Minima',
+      description: '',
+      sortable: false,
+      width: 160,
+      editable: false,
   }
-});
- 
-const MyDocument = () => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>Section #1</Text>
-      </View>
-      <View style={styles.section}>
-        <Text>Section #2</Text>
-      </View>
-    </Page>
-  </Document>
-);
+]
 
-export function DownloadPdf (props: any){
-    console.log(props.content)
+
+
+export function Buttonsd (props: any){
+const MyDocument = () =>{
     return (
-        <div>
-        <Button> Baixar PDF</Button>
-        </div>
+
+        <Document>
+          <Page >
+            <View>
+              <DataGrid 
+                getRowId={(r) => r._id}
+                rows={props.dataToRenderOnPdf.ProductListToBuy}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+                disableSelectionOnClick
+                                    />
+                                    
+             </View>
+          
+          </Page>
+        </Document>
+
+        )}
+
+    return (
+
+      <Button onClick={()=>{{console.log(props.dataToRenderOnPdf.ProductListToBuy)} ReactDOM.render(<MyDocument/>, document.getElementById('root'))}}>
+        <MyDocument/>
+            Baixar pdf 
+      </Button> 
+
+
     )
 
 }
+
+
+                     

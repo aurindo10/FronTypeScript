@@ -1,8 +1,13 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import ReactPDF, { PDFDownloadLink } from "@react-pdf/renderer";
+import React from "react";
 import { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import { useParams } from "react-router-dom";
-import { DownloadPdf } from './download'
+import { Buttonsd } from "./download";
+import Pdf  from "react-to-pdf";
+
 
 interface BuyList {
     _id: string,
@@ -95,26 +100,32 @@ export function OneBuyList (){
       ];
       console.log(onListToBuy.listas)
       const listToRender = onListToBuy.listas
+      const ref = React.createRef();
 return (
     <div style={{ height: 400, width: '100%' }}>
 
-    {listToRender.map((oneList: any)=>{return (
-                    <div style={{ display: 'flex', height: '100%' }}>
-                    <div style={{ flexGrow: 1 }}>
-                    <h2>{'Vendedor:  '}{oneList.nomeDoVendedor}</h2>
-                    <h4>{'Empresa:  '}{oneList.empresa}</h4>
-                    <DataGrid 
-                        getRowId={(r) => r._id}
-                        rows={oneList.ProductListToBuy}
-                        columns={columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
-                        disableSelectionOnClick
-                            />
-                    
-                    </div>
-                    </div>
-        )})}
+        {listToRender.map((oneList: any)=>{return (
+                        <div style={{ display: 'flex', height: '100%' }}>
+                            <div style={{ flexGrow: 1 }}>
+                                <Pdf targetRef={ref} filename="code-example.pdf">
+                                    {({ toPdf }:any) => <button onClick={toPdf}>Generate Pdf</button>}
+                                    </Pdf>
+                                <h2>{'Vendedor:  '}{oneList.nomeDoVendedor}</h2>
+                                <h4>{'Empresa:  '}{oneList.empresa}</h4>
+
+                                <DataGrid 
+                                    ref={ref}
+                                    getRowId={(r) => r._id}
+                                    rows={oneList.ProductListToBuy}
+                                    columns={columns}
+                                    pageSize={5}
+                                    rowsPerPageOptions={[5]}
+                                    disableSelectionOnClick
+                                        />
+                            </div>
+
+                        </div>
+            )})}
     </div>
 
 
