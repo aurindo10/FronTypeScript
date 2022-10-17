@@ -47,13 +47,24 @@ export function CyclesContextProvider({
     localStorage.setItem("token", JSON.stringify(token))
     navigate('/home')
   }
+  const  HandleLogout = async (data: InputsLogin) =>{    
+    await fetch("http://localhost:3002/user/login", {
+    headers: {"Content-Type": "application/json"},
+    method: "POST",
+    body: JSON.stringify(data)}).then(response => { return response.json()})
+     .then((response)=>{setTonken(response)})
+    .catch(error => console.error("Error:", error))
+    setAuth(false)
+    localStorage.removeItem("token")
+    navigate('/login')
+  }
+
 
   useEffect(()=>{
     const token = localStorage.getItem("token")
     if (token) {
       setAuth(true)
     }
-
     setLoading(false)
   },[])
 
@@ -64,7 +75,7 @@ export function CyclesContextProvider({
 
       return (
         <ContacaoContext.Provider
-        value={{cotacaoState, dispatch, next, setNext, HandleLogin, auth}}
+        value={{cotacaoState, dispatch, next, setNext, HandleLogin, auth, HandleLogout}}
         >
             {children}
         </ContacaoContext.Provider>

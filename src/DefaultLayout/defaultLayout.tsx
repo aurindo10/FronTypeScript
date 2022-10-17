@@ -23,6 +23,8 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import img from '../components/Bar/register/sol.svg'
 import { ImgContainer } from './style';
 import { Barcode, ShoppingBag } from 'phosphor-react';
+import { ContacaoContext } from '../pages/Cotacoes/CotacaoContext';
+import { Button } from '@mui/material';
 
 
 const drawerWidth = 240;
@@ -77,6 +79,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export  function DefaultLayout() {
   const theme = useTheme();
+  const { HandleLogout } = React.useContext(ContacaoContext)
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -105,6 +108,9 @@ export  function DefaultLayout() {
           <Typography variant="h6" noWrap component="div">
             Cadastro de Produtos
           </Typography>
+          <Button sx={{color:'white', marginLeft: "90rem"}}
+            onClick={()=>{HandleLogout()}}
+          >Sair</Button>
         </Toolbar>
       </AppBar>
       <Drawer
