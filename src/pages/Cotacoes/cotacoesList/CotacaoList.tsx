@@ -13,7 +13,7 @@ import { useReducer } from 'react';
 import {reducerCotacao} from '../EditScreenCotacao/reducer'
 import { ContacaoContext } from '../CotacaoContext';
 import { display } from '@mui/system';
-import { ModalLink } from './ModalLink';
+import { SnackbarClipBoard } from './SnackbarClipBoard';
 
 
 export interface data{
@@ -107,7 +107,7 @@ export function CotacaoList() {
               variant="contained"
               sx={{ width: '100px', left: "0rem", height: "3.2rem" }}> Verificar Cotacoes</Button></NavLink></TableCell>
               <ButtonToGenereteBuyList idCotacao={row._id} ></ButtonToGenereteBuyList>
-              <TableCell><ModalLink idCotacaoo={row._id}></ModalLink></TableCell>
+              <TableCell><SnackbarClipBoard idCotacaoo={row._id}></SnackbarClipBoard></TableCell>
             </TableRow>
           ))}
         </TableBody>

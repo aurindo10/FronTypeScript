@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TableCell, TextField } from '@mui/material';
+import { Button, Snackbar } from '@mui/material'
+import { useState } from 'react'
+
 
 const style = {
   position: 'absolute',
@@ -17,27 +19,25 @@ const style = {
   p: 4,
 };
 
-export  function ModalLink(props:any) {
-    console.log(props.idCotacaoo)
-    const [open, setOpen] = React.useState(false);
-    const [link, setLink] = React.useState('')
+export  function SnackbarClipBoard (props:any) {
+    const [open, setOpen] = useState(false)
     const handleOpen = () => {
-        setLink("http://127.0.0.1:5173/pricelist/"+props.idCotacaoo)
-        setOpen(true)};
+      const Link = ("http://127.0.0.1:5173/pricelist/"+props.idCotacaoo)
+        setOpen(true)
+        navigator.clipboard.writeText(Link.toString())
+      };
     const handleClose = () => setOpen(false);
+
   return (
     <div>
       <Button onClick={handleOpen} sx={{ width: '100px', left: "0rem", height: "3.2rem" }}>Gerar Link</Button>
-      <Modal
+      <Snackbar
         open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-            <TextField value = {link}> </TextField>
-        </Box>
-      </Modal>
+        onClose={() => setOpen(false)}
+        autoHideDuration={2000}
+        message="Copied to clipboard"
+
+      />
     </div>
   );
 }
