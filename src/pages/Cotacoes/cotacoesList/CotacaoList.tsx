@@ -71,14 +71,20 @@ export function CotacaoList() {
     }
 
     const ButtonToGenereteBuyList = (props:any)=>{
-
       const HandleCLickGenerate = (idCOtacao:any)=>{
         const getData = async ()=>{await fetch("http://localhost:3002/cotacoes/compara/"+idCOtacao, {
           headers: {"Content-Type": "application/json"},
           method: "GET"})
-          .then(response => response.json()).then(response => console.log("Success:", response))
+          .then(response => response.json()).then(response => {
+            if(response.msg){
+              alert(response.msg)
+            }
+            else{
+              alert("Lista Cadastrada com Sucesso")
+            }})
           .catch(error => console.error("Error:", error))};
           getData()
+
     }
 
       return (
@@ -88,9 +94,6 @@ export function CotacaoList() {
           variant="contained"
           sx={{ width: '125px', left: "0rem", height: "3.2rem", fontSize: '0.8rem'}}
           onClick={()=> HandleCLickGenerate(props.idCotacao)}>Gerar Lista de Compra</Button></TableCell>
-        {/* {link && (<p>
-              Link: {link}
-            </p>)} */}
       </Box>
       )
 
