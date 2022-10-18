@@ -13,6 +13,7 @@ import { useReducer } from 'react';
 import {reducerCotacao} from '../EditScreenCotacao/reducer'
 import { ContacaoContext } from '../CotacaoContext';
 import { display } from '@mui/system';
+import { ModalLink } from './ModalLink';
 
 
 export interface data{
@@ -46,29 +47,6 @@ export function CotacaoList() {
         dispatch({type: "SetCotacao", payload: cotacaoState.cotacao!.filter((row: any)=> row._id !== id)}) 
     } 
     const {cotacao} = cotacaoState
-
-
-    const ComponentLink = (props:any)=>{
-      
-      const [link, setLink] = React.useState('')
-      const HandleCLick = (idCOtacao:any)=>{
-          setLink("http://127.0.0.1:5173/pricelist/"+idCOtacao)
-      }
-      return (
-        <Box style={{display : 'inline'}}>
-          <TableCell> <Button 
-            type="submit"
-            variant="contained"
-            sx={{ width: '100px', left: "0rem", height: "3.2rem" }}
-            onClick={()=> HandleCLick(props.idCotacaoo)}>Gerar Link</Button></TableCell>
-          {link && (<p>
-                Link: {link}
-              </p>)}
-        </Box>
-
-      )
-
-    }
 
     const ButtonToGenereteBuyList = (props:any)=>{
       const HandleCLickGenerate = (idCOtacao:any)=>{
@@ -129,8 +107,7 @@ export function CotacaoList() {
               variant="contained"
               sx={{ width: '100px', left: "0rem", height: "3.2rem" }}> Verificar Cotacoes</Button></NavLink></TableCell>
               <ButtonToGenereteBuyList idCotacao={row._id} ></ButtonToGenereteBuyList>
-              <ComponentLink idCotacaoo={row._id}></ComponentLink>
-              
+              <TableCell><ModalLink idCotacaoo={row._id}></ModalLink></TableCell>
             </TableRow>
           ))}
         </TableBody>
