@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import { TableCell, TextField } from '@mui/material';
 import { Button, Snackbar } from '@mui/material'
 import { useState } from 'react'
+import { ShareNetwork } from 'phosphor-react';
 
 
 const style = {
@@ -30,7 +31,9 @@ export  function SnackbarClipBoard (props:any) {
 
   return (
     <div>
-      <Button onClick={handleOpen} sx={{ width: '100px', left: "0rem", height: "3.2rem" }}>Gerar Link</Button>
+      <Button onClick={handleOpen} 
+      sx={{ width: '100px', left: "0rem", height: "3.2rem" }}
+      variant="contained"><ShareNetwork size={32} /></Button>
       <Snackbar
         open={open}
         onClose={() => setOpen(false)}

@@ -1,7 +1,9 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Trash } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { BasicModal } from "../../components/Bar/register/modal";
+import { SnackbarDeleteButton } from "./DeleteButton";
 
 
 
@@ -13,7 +15,8 @@ export function BuyList (){
     const getData = async ()=>{await fetch("http://localhost:3002/cotacoes/obtemtodaslistacomparadas", {
     headers: {"Content-Type": "application/json"},
     method: "GET"})
-    .then(response => response.json()).then((response)=>setallListToBuy(response))
+    .then(response => response.json())
+    .then((response)=>setallListToBuy(response))
     .then(response => console.log("Success:", response))
     .catch(error => console.error("Error:", error))};
 
@@ -27,8 +30,8 @@ export function BuyList (){
 return(
     
     <div> 
-    <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
-      <Table sx={{ maxWidth: 800 }} aria-label="simple table"  key='table'>
+    <TableContainer component={Paper} sx={{ maxWidth: 1000 }} key='tablecontainer'>
+      <Table sx={{ maxWidth: 1000 }} aria-label="simple table"  key='table'>
         <TableHead>
           <TableRow>
             <TableCell>Nome da Cotacao</TableCell> 
@@ -53,6 +56,9 @@ return(
                 <NavLink to={"/buylist/onebuylist/"+row.idCotacao}>
                  <Button>Verificar Lista</Button>
                 </NavLink>
+                  <SnackbarDeleteButton
+                     state={{setallListToBuy, idCotacaoToDelete: row.idCotacao}}>
+                  </SnackbarDeleteButton>
               </TableCell>
             </TableRow>
           ))}

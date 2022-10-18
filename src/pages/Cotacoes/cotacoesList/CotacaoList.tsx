@@ -14,6 +14,7 @@ import {reducerCotacao} from '../EditScreenCotacao/reducer'
 import { ContacaoContext } from '../CotacaoContext';
 import { display } from '@mui/system';
 import { SnackbarClipBoard } from './SnackbarClipBoard';
+import { FolderOpen, Plus, Trash } from 'phosphor-react';
 
 
 export interface data{
@@ -99,13 +100,13 @@ export function CotacaoList() {
               <TableCell align="right">{row.createdAt}</TableCell>
               <TableCell>
               <Button onClick={()=>DeleteProduct(row._id)}
-              >Deletar</Button>
+              ><Trash size={32} /></Button>
               </TableCell>
-              <TableCell ><NavLink to = {{pathname: '/cotacoes/edit/'+row._id}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button> Editar</Button></NavLink></TableCell>
+              <TableCell ><NavLink to = {{pathname: '/cotacoes/edit/'+row._id}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button> <Plus size={32} /></Button></NavLink></TableCell>
               <TableCell ><NavLink to = {{pathname: '/pricelistbyidcotation/'+row._id}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button
               type="submit"
               variant="contained"
-              sx={{ width: '100px', left: "0rem", height: "3.2rem" }}> Verificar Cotacoes</Button></NavLink></TableCell>
+              sx={{ width: '1rem', left: "0rem", height: "2.0rem" }}> <FolderOpen size={32} /></Button></NavLink></TableCell>
               <ButtonToGenereteBuyList idCotacao={row._id} ></ButtonToGenereteBuyList>
               <TableCell><SnackbarClipBoard idCotacaoo={row._id}></SnackbarClipBoard></TableCell>
             </TableRow>
