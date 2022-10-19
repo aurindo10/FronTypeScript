@@ -10,11 +10,11 @@ import { NumericFormat } from 'react-number-format';
 import { Button, Divider, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
+import { ProducName } from './style';
 
 
 
 export type Inputs = {
-    
     productName: string,
     product_id: string,
     marca: string,
@@ -92,16 +92,17 @@ useEffect(()=>{
       component="form"
       sx={{
         width: '100%',
+        height: '100%'
       }}
       spacing={2}
-      justifyContent="center"
       alignItems="center"
   
       >
-            <h1>{getValues("productName")}</h1>
-            <h2>{getValues("marca")}</h2>
-            <h3>{getValues("quantidade")+getValues("unidade")}</h3>
-
+        <ProducName>
+            <div><span>Produto:</span>{getValues("productName")}</div>
+            {/* <div>{getValues("marca")}</div>
+            <div>{getValues("quantidade")+getValues("unidade")}</div> */}
+        </ProducName>
         <Controller
             name="valorUnitario"
             control={control}
@@ -138,6 +139,7 @@ useEffect(()=>{
             decimalSeparator=","
             label={'Quantidade Mínima'}
             placeholder = {"QTD Mínima"}
+            variant={"standard"}
             sx={{}}
             />}/>
             {cotacaoState.activeStep===cotacaoState.priceList.length - 1 &&<Button onClick={HandleClick} sx={{}}>Enviar</Button>

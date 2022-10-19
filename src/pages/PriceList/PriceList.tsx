@@ -61,7 +61,7 @@ export  function PriceList() {
   return (
     <ThemeProvider theme={solTheme}>
     <div>
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1}}>
         <Box 
         
         sx={{ height: 500, width: '100%', display: "inline-block" }}>
@@ -77,6 +77,7 @@ export  function PriceList() {
             ></FormPriceList>
         </Box>
       <MobileStepper
+       sx={{bgcolor:"gray"}}
         variant="text"
         steps={maxSteps}
         position="static"
