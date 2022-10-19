@@ -24,7 +24,7 @@ type Inputs = {
 
 const productSchema = zod.object({
   name: zod.string().min(3, 'Informe o nome do produto'),
-  marca: zod.string().min(2, 'Informe o nome da marca'),
+  marca: zod.string().min(1, 'Informe o nome da marca'),
   unidade:zod.string().min(1, 'Informe o nome da marca'),
   quantidade:zod.string().min(1, 'Informe o nome da marca')
 })
@@ -33,7 +33,8 @@ export  function AddProductOnListOfCotacao () {
   const location = useLocation()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
   const [prodctsList, SetProductsList] = useState([{}])
-  const [selected, setSelected] = useState<Inputs>({_id: '',
+  const [selected, setSelected] = useState<Inputs>({
+    _id: '',
     name:'' ,
     marca:'' ,
     unidade: '',
@@ -66,7 +67,9 @@ export  function AddProductOnListOfCotacao () {
 
   },[]);
 
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastrodelista/"+location.state.idd, {
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
+    console.log(data)
+    await fetch("http://localhost:3002/produto/cadastrodelista/"+location.state.idd, {
       headers: {"Content-Type": "application/json"},
       method: "POST",
       body: JSON.stringify(data)}).then(response => response.json()).then((info)=>

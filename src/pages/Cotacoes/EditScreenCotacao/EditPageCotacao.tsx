@@ -50,6 +50,7 @@ return (
           <TableCell>Nome</TableCell> 
           <TableCell align="right">Unidade</TableCell>
           <TableCell align="right">Quantidade</TableCell>
+          <TableCell align="right">Marca</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -63,6 +64,7 @@ return (
             </TableCell>
             <TableCell align="right">{cell.unidade}</TableCell>
             <TableCell align="right">{cell.quantidade}</TableCell>
+            <TableCell align="right">{cell.marca}</TableCell>
             <TableCell>
             <Button onClick={()=>DeleteProduct(cell._id)}
             >Deletar</Button>

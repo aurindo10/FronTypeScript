@@ -88,7 +88,7 @@ export function CotacaoList() {
             <TableCell align="right">Data de criacao</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody sx={{ maxWidth: 3000 }}>
+        <TableBody  >
           {cotacao!.map((row:any ) => (
             <TableRow
               key={row._id}

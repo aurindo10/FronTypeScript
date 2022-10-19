@@ -14,6 +14,7 @@ interface BuyList {
                 {   
                     _id: string,
                     productName: string,
+                    marca: string,
                     unidade: string,
                     quantidade: number,
                     valorUnitario: number,
@@ -34,6 +35,7 @@ export function OneBuyList (){
                      {
                     _id: "",
                     productName: "",
+                    marca: '',
                     unidade:"" ,
                     quantidade: 0,
                     valorUnitario: 0,
@@ -70,6 +72,12 @@ export function OneBuyList (){
           width: 150,
           editable: false,
         },
+        {
+            field: 'marca',
+            headerName: 'Marca',
+            width: 150,
+            editable: false,
+          },
         {
           field: 'quantidade',
           headerName: 'Quantidade',

@@ -39,6 +39,7 @@ return (
                         <TableRow>
                             <TableCell>Nome do Produto</TableCell> 
                             <TableCell align="right">Unidade</TableCell>
+                            <TableCell align="right">Marca</TableCell>
                             <TableCell align="right">Quantidade</TableCell>
                             <TableCell align="right">Valor Unitario</TableCell>
                             <TableCell align="right">Quantidade Minima</TableCell>  
@@ -52,6 +53,7 @@ return (
                             >
                             <TableCell component="th" scope="row" >{row.productName} </TableCell>
                             <TableCell component="th" scope="row" >{row.unidade} </TableCell>
+                            <TableCell component="th" scope="row" >{row.marca} </TableCell>
                             <TableCell component="th" scope="row" >{row.quantidade} </TableCell>
                             <TableCell component="th" scope="row" >{row.valorUnitario} </TableCell>
                             <TableCell component="th" scope="row" >{row.quantidadeMinima} </TableCell>

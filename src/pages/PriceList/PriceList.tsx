@@ -12,6 +12,8 @@ import { ContacaoContext } from '../Cotacoes/CotacaoContext';
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import { solTheme } from '../../DefaultLayout/style';
 
 
 export  function PriceList() {
@@ -30,6 +32,7 @@ export  function PriceList() {
     .then((response)=>{ return dispatch({type:"SET_PRODUCT_PRICE_LIST", payload: response.products.map((e: any)=>{return {
           productName: e.name,
           product_id: e._id,
+          marca: e.marca,
           unidade: e.unidade,
           quantidade: e.quantidade,
           valorUnitario: priceList[cotacaoState.activeStep].valorUnitario,
@@ -54,29 +57,18 @@ export  function PriceList() {
   useEffect(()=>{
       getAllData()
   },[]);
+
   return (
+    <ThemeProvider theme={solTheme}>
     <div>
-    <Box sx={{ maxWidth: 900, flexGrow: 1 }}>
-      <Paper
-        square
-        elevation={0}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          height: 50,
-          pl: 2,
-          bgcolor: 'background.default',
-        }}
-        
-      > 
-        <Typography>{priceList[cotacaoState.activeStep].productName}</Typography>
-      </Paper>
+    <Box sx={{ flexGrow: 1 }}>
         <Box 
         
-        sx={{ height: 355, maxWidth: 900, width: '100%', p: 2, display: "inline-block" }}>
+        sx={{ height: 500, width: '100%', display: "inline-block" }}>
             <FormPriceList 
                 productName= {priceList[cotacaoState.activeStep].productName}
                 product_id = {priceList[cotacaoState.activeStep].product_id}
+                marca = {priceList[cotacaoState.activeStep].marca}
                 unidade = {priceList[cotacaoState.activeStep].unidade}
                 quantidade= { priceList[cotacaoState.activeStep].quantidade}
                 valorUnitario={ priceList[cotacaoState.activeStep].valorUnitario}
@@ -95,7 +87,7 @@ export  function PriceList() {
             onClick={handleNext}
             disabled={cotacaoState.activeStep === maxSteps - 1}
           >
-            Next
+            Próximo
             {theme.direction === 'rtl' ? (
               <KeyboardArrowLeft />
             ) : (
@@ -110,11 +102,12 @@ export  function PriceList() {
             ) : (
               <KeyboardArrowLeft />
             )}
-            Back
+            Anterior
           </Button>
         }
       />
     </Box>
     </div>
+    </ThemeProvider>
   );
 }

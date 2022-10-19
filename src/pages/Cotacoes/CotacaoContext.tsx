@@ -22,6 +22,7 @@ export function CyclesContextProvider({
         priceList:[{
           productName:'',
           product_id: '',
+          marca: '',
           unidade: '',
           valorUnitario: 0,
           quantidadeMinima:0,

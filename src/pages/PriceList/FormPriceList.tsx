@@ -7,14 +7,17 @@ import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { ContacaoContext } from '../../../src/pages/Cotacoes/CotacaoContext'
 import { NumericFormat } from 'react-number-format';
-import { Button } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import Stack from '@mui/material/Stack';
+
 
 
 export type Inputs = {
     
     productName: string,
     product_id: string,
+    marca: string,
     unidade: string,
     valorUnitario?: number,
     quantidadeMinima?: number,
@@ -29,15 +32,15 @@ export type Inputs = {
 
 export  function FormPriceList (props:Inputs) {
   const {id, name, empresa, sellerid} = useParams()
-
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
-
+  const { priceList } = cotacaoState
 
   const { control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>({
     // resolver: zodResolver(productSchema)
     defaultValues: {
         productName: props.productName,
         product_id: props.product_id,
+        marca: props.marca,
         unidade: props.unidade,
         valorUnitario: props.valorUnitario,
         quantidadeMinima: props.quantidadeMinima,
@@ -49,6 +52,7 @@ export  function FormPriceList (props:Inputs) {
 useEffect(()=>{
     setValue("productName", props.productName)
     setValue("product_id", props.product_id)
+    setValue("marca", props.marca)
     setValue("quantidadeMinima",props.quantidadeMinima )
     setValue('unidade',props.unidade)
     setValue("quantidade", props.quantidade)
@@ -60,7 +64,6 @@ useEffect(()=>{
 
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
     dispatch({type:'UPDATE_PRODUCT_PRICE_LIST', payload: data})
-    console.log(data)
 }
   function HandleClick () {
     const ProdutoNaoPreenchidos = cotacaoState.priceList.filter((e: any)=>{return (
@@ -81,39 +84,24 @@ useEffect(()=>{
       }
       console.log("preencha tudo")
   } 
- 
+
   return (
-      <form style={{textAlign: 'center'}} onChange={handleSubmit(onSubmit)} >
-        <Controller
-            name="productName"
-            control={control}
-            render={({ field }) =><TextField
-            {...field}
-            required
-            label={'Nome do Produto'}
-            placeholder = {"Nome do Produto"}
-            sx={{paddingRight: '15px',marginTop: '32px'}}
-            />}/>
-        <Controller
-            name="quantidade"
-            control={control}
-            render={({ field }) =><TextField
-            {...field}
-            required
-            label={'Quantidade'}
-            placeholder = {"Quantidade"}
-            sx={{paddingRight: '15px',marginTop: '32px'}}
-            />}/>
-        <Controller
-            name="unidade"
-            control={control}
-            render={({ field }) =><TextField
-            {...field}
-            required
-            label={'Unidade'}
-            placeholder = {"Unidade"}
-            sx={{paddingRight: '15px',marginTop: '32px'}}
-            />}/>
+
+      <Stack 
+      onChange={handleSubmit(onSubmit)} 
+      component="form"
+      sx={{
+        width: '100%',
+      }}
+      spacing={2}
+      justifyContent="center"
+      alignItems="center"
+  
+      >
+            <h1>{getValues("productName")}</h1>
+            <h2>{getValues("marca")}</h2>
+            <h3>{getValues("quantidade")+getValues("unidade")}</h3>
+
         <Controller
             name="valorUnitario"
             control={control}
@@ -133,7 +121,7 @@ useEffect(()=>{
             decimalSeparator=","
             label={'Valor Unitário'}
             placeholder = {"Valor unitario"}
-            sx={{paddingRight: '15px',marginTop: '32px'}}
+            sx={{}}
             />}/>
         <Controller
             name="quantidadeMinima"
@@ -150,10 +138,11 @@ useEffect(()=>{
             decimalSeparator=","
             label={'Quantidade Mínima'}
             placeholder = {"QTD Mínima"}
-            sx={{paddingRight: '15px',marginTop: '32px'}}
+            sx={{}}
             />}/>
-            <Button onClick={HandleClick} sx={{display: 'block',paddingTop: '15px', flexDirection: 'column', verticalAlign: 'top', position: "relative"}}>Enviar</Button>
-    </form>
+            {cotacaoState.activeStep===cotacaoState.priceList.length - 1 &&<Button onClick={HandleClick} sx={{}}>Enviar</Button>
+            }
+    </Stack>
     
     )
 }
