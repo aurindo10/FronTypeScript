@@ -32,7 +32,7 @@ export  function SnackbarClipBoard (props:any) {
   return (
     <div>
       <Button onClick={handleOpen} 
-      sx={{ width: '100px', left: "0rem", height: "3.2rem" }}
+      sx={{ width: '50px', left: "0rem", height: "2.2rem" }}
       variant="contained"><ShareNetwork size={32} /></Button>
       <Snackbar
         open={open}

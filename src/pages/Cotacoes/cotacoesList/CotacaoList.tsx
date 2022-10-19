@@ -14,7 +14,7 @@ import {reducerCotacao} from '../EditScreenCotacao/reducer'
 import { ContacaoContext } from '../CotacaoContext';
 import { display } from '@mui/system';
 import { SnackbarClipBoard } from './SnackbarClipBoard';
-import { FolderOpen, Plus, Trash } from 'phosphor-react';
+import { FolderOpen, Plus, Trash, TreeStructure } from 'phosphor-react';
 
 
 export interface data{
@@ -68,11 +68,11 @@ export function CotacaoList() {
 
       return (
       <Box style={{display : 'inline'}}>
-        <TableCell> <Button 
+         <Button 
           type="submit"
           variant="contained"
-          sx={{ width: '125px', left: "0rem", height: "3.2rem", fontSize: '0.8rem'}}
-          onClick={()=> HandleCLickGenerate(props.idCotacao)}>Gerar Lista de Compra</Button></TableCell>
+          sx={{ width: '3rem', left: "0rem", height: "2.2rem", fontSize: '0.8rem'}}
+          onClick={()=> HandleCLickGenerate(props.idCotacao)}><TreeStructure size={32} /></Button>
       </Box>
       )
 
@@ -99,15 +99,24 @@ export function CotacaoList() {
               </TableCell>
               <TableCell align="right">{row.createdAt}</TableCell>
               <TableCell>
-              <Button onClick={()=>DeleteProduct(row._id)}
-              ><Trash size={32} /></Button>
+              <Button 
+                        sx={{ width: '50px', left: "0rem", height: "2.2rem" }}
+                        variant="contained"
+                        onClick={()=>DeleteProduct(row._id)}>
+                        <Trash size={28} />
+              </Button>
               </TableCell>
-              <TableCell ><NavLink to = {{pathname: '/cotacoes/edit/'+row._id}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button> <Plus size={32} /></Button></NavLink></TableCell>
+              <TableCell ><NavLink to = {{pathname: '/cotacoes/edit/'+row._id}}  state= {{idd:row._id}} 
+                style={{ textDecoration: 'none', color:'black' }}>
+                    <Button       sx={{ width: '50px', left: "0rem", height: "2.2rem" }}
+                    variant="contained"> <Plus size={32} /></Button>
+                   </NavLink>
+              </TableCell>
               <TableCell ><NavLink to = {{pathname: '/pricelistbyidcotation/'+row._id}}  state= {{idd:row._id}} style={{ textDecoration: 'none', color:'black' }}><Button
               type="submit"
               variant="contained"
-              sx={{ width: '1rem', left: "0rem", height: "2.0rem" }}> <FolderOpen size={32} /></Button></NavLink></TableCell>
-              <ButtonToGenereteBuyList idCotacao={row._id} ></ButtonToGenereteBuyList>
+              sx={{ width: '20px', left: "0rem", height: "2.0rem" }}> <FolderOpen size={28} /></Button></NavLink></TableCell>
+              <TableCell><ButtonToGenereteBuyList idCotacao={row._id} ></ButtonToGenereteBuyList></TableCell>
               <TableCell><SnackbarClipBoard idCotacaoo={row._id}></SnackbarClipBoard></TableCell>
             </TableRow>
           ))}
