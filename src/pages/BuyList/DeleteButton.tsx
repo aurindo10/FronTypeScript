@@ -29,12 +29,13 @@ export  function SnackbarDeleteButton (props:any) {
 
   return (
     <Box>
-      <TableCell>
-        <Button onClick={handleDelete} 
-          sx={{ width: '50px', left: "0rem", height: "2.2rem" }}
-          variant="contained"> <Trash size={15} /></Button>
-      </TableCell>
-      <Snackbar
+      <Box>
+          <Button onClick={handleDelete} 
+            sx={{ width: '50px', left: "0rem", height: "2.2rem" }}
+            variant="contained"> <Trash size={15} />
+          </Button>
+      </Box>
+      <Snackbar 
         open={openOnError}
         onClose={() => setOpenOnError(false)}
         autoHideDuration={2000}

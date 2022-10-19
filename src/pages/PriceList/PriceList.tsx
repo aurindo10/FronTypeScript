@@ -73,7 +73,7 @@ export  function PriceList() {
       </Paper>
         <Box 
         
-        sx={{ height: 255, maxWidth: 900, width: '100%', p: 2, display: "inline-block" }}>
+        sx={{ height: 355, maxWidth: 900, width: '100%', p: 2, display: "inline-block" }}>
             <FormPriceList 
                 productName= {priceList[cotacaoState.activeStep].productName}
                 product_id = {priceList[cotacaoState.activeStep].product_id}

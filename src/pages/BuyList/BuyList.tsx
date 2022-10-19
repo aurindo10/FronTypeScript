@@ -30,7 +30,7 @@ export function BuyList (){
 return(
     
     <div> 
-    <TableContainer component={Paper} sx={{ maxWidth: 1000 }} key='tablecontainer'>
+    <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
       <Table sx={{ maxWidth: 1000 }} aria-label="simple table"  key='table'>
         <TableHead>
           <TableRow>
@@ -38,7 +38,7 @@ return(
             <TableCell align="right">Data de criacao</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody sx={{ maxWidth: 800 }}>
           {allListToBuy.map((row: any ) => (
             <TableRow
               key={row._id}
@@ -48,18 +48,17 @@ return(
                 {row.nomeDaCotacao}
               </TableCell>
               <TableCell align="right">{row.createdAt}</TableCell>
-              <TableCell>
-              {/* <Button onClick={()=>DeleteProduct(row._id)}
-              >Deletar</Button> */}
-              </TableCell>
-              <TableCell>
-                <NavLink to={"/buylist/onebuylist/"+row.idCotacao}>
-                 <Button>Verificar Lista</Button>
-                </NavLink>
+                <TableCell>
+                    <NavLink to={"/buylist/onebuylist/"+row.idCotacao}>
+                          <Button>Verificar Lista</Button>
+                    </NavLink>
+                </TableCell>
+                <TableCell>
                   <SnackbarDeleteButton
                      state={{setallListToBuy, idCotacaoToDelete: row.idCotacao}}>
                   </SnackbarDeleteButton>
-              </TableCell>
+                </TableCell>
+
             </TableRow>
           ))}
         </TableBody>

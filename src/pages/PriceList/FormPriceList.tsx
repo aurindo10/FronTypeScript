@@ -83,14 +83,7 @@ useEffect(()=>{
   } 
  
   return (
-    <Box
-    component="span"
-    sx={{ padding: '40px', paddingLeft: '15px', }}> 
-      <Button onClick={HandleClick}>Enviar</Button>
-      <form style={{flexGrow: 1}} onChange={handleSubmit(onSubmit)} >
-      <div>
-        <Box sx={{display: "flex", alignItems: "center" }}>
-
+      <form style={{textAlign: 'center'}} onChange={handleSubmit(onSubmit)} >
         <Controller
             name="productName"
             control={control}
@@ -99,7 +92,7 @@ useEffect(()=>{
             required
             label={'Nome do Produto'}
             placeholder = {"Nome do Produto"}
-            sx={{paddingRight: '15px'}}
+            sx={{paddingRight: '15px',marginTop: '32px'}}
             />}/>
         <Controller
             name="quantidade"
@@ -109,7 +102,7 @@ useEffect(()=>{
             required
             label={'Quantidade'}
             placeholder = {"Quantidade"}
-            sx={{paddingRight: '15px'}}
+            sx={{paddingRight: '15px',marginTop: '32px'}}
             />}/>
         <Controller
             name="unidade"
@@ -119,7 +112,7 @@ useEffect(()=>{
             required
             label={'Unidade'}
             placeholder = {"Unidade"}
-            sx={{paddingRight: '15px'}}
+            sx={{paddingRight: '15px',marginTop: '32px'}}
             />}/>
         <Controller
             name="valorUnitario"
@@ -140,7 +133,7 @@ useEffect(()=>{
             decimalSeparator=","
             label={'Valor Unitário'}
             placeholder = {"Valor unitario"}
-            sx={{paddingRight: '15px'}}
+            sx={{paddingRight: '15px',marginTop: '32px'}}
             />}/>
         <Controller
             name="quantidadeMinima"
@@ -157,14 +150,10 @@ useEffect(()=>{
             decimalSeparator=","
             label={'Quantidade Mínima'}
             placeholder = {"QTD Mínima"}
-            sx={{paddingRight: '15px'}}
+            sx={{paddingRight: '15px',marginTop: '32px'}}
             />}/>
-        </Box>
-
-        
-    </div>
+            <Button onClick={HandleClick} sx={{display: 'block',paddingTop: '15px', flexDirection: 'column', verticalAlign: 'top', position: "relative"}}>Enviar</Button>
     </form>
     
-    </Box>
     )
 }
