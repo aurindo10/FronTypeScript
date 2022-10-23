@@ -2,7 +2,8 @@ import { reducerCotacao } from "./EditScreenCotacao/reducer"
 import { useReducer, ReactNode, createContext, useState, useEffect } from "react"
 import { notNullish } from "react-select/dist/declarations/src/utils"
 import { InputsLogin } from "../Loggin/Login"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
+import axios from '../../lib/axios'
 
 
 
@@ -36,18 +37,8 @@ export function CyclesContextProvider({
   const [token, setTonken] = useState('')
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
+  const [auth2, setAuth2] = useState({});
 
-  const  HandleLogin = async (data: InputsLogin) =>{    
-    await fetch("http://localhost:3002/user/login", {
-    headers: {"Content-Type": "application/json"},
-    method: "POST",
-    body: JSON.stringify(data)}).then(response => { return response.json()})
-     .then((response)=>{setTonken(response)})
-    .catch(error => console.error("Error:", error))
-    setAuth(true)
-    localStorage.setItem("token", JSON.stringify(token))
-    navigate('/home')
-  }
   const  HandleLogout = async (data: InputsLogin) =>{    
     await fetch("http://localhost:3002/user/login", {
     headers: {"Content-Type": "application/json"},
@@ -76,7 +67,7 @@ export function CyclesContextProvider({
 
       return (
         <ContacaoContext.Provider
-        value={{cotacaoState, dispatch, next, setNext, HandleLogin, auth, HandleLogout}}
+        value={{cotacaoState, dispatch, next, setNext, auth, HandleLogout, auth2, setAuth2, token, setTonken, setAuth}}
         >
             {children}
         </ContacaoContext.Provider>

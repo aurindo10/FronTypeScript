@@ -14,6 +14,7 @@ import { RegistorDeUsuario } from './pages/Loggin/Register'
 import { Login } from './pages/Loggin/Login'
 import { useContext } from 'react'
 import { PrivateRoute } from './PrivateRoute'
+import { RequireAuth } from './RequireAuth'
 
 
 
@@ -25,14 +26,16 @@ export function Router() {
       <Routes>
           <Route path='/login' element={<Login/>}></Route>
           <Route path="/register" element={<RegistorDeUsuario />} />
-          <Route path="/" element={<PrivateRoute><DefaultLayout /></PrivateRoute>}>
-            <Route  path="/home" element={<PrivateRoute><HomeComponent /></PrivateRoute>} />
-            <Route  path="/cadastro" element={<PrivateRoute><Cadastro /></PrivateRoute>} />
-            <Route  path="/cotacoes" element={<PrivateRoute><Cotacoes /></PrivateRoute>} />
-            <Route  path="/cotacoes/edit/:idList" element={<PrivateRoute><EditPageCotacao/></PrivateRoute>} />
-            <Route  path="/buylist/onebuylist/:idbuylist" element={<PrivateRoute><OneBuyList /></PrivateRoute>}/>
-            <Route  path="/buylist" element = {<PrivateRoute><BuyList/></PrivateRoute>}/>
-            <Route  path="/pricelistbyidcotation/:idPriceList" element = {<PrivateRoute><PriceListByIdCotation/></PrivateRoute>}/>
+          <Route element={<RequireAuth/>}>
+            <Route path="/" element={<DefaultLayout />}>
+              <Route  path="/home" element={<HomeComponent />} />
+              <Route  path="/cadastro" element={<Cadastro />} />
+              <Route  path="/cotacoes" element={<Cotacoes />} />
+              <Route  path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
+              <Route  path="/buylist/onebuylist/:idbuylist" element={<OneBuyList />}/>
+              <Route  path="/buylist" element = {<BuyList/>}/>
+              <Route  path="/pricelistbyidcotation/:idPriceList" element = {<PriceListByIdCotation/>}/>
+            </Route>
           </Route>
           <Route path='/pricelist/:id/' element={<EntryPage/>}></Route>
           <Route path='/pricelist/:id/:name/:empresa/:sellerid' element={<PriceList/>}></Route>

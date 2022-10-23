@@ -6,9 +6,13 @@ import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { ContacaoContext } from '../Cotacoes/CotacaoContext';
+import axios from '../../lib/axios';
+import useAuth from '../../hooks/useAuth';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 
-export type InputsLogin = { 
+export type InputsLogin = {
+    admin: any; 
     email: string,
     password: string
 };
@@ -19,7 +23,12 @@ export type InputsLogin = {
 
 export  function Login() {
     const [status, setStatus] = useState('')
-    const { HandleLogin, auth } = useContext(ContacaoContext)
+    const { setAuth2 } = useAuth();
+    const navigate  = useNavigate()
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/home";
+    const { auth, setAuth, token, setTonken } = useContext(ContacaoContext)
+    
     const { control, handleSubmit, reset, formState: { errors }} = useForm<InputsLogin>({
     // resolver: zodResolver(productSchema),
     defaultValues: {
@@ -28,12 +37,26 @@ export  function Login() {
     }
   });
  
+  const  HandleLogin = async (data: InputsLogin) =>{ 
+    
+    axios.post("/user/login",
+     JSON.stringify(data),
+     {
+       headers: { 'Content-Type': 'application/json' },
+       withCredentials: true
+     }
+   
+   ).then((response: any)=>{
+     setAuth2({ email: data.email, data: response.password , admin: data.admin, accessToken: response.data.accessToken })
+     navigate(from, { replace: true });
+     ;})
+   .catch(error => console.error("Error:", error))
+    
+}
   const onSubmit: SubmitHandler<InputsLogin>  = async (data: InputsLogin) => {  
     await HandleLogin(data)
     
   }
-  console.log(auth)
-      
   return (
     <Box
     component="span"

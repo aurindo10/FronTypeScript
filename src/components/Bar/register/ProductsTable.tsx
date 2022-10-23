@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import { BasicModal } from './modal'; 
 import { productsContext } from '../../../pages/cadastro/Cadastro'; 
 import { useContext} from 'react'
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 
 export interface data{
   _id: string,
@@ -21,17 +22,31 @@ export interface data{
 }
 
 export function BasicTable() {
+    const axiosPrivate = useAxiosPrivate()
     const {setProductList, productList} = useContext(productsContext)
-    const getData = async ()=>{await fetch("http://localhost:3002/produto/productslist", {
-    headers: {"Content-Type": "application/json"},
-    method: "GET"})
-    .then(response => response.json()).then((response)=>setProductList(response))
-    .then(response => console.log("Success:", response))
-    .catch(error => console.error("Error:", error))};
-    
-    React.useEffect(()=>{
-        getData()
-    },[]);
+
+  React.useEffect(()=>{
+      let isMounted = true;
+      const controller = new AbortController();
+
+      const getData =  async ()=>{ 
+        try{
+            const response = await axiosPrivate.get("/produto/productslist/",
+            {signal: controller.signal})
+            console.log(response)
+            isMounted && setProductList(response.data);
+      }catch(err) {
+             console.log(err)  
+      }
+    }
+    getData()
+    return () => {
+      isMounted = false;
+      controller.abort();
+  }
+  
+  },[]);
+
     const DeleteProduct = async (id:string)=>{
         await fetch ("http://localhost:3002/produto/cadastro/"+id, {
         method: "DELETE"
