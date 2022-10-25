@@ -1,6 +1,7 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 
 
@@ -9,22 +10,18 @@ import { useParams } from "react-router-dom";
 
 
 export function PriceListByIdCotation (){
+    const axiosPrivate = useAxiosPrivate()
     const [data, setData] = useState([])
     const { idPriceList } = useParams()
-    const getData = async ()=>{await fetch("http://localhost:3002/cotacoes/obtemlistdeprecoporlistadecotacao/"+idPriceList, {
-        headers: {"Content-Type": "application/json"},
-        method: "GET"})
-        .then(response => response.json()).then((response)=>setData(response))
+    const getData = async ()=>{
+        axiosPrivate.get("cotacoes/obtemlistdeprecoporlistadecotacao/"+idPriceList)
+        .then((response)=>setData(response.data))
         .then(response => console.log("Success:", response))
         .catch(error => console.error("Error:", error))};
-
         useEffect(()=>{
             getData()
     
         }, [])
-    
-    
-
 
 return (
         <div>

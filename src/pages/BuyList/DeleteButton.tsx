@@ -6,16 +6,18 @@ import { TableCell, TextField } from '@mui/material';
 import { Button, Snackbar } from '@mui/material'
 import { useState } from 'react'
 import { ShareNetwork, Trash } from 'phosphor-react';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 
 export  function SnackbarDeleteButton (props:any) {
+   const axiosPrivate = useAxiosPrivate()
     const {setallListToBuy, idCotacaoToDelete} = props.state
     const [openOnSucess, setOpenOnSucess] = useState(false)
     const [openOnError, setOpenOnError] = useState(false)
     const handleDelete = async () => {
-      await fetch ("http://localhost:3002/cotacoes/deletalistacomparada/"+idCotacaoToDelete, {
-        method: "DELETE"
-        }).then((response)=>{
+      
+       axiosPrivate.delete ("cotacoes/deletalistacomparada/"+idCotacaoToDelete)
+       .then((response)=>{
           if (response.status === 200){
             setallListToBuy((e: any)=>{return e.filter((row: any)=> row.idCotacao !== idCotacaoToDelete)})
           }

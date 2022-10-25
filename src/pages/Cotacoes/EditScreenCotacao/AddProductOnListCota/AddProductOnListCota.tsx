@@ -12,6 +12,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import React from "react";
 import { ContacaoContext } from '../../CotacaoContext'
 import { useLocation } from 'react-router-dom';
+import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 
 type Inputs = {
     _id: string,
@@ -30,6 +31,7 @@ const productSchema = zod.object({
 })
 
 export  function AddProductOnListOfCotacao () {
+  const axiosPrivate = useAxiosPrivate()
   const location = useLocation()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
   const [prodctsList, SetProductsList] = useState([{}])
@@ -53,27 +55,21 @@ export  function AddProductOnListOfCotacao () {
   });
 
 
-  const getData = async ()=>{await fetch("http://localhost:3002/produto/productslist", {
-    headers: {"Content-Type": "application/json"},
-    method: "GET"})
-    .then(response => response.json()).then((response)=>SetProductsList(response))
+  const getData = async ()=>{axiosPrivate.get("produto/productslist")
+    .then((response)=>SetProductsList(response.data))
     .then(response => console.log("Success:", response))
     .catch(error => console.error("Error:", error))}
 
 
-    
   React.useEffect(()=>{
       getData()
 
   },[]);
 
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
-    console.log(data)
-    await fetch("http://localhost:3002/produto/cadastrodelista/"+location.state.idd, {
-      headers: {"Content-Type": "application/json"},
-      method: "POST",
-      body: JSON.stringify(data)}).then(response => response.json()).then((info)=>
-      {dispatch({type:'UPDATE_ONE_COTACAO', payload: info})})
+    axiosPrivate.post("produto/cadastrodelista/"+location.state.idd, 
+     JSON.stringify(data)).then((info)=>
+      {dispatch({type:'UPDATE_ONE_COTACAO', payload: info.data})})
       .then(response => console.log("Sucess:", JSON.stringify(response)))
       .catch(error => console.error("Error:", error))
       reset()

@@ -24,7 +24,6 @@ export interface data{
 export function BasicTable() {
     const axiosPrivate = useAxiosPrivate()
     const {setProductList, productList} = useContext(productsContext)
-
   React.useEffect(()=>{
       let isMounted = true;
       const controller = new AbortController();
@@ -48,12 +47,10 @@ export function BasicTable() {
   },[]);
 
     const DeleteProduct = async (id:string)=>{
-        await fetch ("http://localhost:3002/produto/cadastro/"+id, {
-        method: "DELETE"
-        }).then(response => console.log("Deletado com Sucesso:", response))
-        .catch(error => console.error("Error:", error))
-       
-        setProductList(productList.filter((row: {_id: string}) => row._id !== id));   
+      axiosPrivate.delete("produto/cadastro/"+id)
+      .then(response => console.log("Deletado com Sucesso:", response.data))
+      .catch(error => console.error("Error:", error))
+      setProductList(productList.filter((row: {_id: string}) => row._id !== id));   
     } 
     
   return (

@@ -3,6 +3,7 @@ import { Trash } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { BasicModal } from "../../components/Bar/register/modal";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { SnackbarDeleteButton } from "./DeleteButton";
 
 
@@ -11,15 +12,11 @@ import { SnackbarDeleteButton } from "./DeleteButton";
 
 export function BuyList (){
     const [allListToBuy, setallListToBuy] = useState([{}])
-
-    const getData = async ()=>{await fetch("http://localhost:3002/cotacoes/obtemtodaslistacomparadas", {
-    headers: {"Content-Type": "application/json"},
-    method: "GET"})
-    .then(response => response.json())
-    .then((response)=>setallListToBuy(response))
-    .then(response => console.log("Success:", response))
-    .catch(error => console.error("Error:", error))};
-
+    const axiosPrivate = useAxiosPrivate()
+    const getData = async ()=>{axiosPrivate.get("cotacoes/obtemtodaslistacomparadas")
+      .then((response)=>setallListToBuy(response.data))
+        .then(response => console.log("Success:", response))
+          .catch(error => console.error("Error:", error))};
 
     useEffect(()=>{
         getData()

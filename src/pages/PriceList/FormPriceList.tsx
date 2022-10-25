@@ -11,7 +11,7 @@ import { Button, Divider, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import { ProducName } from './style';
-
+import { axiosFree } from "../../lib/axios"
 
 
 export type Inputs = {
@@ -65,25 +65,23 @@ useEffect(()=>{
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
     dispatch({type:'UPDATE_PRODUCT_PRICE_LIST', payload: data})
 }
-  function HandleClick () {
+  const HandleClick = async ()=> {
     const ProdutoNaoPreenchidos = cotacaoState.priceList.filter((e: any)=>{return (
         e.valorUnitario == '')
       })
-      console.log(ProdutoNaoPreenchidos)
-      console.log(cotacaoState.priceList[0].valorUnitario)
       if (ProdutoNaoPreenchidos) {
-        fetch("http://localhost:3002/cotacoes/cadastrodelistadeprecos", {
-        headers: {"Content-Type": "application/json"},
-        method: "POST",
-        body: JSON.stringify({
+        try {
+        const response = await axiosFree.post("cotacoes/cadastrodelistadeprecos", 
+          JSON.stringify({
           vendedor: name,
           empresa: empresa,
           cotacao_id: id,
           listOfProducts: cotacaoState.priceList
-        })}).then(response => response.json())
+        }))
+      }catch(err){console.log(err)}
       }
-      console.log("preencha tudo")
   } 
+
 
   return (
 
@@ -99,7 +97,7 @@ useEffect(()=>{
   
       >
         <ProducName>
-            <div><span>Produto:</span>{getValues("productName")}</div>
+            <div><span>Produto:</span>{cotacaoState.priceList[cotacaoState.activeStep].productName}</div>
             {/* <div>{getValues("marca")}</div>
             <div>{getValues("quantidade")+getValues("unidade")}</div> */}
         </ProducName>

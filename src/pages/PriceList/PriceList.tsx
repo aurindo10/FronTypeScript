@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { solTheme } from '../../DefaultLayout/style';
+import { axiosFree } from "../../lib/axios"
 
 
 export  function PriceList() {
@@ -25,11 +26,8 @@ export  function PriceList() {
   
 
   const getAllData = async ()=>{
-    await fetch("http://localhost:3002/produto/cotacoes/"+id, {
-    headers: {"Content-Type": "application/json"},
-    method: "GET"})
-    .then(response => response.json())
-    .then((response)=>{ return dispatch({type:"SET_PRODUCT_PRICE_LIST", payload: response.products.map((e: any)=>{return {
+    axiosFree.get("produto/cotacoes/"+id)
+    .then((response)=>{ return dispatch({type:"SET_PRODUCT_PRICE_LIST", payload: response.data.products.map((e: any)=>{return {
           productName: e.name,
           product_id: e._id,
           marca: e.marca,
@@ -46,6 +44,7 @@ export  function PriceList() {
    )
   }
 )
+
     .catch(error => console.error("Error:", error))
   } 
   const handleNext = () => {

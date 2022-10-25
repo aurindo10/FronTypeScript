@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 type Inputs = {
   _id: string,
@@ -22,6 +23,7 @@ const productSchema = zod.object({
   unidade:zod.string().min(1, 'Informe o nome da marca')
 })
 export  function FormPropsTextFields() {
+  const axiosPrivate = useAxiosPrivate()
   const {setProductList, productList} = useContext(productsContext)
   const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
@@ -32,16 +34,14 @@ export  function FormPropsTextFields() {
       unidade: "",
     }
   });
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastro", {
-      headers: {"Content-Type": "application/json"},
-      method: "POST",
-      body: JSON.stringify(data)}).then(response => response.json()).then((info)=>{ 
-        setProductList([...productList, info])})
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
+     axiosPrivate.post("produto/cadastro", 
+     JSON.stringify(data)).then((info)=>{ 
+        setProductList([...productList, info.data])})
       .then(response => console.log("Sucess:", JSON.stringify(response)))
       .catch(error => console.error("Error:", error))
       reset()
-    }
-      
+    }  
   return (
     
     

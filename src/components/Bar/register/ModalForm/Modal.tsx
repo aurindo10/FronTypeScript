@@ -8,6 +8,7 @@ import { productsContext } from '../../../../pages/cadastro/Cadastro';
 import { useContext } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
+import useAxiosPrivate  from '../../../../hooks/useAxiosPrivate'
 import * as zod from 'zod'
 
 
@@ -26,6 +27,7 @@ const productSchema = zod.object({
 })
 
 export  function ModalForm({handleClose, productInfotoUpdateOnModal}: any) {
+  const axiosPrivate = useAxiosPrivate()
   const productToBeUpdated = productInfotoUpdateOnModal
   const {setProductList, productList} = useContext(productsContext)
   const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
@@ -39,12 +41,9 @@ export  function ModalForm({handleClose, productInfotoUpdateOnModal}: any) {
   });
  
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
-
     handleClose(false)
-    await fetch("http://localhost:3002/produto/editproduct/"+productToBeUpdated.info.row._id, {
-      headers: {"Content-Type": "application/json"},
-      method: "POST",
-      body: JSON.stringify(data)}).then(response => response.json())
+     axiosPrivate.post("produto/editproduct/"+productToBeUpdated.info.row._id, 
+      JSON.stringify(data))
       .then((e)=>{
         const index = productList.findIndex((x: { _id: any; })=>{ return (x._id === productToBeUpdated.info.row._id)});
         if (index === -1)
@@ -54,7 +53,7 @@ export  function ModalForm({handleClose, productInfotoUpdateOnModal}: any) {
         setProductList(
              [
                ...productList.slice(0,index),
-               Object.assign({}, productList[index], e),
+               Object.assign({}, productList[index], e.data),
                ...productList.slice(index+1)
             ]
         )}})

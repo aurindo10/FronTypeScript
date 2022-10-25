@@ -15,6 +15,7 @@ import { ContacaoContext } from '../CotacaoContext';
 import { display } from '@mui/system';
 import { SnackbarClipBoard } from './SnackbarClipBoard';
 import { FolderOpen, Plus, Trash, TreeStructure } from 'phosphor-react';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 
 export interface data{
@@ -28,10 +29,10 @@ export interface data{
 
 export function CotacaoList() {
     const {cotacaoState, dispatch} = useContext(ContacaoContext)
-    const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/", {
-    headers: {"Content-Type": "application/json"},
-    method: "GET"})
-    .then(response => response.json()).then((response)=>dispatch({type: "SetCotacao", payload: response}))
+    const axiosPrivate = useAxiosPrivate()
+    const getData = async ()=>{
+      axiosPrivate.get("produto/cotacoes")
+    .then((response)=>dispatch({type: "SetCotacao", payload: response.data}))
     .then(response => console.log("Success:", response))
     .catch(error => console.error("Error:", error))};
     
@@ -40,28 +41,20 @@ export function CotacaoList() {
 
     },[]);
     const DeleteProduct = async (id:string)=>{
-        await fetch ("http://localhost:3002/produto/cotacoes/"+id, {
-        method: "DELETE"
-        }).then(response => console.log("Deletado com Sucesso:", response))
+      axiosPrivate.delete ("produto/cotacoes/"+id)
+      .then(response => console.log("Deletado com Sucesso:", response.data))
         .catch(error => console.error("Error:", error))
-       
-        dispatch({type: "SetCotacao", payload: cotacaoState.cotacao!.filter((row: any)=> row._id !== id)}) 
+          dispatch({type: "SetCotacao", payload: cotacaoState.cotacao!.filter((row: any)=> row._id !== id)}) 
     } 
     const {cotacao} = cotacaoState
-
     const ButtonToGenereteBuyList = (props:any)=>{
       const HandleCLickGenerate = (idCOtacao:any)=>{
-        const getData = async ()=>{await fetch("http://localhost:3002/cotacoes/compara/"+idCOtacao, {
-          headers: {"Content-Type": "application/json"},
-          method: "GET"})
-          .then(response => response.json()).then(response => {
-            if(response.msg){
-              alert(response.msg)
-            }
-            else{
+        const getData = async ()=>{axiosPrivate.get("cotacoes/compara/"+idCOtacao)
+          .then(() => {
+
               alert("Lista Cadastrada com Sucesso")
-            }})
-          .catch(error => console.error("Error:", error))};
+          })
+          .catch(error => alert(error.response.data.msg))};
           getData()
 
     }

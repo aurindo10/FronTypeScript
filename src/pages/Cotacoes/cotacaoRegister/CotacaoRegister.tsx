@@ -6,6 +6,7 @@ import { useForm, Controller,  SubmitHandler } from "react-hook-form";
 import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 import { ContacaoContext } from '../CotacaoContext';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 const inicialState = {
   cotacao: [{}],
@@ -21,6 +22,7 @@ const productSchema = zod.object({
 })
 
 export  function CotacaoRegister() {
+  const axiosPrivate = useAxiosPrivate()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)  
   const { control, handleSubmit, reset, formState: { errors }} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
@@ -29,12 +31,9 @@ export  function CotacaoRegister() {
     }
   });
  
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/produto/cadastrodelista", {
-      headers: {"Content-Type": "application/json"},
-      method: "POST",
-      body: JSON.stringify(data)}).then(response => response.json()).then((info)=>{ console.log(info)
-        dispatch({type:'UPDATE_COTACAO',  payload: info})})
-      .then(response => console.log(cotacaoState.cotacao))
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {axiosPrivate.post("produto/cadastrodelista", 
+        JSON.stringify(data)).then((info)=>{
+        dispatch({type:'UPDATE_COTACAO',  payload: info.data})})
       .catch(error => console.error("Error:", error))
       reset()
     }

@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { Navigate } from "react-router-dom";
 import { render } from 'react-dom';
 import { useNavigate } from "react-router-dom";
+import { axiosFree } from "../../lib/axios"
 
 type Inputs = {
     nome: string,
@@ -25,19 +26,15 @@ export function EntryPage (){
               }
           }
     ) 
-    const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => 
-    {await fetch("http://localhost:3002/cotacoes/cadastravendedor", {
-        headers: {"Content-Type": "application/json"},
-        method: "PUT",
-        body: JSON.stringify(data)}).then(response => response.json())
-        .then((seller)=>{ navigate(
-            "/pricelist/"+id+"/"+watch('nome')+'/'+
-            watch('empresa')+'/'+seller._id)})
-        .then(response => console.log("Sucess:", JSON.stringify(response)))
-        .catch(error => console.error("Error:", error))
-        reset()
-      }
-
+    const onSubmit: SubmitHandler<Inputs>  = async (info: Inputs) => {
+           try {
+            const response = await axiosFree.put("cotacoes/cadastravendedor", JSON.stringify(info))
+                navigate(
+                    "/pricelist/"+id+"/"+watch('nome')+'/'+
+                    watch('empresa')+'/'+response.data._id)
+                reset()
+            
+            }catch(err){ console.log(err)}}
 
     return (
         <Box>

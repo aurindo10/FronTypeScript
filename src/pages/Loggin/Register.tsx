@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useContext, useState } from 'react';
 import { useForm, Controller,  SubmitHandler } from "react-hook-form";
+import { axiosFree } from '../../lib/axios';
 import {zodResolver} from '@hookform/resolvers/zod'
 import * as zod from 'zod'
 
@@ -29,13 +30,10 @@ export  function RegistorDeUsuario() {
     }
   });
  
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {await fetch("http://localhost:3002/user/registrar", {
-      headers: {"Content-Type": "application/json"},
-      method: "POST",
-      body: JSON.stringify(data)}).then(response => response.json())
-      .then(response => {
-        if (response.msg == 'Este email já está cadastrado')
-        setStatus(response.msg)
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {axiosFree.post("user/registrar", JSON.stringify(data))
+        .then(response => {
+        if (response.data.msg == 'Este email já está cadastrado')
+        setStatus(response.data.msg)
         else{
          reset()
         }

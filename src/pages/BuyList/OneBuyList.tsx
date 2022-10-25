@@ -3,6 +3,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 
 interface BuyList {
@@ -25,6 +26,7 @@ interface BuyList {
 
 
 export function OneBuyList (){
+    const axiosPrivate = useAxiosPrivate()
     const {idbuylist} = useParams()
     const [onListToBuy, setonListToBuy] = useState<BuyList>({
         _id: '',
@@ -46,13 +48,10 @@ export function OneBuyList (){
             })
 
 
-    const getData = async ()=>{await fetch("http://localhost:3002/cotacoes/obtemlistacomparada/"+idbuylist, {
-    headers: {"Content-Type": "application/json"},
-    method: "GET"})
-    .then(response => response.json()).then((response)=>setonListToBuy(response[0]))
-    .then(response => console.log("Success:", response))
-    .catch(error => console.error("Error:", error))};
-
+    const getData = async ()=>{ axiosPrivate.get("cotacoes/obtemlistacomparada/"+idbuylist)
+        .then((response)=>setonListToBuy(response.data[0]))
+            .then(response => console.log("Success:", response))
+                .catch(error => console.error("Error:", error))};
 
     useEffect(()=>{
         getData()

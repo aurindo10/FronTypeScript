@@ -5,6 +5,7 @@ import { ContacaoContext } from '../CotacaoContext';
 import { AddProductOnListOfCotacao } from './AddProductOnListCota/AddProductOnListCota'
 import { useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
  
 
 
@@ -16,13 +17,12 @@ const inicialState = {
 
 
 export  function EditPageCotacao() {
+  const axiosPrivate = useAxiosPrivate()
   const location = useLocation()
   const {idList} = useParams()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
-  const getData = async ()=>{await fetch("http://localhost:3002/produto/cotacoes/"+idList, {
-  headers: {"Content-Type": "application/json"},
-  method: "GET"})
-  .then(response => response.json()).then((response)=>dispatch({type: "SetProductsOfCotacao", payload: response.products }))
+  const getData = async ()=>{ axiosPrivate.get("produto/cotacoes/"+idList)
+  .then((response)=>dispatch({type: "SetProductsOfCotacao", payload: response.data.products }))
   .then(response => console.log("Success:", response))
   .catch(error => console.error("Error:", error))};
   
@@ -31,13 +31,11 @@ export  function EditPageCotacao() {
     getData()
   },[]);
   const DeleteProduct = async (idProduct:string)=>{
-      await fetch ('http://localhost:3002/produto/cotacoes/'+location.state.idd+'/'+idProduct, {
-      method: "DELETE"
-      }).then(response => console.log("Deletado com Sucesso:", response))
+      axiosPrivate.delete('produto/cotacoes/'+location.state.idd+'/'+idProduct)
+      .then(response => console.log("Deletado com Sucesso:", response.data))
       .catch(error => console.error("Error:", error))
       dispatch({type: "SetProductsOfCotacao", payload: cotacaoState.productsOfCotacao!.filter((row: any) => row._id !== idProduct)})
 
-       
   } 
   const {productsOfCotacao} = cotacaoState
 return (
