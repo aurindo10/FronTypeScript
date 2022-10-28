@@ -90,16 +90,23 @@ useEffect(()=>{
       component="form"
       sx={{
         width: '100%',
-        height: '100%'
+        height: '100%',
+        
       }}
       spacing={2}
       alignItems="center"
   
       >
         <ProducName>
-            <div><span>Produto:</span>{cotacaoState.priceList[cotacaoState.activeStep].productName}</div>
-            {/* <div>{getValues("marca")}</div>
-            <div>{getValues("quantidade")+getValues("unidade")}</div> */}
+            <Box className='produto'>PRODUTO:</Box>
+            <Box sx={{height: '7.5rem'}}>
+              <Box className='productName'>{cotacaoState.priceList[cotacaoState.activeStep].productName}</Box>
+              <Box className='marca  '>Marca:
+            </Box>
+            <Box className='marcaName'> {cotacaoState.priceList[cotacaoState.activeStep].marca}</Box>
+            </Box>
+
+            
         </ProducName>
         <Controller
             name="valorUnitario"
@@ -118,8 +125,9 @@ useEffect(()=>{
             thousandSeparator="."
             decimalScale={2}
             decimalSeparator=","
-            label={'Valor Unitário'}
+            label={'R$'}
             placeholder = {"Valor unitario"}
+      
             sx={{}}
             />}/>
         <Controller
@@ -137,11 +145,26 @@ useEffect(()=>{
             decimalSeparator=","
             label={'Quantidade Mínima'}
             placeholder = {"QTD Mínima"}
-            variant={"standard"}
+            
             sx={{}}
             />}/>
-            {cotacaoState.activeStep===cotacaoState.priceList.length - 1 &&<Button onClick={HandleClick} sx={{}}>Enviar</Button>
+            <Box sx={{height: '3rem'}}>
+            {cotacaoState.activeStep===cotacaoState.priceList.length - 1 &&<Button onClick={HandleClick} sx={{
+              backgroundColor:'#FF7A00'
+              , color: 'white',
+            fontFamily: "'Montserrat' ",
+            fontWeight: "900px",
+            borderWidth: "1px" ,
+            borderColor: "#FFFFFF",
+            fontSize: '1.3rem',
+            borderStyle: "solid",
+            borderRadius: "25px",
+            textAlign: 'center',
+            borderRadius: "12px 12px 12px 12px",
+
+            }}>Enviar</Button>
             }
+            </Box>
     </Stack>
     
     )
