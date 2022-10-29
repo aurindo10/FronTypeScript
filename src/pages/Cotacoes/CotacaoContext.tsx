@@ -33,41 +33,13 @@ export function CyclesContextProvider({
           activeStep: 0
       })
   const [next, setNext] = useState()
-  const [auth, setAuth] = useState(false)
-  const [token, setTonken] = useState('')
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
   const [auth2, setAuth2] = useState({});
 
-  const  HandleLogout = async (data: InputsLogin) =>{    
-    await fetch("http://localhost:3002/user/login", {
-    headers: {"Content-Type": "application/json"},
-    method: "POST",
-    body: JSON.stringify(data)}).then(response => { return response.json()})
-     .then((response)=>{setTonken(response)})
-    .catch(error => console.error("Error:", error))
-    setAuth(false)
-    localStorage.removeItem("token")
-    navigate('/login')
-  }
-
-
-  useEffect(()=>{
-    const token = localStorage.getItem("token")
-    if (token) {
-      setAuth(true)
-    }
-    setLoading(false)
-  },[])
-
-
-  if (loading) {
-    return <h1>Carregando</h1>
-  }
-
+ 
       return (
         <ContacaoContext.Provider
-        value={{cotacaoState, dispatch, next, setNext, auth, HandleLogout, auth2, setAuth2, token, setTonken, setAuth}}
+        value={{cotacaoState, dispatch, next, setNext, auth2, setAuth2 }}
         >
             {children}
         </ContacaoContext.Provider>

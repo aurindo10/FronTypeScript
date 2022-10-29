@@ -16,7 +16,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { solTheme } from './style';
 import InventoryIcon from '@mui/icons-material/Inventory';
@@ -25,6 +25,7 @@ import { ImgContainer } from './style';
 import { Barcode, ShoppingBag } from 'phosphor-react';
 import { ContacaoContext } from '../pages/Cotacoes/CotacaoContext';
 import { Button } from '@mui/material';
+import useLogout from '../hooks/useLogout';
 
 
 const drawerWidth = 240;
@@ -79,9 +80,15 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export  function DefaultLayout() {
   const theme = useTheme();
-  const { HandleLogout } = React.useContext(ContacaoContext)
-  const [open, setOpen] = React.useState(false);
 
+  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const logout = useLogout();
+
+  const signOut = async () => {
+      await logout();
+      navigate('/login');
+  }
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -89,6 +96,8 @@ export  function DefaultLayout() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+
 
   return (
     <ThemeProvider theme={solTheme} >
@@ -109,7 +118,7 @@ export  function DefaultLayout() {
             Cadastro de Produtos
           </Typography>
           <Button sx={{color:'white', marginLeft: "90rem"}}
-            onClick={()=>{HandleLogout()}}
+            onClick={()=>{signOut()}}
           >Sair</Button>
         </Toolbar>
       </AppBar>

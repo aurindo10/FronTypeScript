@@ -4,7 +4,6 @@ import { DefaultLayout } from './DefaultLayout/defaultLayout'
 import { Cadastro } from './pages/cadastro/Cadastro'
 import { Cotacoes } from './pages/Cotacoes/Cotacoes'
 import { EditPageCotacao } from './pages/Cotacoes/EditScreenCotacao/EditPageCotacao'
-import { ContacaoContext } from './pages/Cotacoes/CotacaoContext' 
 import { EntryPage } from './pages/PriceList/EntryPage'
 import { PriceList } from './pages/PriceList/PriceList'
 import { BuyList } from './pages/BuyList/BuyList'
@@ -12,10 +11,9 @@ import { PriceListByIdCotation } from './pages/Cotacoes/cotacoesList/PriceListPa
 import { OneBuyList } from './pages/BuyList/OneBuyList'
 import { RegistorDeUsuario } from './pages/Loggin/Register'
 import { Login } from './pages/Loggin/Login'
-import { useContext } from 'react'
-import { PrivateRoute } from './PrivateRoute'
 import { RequireAuth } from './RequireAuth'
 import { SucessPage } from './pages/PriceList/SucessPage'
+import { PersistLogin } from './Utils/PersistLogin'
 
 
 
@@ -26,15 +24,17 @@ export function Router() {
       <Routes>
           <Route path='/login' element={<Login/>}></Route>
           <Route path="/register" element={<RegistorDeUsuario />} />
-          <Route element={<RequireAuth/>}>
-            <Route path="/" element={<DefaultLayout />}>
-              <Route  path="/home" element={<HomeComponent />} />
-              <Route  path="/cadastro" element={<Cadastro />} />
-              <Route  path="/cotacoes" element={<Cotacoes />} />
-              <Route  path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
-              <Route  path="/buylist/onebuylist/:idbuylist" element={<OneBuyList />}/>
-              <Route  path="/buylist" element = {<BuyList/>}/>
-              <Route  path="/pricelistbyidcotation/:idPriceList" element = {<PriceListByIdCotation/>}/>
+          <Route element={<PersistLogin/>}>
+            <Route element={<RequireAuth/>}>
+                <Route path="/" element={<DefaultLayout />}>
+                    <Route  path="/home" element={<HomeComponent />} />
+                    <Route  path="/cadastro" element={<Cadastro />} />
+                    <Route  path="/cotacoes" element={<Cotacoes />} />
+                    <Route  path="/cotacoes/edit/:idList" element={<EditPageCotacao/>} />
+                    <Route  path="/buylist/onebuylist/:idbuylist" element={<OneBuyList />}/>
+                    <Route  path="/buylist" element = {<BuyList/>}/>
+                    <Route  path="/pricelistbyidcotation/:idPriceList" element = {<PriceListByIdCotation/>}/>
+                </Route>
             </Route>
           </Route>
           <Route path='/pricelist/:id/' element={<EntryPage/>}></Route>

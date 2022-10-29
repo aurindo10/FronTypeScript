@@ -12,7 +12,10 @@ const useRefreshToken = () => {
             withCredentials: true
         })
         setAuth2((prev: any) => {
-            return { ...prev, accessToken: response.data.accessToken}
+            return { ...prev,
+                 accessToken: response.data.accessToken,
+                 email: response.data.email
+            }
         });
         return response.data.accessToken;
     }
