@@ -37,31 +37,76 @@ export function EntryPage (){
             }catch(err){ console.log(err)}}
 
     return (
-        <Box>
+        <Box
+        sx={{backgroundColor:'#FF7A00'}}
+        
+        >
            <form onSubmit={handleSubmit(onSubmit)} >
-           <Controller
-            name="nome"
-            control={control}
-            render={({ field }) =><TextField
-            {...field}
-            required
-            label={'vendedor'}
-            placeholder = {"Nome do vendedor"}
-            sx={{paddingRight: '15px'}}
-            />}/>
-            <Controller
-            name="empresa"
-            control={control}
-            render={({ field }) =><TextField
-            {...field}
-            required
-            label={'Empresa'}
-            placeholder = {"Nome da empresa"}
-            sx={{paddingRight: '15px'}}
-            />}/>
-            <Button
-            type="submit"
-            > Preencher </Button>
+            <Box sx={{display: 'flex', flexDirection: 'column',
+            justifyContent: 'center',
+            alignContent: 'center',
+            textAlign: 'center',
+            justifyItems: 'center',
+            alignItems: 'center',
+            height: '100vh', 
+            width: '100vw',
+            boxSizing: 'border-box',
+            paddingLeft: '10rem',
+            paddingRight: '10rem'
+
+        }}>
+                 <Controller
+                    name="nome"
+                    control={control}
+                    render={({ field }) =><TextField
+                    {...field}
+                    required
+                    label={'vendedor'}
+                    placeholder = {"Nome do vendedor"}
+                    fullWidth 
+                    sx={{
+                    boxSizing: "border-box",
+                    maxWidth: '30rem',
+                    minWidth: '20rem',
+                    }}
+                    />}/>
+                    <Controller
+                    name="empresa"
+                    control={control}
+                    render={({ field }) =><TextField
+                    {...field}
+                    required
+                    label={'Empresa'}
+                    placeholder = {"Nome da empresa"}
+                    fullWidth
+                    sx={{
+                    marginTop: '1rem',
+                    boxSizing: "border-box",
+                    maxWidth: '30rem',
+                    minWidth: '20rem',
+                    borderBlockColor: 'white',
+                
+                }}
+                    />}/>
+                    <Button
+                    fullWidth
+                    type="submit"
+                    sx={{marginTop: '1rem',
+                    borderWidth: "1px" ,
+                    borderColor: "black",
+                    borderStyle: "solid",
+                    borderRadius: "25px",
+                    backgroundColor:'black',
+                    color: 'white',
+                    maxWidth: '15rem',
+                    minWidth: '10rem',
+                    marginLeft: '10rem',
+                    marginRight: '10rem'
+
+
+                }}
+                    > Preencher </Button>
+            </Box>
            </form>
            
         </Box>

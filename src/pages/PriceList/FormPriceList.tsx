@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import { ProducName } from './style';
 import { axiosFree } from "../../lib/axios"
+import { useNavigate } from 'react-router-dom';
 
 
 export type Inputs = {
@@ -34,6 +35,7 @@ export  function FormPriceList (props:Inputs) {
   const {id, name, empresa, sellerid} = useParams()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
   const { priceList } = cotacaoState
+  const navigate = useNavigate()
 
   const { control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>({
     // resolver: zodResolver(productSchema)
@@ -77,7 +79,11 @@ useEffect(()=>{
           empresa: empresa,
           cotacao_id: id,
           listOfProducts: cotacaoState.priceList
-        }))
+        }
+        ),
+        )
+        if (response.status === 200) {
+          navigate("/sucesssent")}
       }catch(err){console.log(err)}
       }
   } 

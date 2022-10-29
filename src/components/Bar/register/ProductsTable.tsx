@@ -32,7 +32,6 @@ export function BasicTable() {
         try{
             const response = await axiosPrivate.get("/produto/productslist/",
             {signal: controller.signal})
-            console.log(response)
             isMounted && setProductList(response.data);
       }catch(err) {
              console.log(err)  

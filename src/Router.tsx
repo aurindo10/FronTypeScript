@@ -15,7 +15,7 @@ import { Login } from './pages/Loggin/Login'
 import { useContext } from 'react'
 import { PrivateRoute } from './PrivateRoute'
 import { RequireAuth } from './RequireAuth'
-
+import { SucessPage } from './pages/PriceList/SucessPage'
 
 
 
@@ -39,6 +39,7 @@ export function Router() {
           </Route>
           <Route path='/pricelist/:id/' element={<EntryPage/>}></Route>
           <Route path='/pricelist/:id/:name/:empresa/:sellerid' element={<PriceList/>}></Route>
+          <Route path='/sucesssent' element={<SucessPage/>}/>
       </Routes> 
     
   )
