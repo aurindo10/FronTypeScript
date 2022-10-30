@@ -23,7 +23,7 @@ const style = {
 export  function SnackbarClipBoard (props:any) {
     const [open, setOpen] = useState(false)
     const handleOpen = () => {
-      const Link = ("https://cotacaojs.herokuapp.com/"+props.idCotacaoo)
+      const Link = ("https://cotacaojs.vercel.app/pricelist/"+props.idCotacaoo)
         setOpen(true)
         navigator.clipboard.writeText(Link.toString())
       };
