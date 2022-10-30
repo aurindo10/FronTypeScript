@@ -117,7 +117,7 @@ export  function PriceList() {
                             borderStyle: "solid",
                             borderRadius: "25px",
                             textAlign: 'left',
-                            borderRadius: "12px 0px 0px 12px",
+                            // borderRadius: "12px 0px 0px 12px",
 
 
                             }}
@@ -141,7 +141,7 @@ export  function PriceList() {
                           borderStyle: "solid",
                           borderRadius: "25px",
                           textAlign: 'left',
-                          borderRadius: "0px 12px 12px 0px",
+                          // borderRadius: "0px 12px 12px 0px",
 
 
                           }}

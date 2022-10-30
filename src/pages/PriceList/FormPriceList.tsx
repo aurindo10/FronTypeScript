@@ -167,7 +167,7 @@ useEffect(()=>{
             borderStyle: "solid",
             borderRadius: "25px",
             textAlign: 'center',
-            borderRadius: "12px 12px 12px 12px",
+            // borderRadius: "12px 12px 12px 12px",
 
             }}>Enviar</Button>
             }
