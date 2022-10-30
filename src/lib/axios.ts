@@ -1,7 +1,5 @@
-
 import axios from 'axios';
-const BASE_URL  = process.env.URL;
-
+const BASE_URL  = 'https://cotacaojs.herokuapp.com/';
 export default axios.create({
     baseURL: BASE_URL
 });
