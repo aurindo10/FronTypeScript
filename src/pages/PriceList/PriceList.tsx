@@ -63,14 +63,13 @@ export  function PriceList() {
 
   return (
     <ThemeProvider theme={solTheme}>
-    <Box sx={{ flexGrow: 1,  display:'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', flexDirection: 'column'}}>
+    <Box sx={{ flexGrow: 1,  display:'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', flexDirection: 'column', height: "100vh"}}>
               <Box sx={{  alignItems: 'center', justifyContent: 'center', position: 'relative', height: "100vh"}}>
                 <Box sx={{}}>
                   <Box sx={{ backgroundColor: "#FB5300",
                   height: '42rem',
                   borderRadius: '0px 0px 100px 100px'}}>
-                    
-                    
+
                   <Box sx={ { backgroundColor: '#1B1B1B',
                     width: "100vw", 
                     height: '3.7rem', borderRadius: '0px 0px 23px 23px', display:'flex', alignItems: 'center', justifyContent: 'center',
@@ -174,15 +173,18 @@ export  function PriceList() {
                 <img src={logo2} ></img>
               </Box>
 
-
           </Box>
-          <Box sx={ { backgroundColor: '#1B1B1B',
-                    width: "100vw", 
+          {/* <Box sx={ { backgroundColor: '#1B1B1B',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
                     height: '2.7rem', borderRadius: '23px 23px 0px 0px',
-                    position: 'absolute',
+                    position: 'relative',
                     bottom: '0px',
-                    }}></Box>
+                    }}></Box> */}
+
     </Box>
+
+
     
     </ThemeProvider>
   );

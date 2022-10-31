@@ -15,6 +15,7 @@ import { axiosFree } from "../../lib/axios"
 import { useNavigate } from 'react-router-dom';
 
 
+
 export type Inputs = {
     productName: string,
     product_id: string,

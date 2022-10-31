@@ -114,10 +114,10 @@ export  function DefaultLayout() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          {/* <Typography variant="h6" noWrap component="div">
             Cadastro de Produtos
-          </Typography>
-          <Button sx={{color:'white', marginLeft: "90rem"}}
+          </Typography> */}
+          <Button sx={{color:'white', position: 'absolute', right: "2rem", }}
             onClick={()=>{signOut()}}
           >Sair</Button>
         </Toolbar>

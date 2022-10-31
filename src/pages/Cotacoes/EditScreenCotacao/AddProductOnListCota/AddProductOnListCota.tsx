@@ -13,6 +13,7 @@ import React from "react";
 import { ContacaoContext } from '../../CotacaoContext'
 import { useLocation } from 'react-router-dom';
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
+import { getValue } from "@mui/system";
 
 type Inputs = {
     _id: string,
@@ -66,12 +67,14 @@ export  function AddProductOnListOfCotacao () {
 
   },[]);
 
+  const [sds, setdsds] = useState('')
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
     axiosPrivate.post("produto/cadastrodelista/"+location.state.idd, 
      JSON.stringify(data)).then((info)=>
       {dispatch({type:'UPDATE_ONE_COTACAO', payload: info.data})})
       .then(response => console.log("Sucess:", JSON.stringify(response)))
       .catch(error => console.error("Error:", error))
+      setValue('name', '')
       reset()
     }
     const defaultProps = {
@@ -79,6 +82,23 @@ export  function AddProductOnListOfCotacao () {
       getOptionLabel: (option: any) => option.nome
     };
 
+
+    function handleChange (event: any, value:any){
+      if(value===null){
+
+        setSelected(value),
+        setValue('marca', '' ),setValue('unidade', ''),
+        setValue('name', ''), setValue('produto_id', '')
+
+      }
+      else{
+      setSelected(value),
+        setValue('marca', value.marca=null?'':value.marca ),setValue('unidade', value.unidade=='null'?'':value.unidade),
+        setValue('name', value.nome=='null'?'': value.nome), setValue('produto_id', value._id=='null'?'':value._id)
+      }
+    }    
+    
+ 
   return (
     <Box
     component="span"
@@ -89,11 +109,9 @@ export  function AddProductOnListOfCotacao () {
         
         <Autocomplete
             placeholder = {"Descrição"}
-            onChange = {(event, value:any)=>{setSelected(value),
-              setValue('marca', value.marca),setValue('unidade', value.unidade),
-              setValue('name', value.nome), setValue('produto_id', value._id)}}
+            onChange = {handleChange}
+            inputValue={watch('name')}
             {...defaultProps}
-            inputValue={getValues('name')}
             sx={{paddingRight: '30px' , width: '300px'}}
             renderInput={(params) =>
               <Controller
@@ -103,7 +121,7 @@ export  function AddProductOnListOfCotacao () {
                 {...params}
                 {...field}
                 required
-                value={"ok"}
+                
                 placeholder={"Produto"}
                 sx={{ paddingRight: '15px' }} />} />}/>
 
