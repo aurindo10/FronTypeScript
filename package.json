@@ -19,6 +19,7 @@
     "@types/styled-components": "^5.1.26",
     "axios": "^1.1.3",
     "immer": "^9.0.15",
+    "input-currency-react": "^1.0.1",
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

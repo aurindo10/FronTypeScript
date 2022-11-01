@@ -13,6 +13,11 @@ import Stack from '@mui/material/Stack';
 import { ProducName } from './style';
 import { axiosFree } from "../../lib/axios"
 import { useNavigate } from 'react-router-dom';
+import { 
+  CurrencyInput, 
+  Currencies, 
+  Locales 
+} from 'input-currency-react';
 
 
 
@@ -116,28 +121,27 @@ useEffect(()=>{
             
         </ProducName>
         <Controller
-            name="valorUnitario"
-            control={control}
-            render ={({field: {onChange, name, value}}) =><NumericFormat
-            name = {name}
-            onValueChange={(values) => {
-                const {formattedValue, value, floatValue} = values;
-                onChange(floatValue)
-              }}
-            customInput = {TextField}
-            required
-            value={props.valorUnitario}
-            displayType="input"
-            prefix="R$ "
-            thousandSeparator="."
-            decimalScale={2}
-            decimalSeparator=","
-            label={'R$'}
-            placeholder = {"Valor unitario"}
-
-      
-            sx={{}}
-            />}/>
+        name="valorUnitario"
+        control={control}
+        render={({
+          field: { onChange, onBlur, value, name, ref },
+          fieldState: { invalid, isTouched, isDirty, error },
+          formState,
+        })=> (
+          <CurrencyInput 
+            style = {{width:'13rem', fontSize: '2rem'}}
+            options={{ style: "currency", allowNegative: false, 
+            locale: Locales["Portuguese (Brazil)"], 
+            i18nCurrency: Currencies["Brazilian Real"]
+          }}
+            onChangeEvent={(_, maskedValue,floatValue) => {
+              console.log(parseFloat(floatValue))
+              console.log(maskedValue)
+              onChange(parseFloat(floatValue));
+            }}
+            required={true} value={`${value}`}/>
+        )}
+        />
         <Controller
             name="quantidadeMinima"
             control={control}
@@ -169,7 +173,6 @@ useEffect(()=>{
             borderRadius: "25px",
             textAlign: 'center',
             // borderRadius: "12px 12px 12px 12px",
-
             }}>Enviar</Button>
             }
             </Box>
