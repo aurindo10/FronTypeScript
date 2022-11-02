@@ -156,6 +156,7 @@ useEffect(()=>{
             value={props.valorUnitario!*100}
             label={`Valor por ${cotacaoState.priceList[cotacaoState.activeStep].unidade}`}
             defaultValue={0}
+  
             
             />
           )}
@@ -195,6 +196,7 @@ useEffect(()=>{
               },
             
             }}
+            inputProps={{ inputMode: 'numeric' }}
 
               />}/>
             </Box>

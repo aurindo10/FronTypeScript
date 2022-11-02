@@ -29,6 +29,7 @@ export function MyCustomNumberFormat(props: any) {
     },
   
   }}
+  inputProps={{ inputMode: 'numeric' }}
   placeholder = {"R$"}
     
     />;
