@@ -72,15 +72,12 @@ export  function FormPropsTextFields() {
         <Controller
          name="unidade"
          control={control}
-         render={({ field }) => <Select {...field} 
-            sx={{width: '100px'}}
+         render={({ field }) =><TextField
+            {...field}
             required
-            >
-            <MenuItem value={"m"}>metros</MenuItem>
-            <MenuItem value={"uni"}>unidade</MenuItem>
-            <MenuItem value={"kg"}>peso</MenuItem>
-          </Select>}
-        />
+            placeholder = {"Unidade"}
+            sx={{paddingRight: '15px'}}
+            />}/>
     
       <Button 
             

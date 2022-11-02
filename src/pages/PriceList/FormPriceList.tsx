@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import { ProducName } from './style';
 import { axiosFree } from "../../lib/axios"
 import { useNavigate } from 'react-router-dom';
+import { MyCustomNumberFormat } from './Currency';
 import { 
   CurrencyInput, 
   Currencies, 
@@ -94,6 +95,19 @@ useEffect(()=>{
       }
   } 
 
+  console.log(getValues("valorUnitario"))
+
+  function dslkslds (_: any, maskedValue: any, floatValue: any) {
+    useEffect(()=>{
+
+      setValue("valorUnitario", floatValue)
+
+    },[floatValue])
+  }
+
+
+
+
 
   return (
 
@@ -105,61 +119,85 @@ useEffect(()=>{
         height: '100%',
         
       }}
-      spacing={2}
+      spacing={1}
       alignItems="center"
   
       >
         <ProducName>
             <Box className='produto'>PRODUTO:</Box>
-            <Box sx={{height: '7.5rem'}}>
-              <Box className='productName'>{cotacaoState.priceList[cotacaoState.activeStep].productName}</Box>
-              <Box className='marca  '>Marca:
+            <Box sx={{height: '8.4rem'}}>
+              <Box>
+                  <Box className='productName'>{cotacaoState.priceList[cotacaoState.activeStep].productName}</Box>
+                  <Box className='quantidade'> {cotacaoState.priceList[cotacaoState.activeStep].quantidade}{'  '}{cotacaoState.priceList[cotacaoState.activeStep].unidade}</Box>
+              </Box>
+              <Box>
+                  <Box className='marca  '>Marca:</Box >
+                  <Box className='marcaName'> {cotacaoState.priceList[cotacaoState.activeStep].marca}</Box>
+              </Box>
             </Box>
-            <Box className='marcaName'> {cotacaoState.priceList[cotacaoState.activeStep].marca}</Box>
-            </Box>
-
             
         </ProducName>
-        <Controller
-        name="valorUnitario"
-        control={control}
-        render={({
-          field: { onChange, onBlur, value, name, ref },
-          fieldState: { invalid, isTouched, isDirty, error },
-          formState,
-        })=> (
-          <CurrencyInput 
-            style = {{width:'13rem', fontSize: '2rem'}}
-            options={{ style: "currency", allowNegative: false, 
-            locale: Locales["Portuguese (Brazil)"], 
-            i18nCurrency: Currencies["Brazilian Real"]
-          }}
-            onChangeEvent={(_, maskedValue,floatValue) => {
-              console.log(parseFloat(floatValue))
-              console.log(maskedValue)
-              onChange(parseFloat(floatValue));
+        <Box sx={{backgroundColor: 'white', borderRadius: '5px'}}>
+          <Controller
+          name="valorUnitario"
+          control={control}
+          render={({
+            field: { onChange, onBlur, value, name, ref },
+            fieldState: { invalid, isTouched, isDirty, error },
+            formState,
+          })=> (
+            <MyCustomNumberFormat
+
+            onValueChange={(values: any) => {
+              const {formattedValue, value, floatValue} = values;
+              console.log(floatValue/100)
+              onChange(floatValue/100)
             }}
-            required={true} value={`${value}`}/>
-        )}
-        />
-        <Controller
-            name="quantidadeMinima"
-            control={control}
-            render={({field: {onChange, name, value}}) =><NumericFormat
-            required
-            customInput = {TextField}
-            onValueChange={(values) => {
-                const {formattedValue, value, floatValue} = values;
-                onChange(floatValue)
-              }}
-            value = {props.quantidadeMinima}
-            thousandSeparator="."
-            decimalSeparator=","
-            label={'Quantidade Mínima'}
-            placeholder = {"QTD Mínima"}
+            value={props.valorUnitario!*100}
+            label={`Valor por ${cotacaoState.priceList[cotacaoState.activeStep].unidade}`}
+            defaultValue={0}
             
-            sx={{}}
-            />}/>
+            />
+          )}
+          />
+          </Box>
+          <Box sx={{backgroundColor: 'white', borderRadius: '5px'}}>
+          <Controller
+              name="quantidadeMinima"
+              control={control}
+              render={({field: {onChange, name, value}}) =><NumericFormat
+              required
+              customInput = {TextField}
+              onValueChange={(values) => {
+                  const {formattedValue, value, floatValue} = values;
+                  onChange(floatValue)
+                }}
+
+              value = {props.quantidadeMinima}
+              thousandSeparator="."
+              decimalSeparator=","
+              label={'Quantidade Mínima'}
+              placeholder = {"QTD Mínima"}
+              sx={{ '& label.Mui-focused':{
+                color: 'black'
+              },
+              '& .MuiInputBase-input': {
+          
+                position: 'relative',
+                color: '#1B1B1B',
+                width: '14rem',
+                height: '3rem',
+                padding: '1px 1px',
+                fontSize: '25px',
+                fontFamily: [
+                  'Montserrat'
+                ]
+              },
+            
+            }}
+
+              />}/>
+            </Box>
             <Box sx={{height: '3rem'}}>
             {cotacaoState.activeStep===cotacaoState.priceList.length - 1 &&<Button onClick={HandleClick} sx={{
               backgroundColor:'#FF7A00'

@@ -72,7 +72,7 @@ export  function PriceList() {
 
                   <Box sx={ { backgroundColor: '#1B1B1B',
                     width: "100vw", 
-                    height: '3.7rem', borderRadius: '0px 0px 23px 23px', display:'flex', alignItems: 'center', justifyContent: 'center',
+                    height: '2.7rem', borderRadius: '0px 0px 23px 23px', display:'flex', alignItems: 'center', justifyContent: 'center',
                     
 
                     }}>

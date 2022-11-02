@@ -121,7 +121,7 @@ export  function AddProductOnListOfCotacao () {
                 {...params}
                 {...field}
                 required
-                
+                label = {'Produto'}
                 placeholder={"Produto"}
                 sx={{ paddingRight: '15px' }} />} />}/>
 
@@ -131,6 +131,7 @@ export  function AddProductOnListOfCotacao () {
             render={({ field }) =><TextField
             {...field}
             required
+            label = {'Marca'}
             placeholder = {"Marca"}
             sx={{paddingRight: '15px'}}
             />}/>
@@ -141,21 +142,20 @@ export  function AddProductOnListOfCotacao () {
             {...field}
             required
             placeholder = {"Quantidade"}
+            label = {'Quantidade'}
             sx={{paddingRight: '15px'}}
             />}/>
         <Controller
          name="unidade"
          control={control}
-         render={({ field }) => <Select {...field} 
-            sx={{width: '100px'}}
-            required
-            
-            >
-            <MenuItem value={"m"}>metros</MenuItem>
-            <MenuItem value={"uni"}>unidade</MenuItem>
-            <MenuItem value={"kg"}>peso</MenuItem>
-          </Select>}
-        />
+         
+         render={({ field }) =><TextField
+         {...field}
+         required
+         label = {'unidade'}
+         placeholder = {"Quantidade"}
+         sx={{paddingRight: '15px'}}
+         />}/>
       <Button 
             
             type="submit"
