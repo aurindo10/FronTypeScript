@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, LinearProgress } from '@mui/material';
 import { BasicModal } from './modal'; 
 import { productsContext } from '../../../pages/cadastro/Cadastro'; 
 import { useContext} from 'react'
@@ -24,6 +24,7 @@ export interface data{
 export function BasicTable() {
     const axiosPrivate = useAxiosPrivate()
     const {setProductList, productList} = useContext(productsContext)
+    const [isLoading, setIsloading] = React.useState(true)
   React.useEffect(()=>{
       let isMounted = true;
       const controller = new AbortController();
@@ -33,6 +34,8 @@ export function BasicTable() {
             const response = await axiosPrivate.get("/produto/productslist/",
             {signal: controller.signal})
             isMounted && setProductList(response.data);
+            setIsloading(false)
+
       }catch(err) {
              console.log(err)  
       }
@@ -64,7 +67,7 @@ export function BasicTable() {
             <TableCell align="right">Data de criacao</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody>{isLoading && <LinearProgress/>}
           {productList.map((row: data ) => (
             <TableRow
               key={row._id}
