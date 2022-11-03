@@ -24,7 +24,7 @@ import img from '../components/Bar/register/sol.svg'
 import { ImgContainer } from './style';
 import { Barcode, ShoppingBag } from 'phosphor-react';
 import { ContacaoContext } from '../pages/Cotacoes/CotacaoContext';
-import { Button } from '@mui/material';
+import { Button, LinearProgress } from '@mui/material';
 import useLogout from '../hooks/useLogout';
 
 
@@ -80,6 +80,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export  function DefaultLayout() {
   const theme = useTheme();
+  const [isLoading, setIsloading] = React.useState(true)
 
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
@@ -96,7 +97,10 @@ export  function DefaultLayout() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+React.useEffect(()=>{
+  setIsloading(false)
 
+}, [])
 
 
   return (
@@ -190,8 +194,8 @@ export  function DefaultLayout() {
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
-        
-         <Outlet></Outlet>
+      {isLoading?<LinearProgress />:
+         <Outlet></Outlet>}
         
       </Main>
     </Box>
