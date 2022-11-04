@@ -1,5 +1,5 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { Box, Button, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { DataGrid, GridColDef, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, GridValueGetterParams } from "@mui/x-data-grid";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -57,24 +57,29 @@ export function OneBuyList (){
         getData()
 
     }, [])
-
+    function CustomToolbar() {
+        return (
+          <GridToolbarContainer>
+            <GridToolbarColumnsButton />
+            <GridToolbarFilterButton />
+            <GridToolbarDensitySelector />
+            <GridToolbarExport />
+          </GridToolbarContainer>
+        );
+      }
+    
     const columns: GridColDef[] = [
         {
           field: 'productName',
           headerName: 'Nome do Produto',
-          width: 150,
+          width: 300,
           editable: false,
         },
-        {
-          field: 'unidade',
-          headerName: 'Unidade',
-          width: 150,
-          editable: false,
-        },
+       
         {
             field: 'marca',
             headerName: 'Marca',
-            width: 150,
+            width: 80,
             editable: false,
           },
         {
@@ -84,40 +89,47 @@ export function OneBuyList (){
           width: 110,
           editable: false,
         },
+         {
+            field: 'unidade',
+            headerName: 'Unidade',
+            width: 80,
+            editable: false,
+          },
         {
           field: 'valorUnitario',
           headerName: 'Valor Unitario',
           description: '',
           sortable: false,
-          width: 160,
+          width: 110,
           editable: false
         },
-        {
-            field: 'quantidadeMinima',
-            headerName: 'Quantidade Minima',
-            description: '',
-            sortable: false,
-            width: 160,
-            editable: false,
-        }
       ];
       console.log(onListToBuy.listas)
       const listToRender = onListToBuy.listas
+      const filteredList = listToRender.filter((e)=>{return e.ProductListToBuy.length > 0})
+      console.log(listToRender)
       const ref = React.createRef();
-return (
-    <div style={{ height: 400, width: '100%' }}>
 
-        {listToRender.map((oneList: any)=>{return (
+      function DataToPlotonTable (vendedor: string, empresa: string){
+        return (
+            <Box sx={{display: 'flex', gap: 2}}>
+                <h3>{'Vendedor:  '}{vendedor}</h3>
+                <h3>{'Empresa:  '}{empresa}</h3>
+            </Box>
+        )
+      }
+return (
+    <Box sx={{ height: 400, width: '45rem' }}>
+
+        {filteredList.map((oneList: any)=>{return (
                         <div style={{ display: 'flex', height: '100%' }}>
                             <div style={{ flexGrow: 1 }}>
-                                <h2>{'Vendedor:  '}{oneList.nomeDoVendedor}</h2>
-                                <h4>{'Empresa:  '}{oneList.empresa}</h4>
-
                                 <DataGrid 
                                     getRowId={(r) => r._id}
                                     rows={oneList.ProductListToBuy}
                                     columns={columns}
-                                    pageSize={5}
+                                    pageSize={15}
+                                    components={{Toolbar:CustomToolbar, LoadingOverlay: LinearProgress, Footer:()=>{ return DataToPlotonTable(oneList.nomeDoVendedor,oneList.empresa)}}}
                                     rowsPerPageOptions={[5]}
                                     disableSelectionOnClick
                                         />
@@ -125,7 +137,7 @@ return (
 
                         </div>
             )})}
-    </div>
+    </Box>
 
 
 

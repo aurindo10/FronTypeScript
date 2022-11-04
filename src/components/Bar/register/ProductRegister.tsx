@@ -83,7 +83,7 @@ export  function FormPropsTextFields() {
             
             type="submit"
             variant="contained"
-            sx={{ width: '100px', left: "1.5rem", height: "3.2rem" }}
+            sx={{ width: '100px', left: "0.2rem", height: "3.2rem" }}
           > Cadastrar 
           </Button>
         </Box>

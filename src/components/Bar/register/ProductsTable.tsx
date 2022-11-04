@@ -1,19 +1,15 @@
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { useState } from 'react';
-import { Button, LinearProgress } from '@mui/material';
+import { Box, Button, LinearProgress } from '@mui/material';
 import { BasicModal } from './modal'; 
 import { productsContext } from '../../../pages/cadastro/Cadastro'; 
 import { useContext} from 'react'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
+import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
+import { Trash } from 'phosphor-react';
 
-export interface data{
+
+export interface data {
   _id: string,
   nome: string,
   marca: string,
@@ -22,6 +18,79 @@ export interface data{
 }
 
 export function BasicTable() {
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
+
+  const columns : GridColDef[] = [
+    {
+      field: 'nome',
+      headerName: 'Produto',
+      width: 300,
+      editable: false,
+    },
+    {
+      field: 'marca',
+      headerName: 'Marca',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'unidade',
+      headerName: 'Unidade',
+      width: 110,
+      editable: false,
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Data de criação',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160
+    },
+    {
+        field: 'deletar',
+        headerName: 'Deletar',
+        description: 'Botões de deletar',
+        sortable: false,
+        width: 80,
+        renderCell: (params: GridRenderCellParams<data>) => {
+          
+          const DeleteProduct = async ()=>{
+            axiosPrivate.delete("produto/cadastro/"+params.row._id)
+            .then(response => console.log("Deletado com Sucesso:", response.data))
+            .catch(error => console.error("Error:", error))
+            setProductList(productList.filter((row: {_id: string}) => row._id !== params.row._id));   
+          } 
+          return (
+              <Button onClick={()=>{DeleteProduct()}}><Trash size={25} /></Button>
+          );
+        }
+    },
+    {
+      field: 'editar',
+      headerName: 'Editar',
+      description: 'Botões de editar',
+      sortable: false,
+      width: 80,
+      renderCell: (params: GridRenderCellParams<data>) => {
+        const {row} = params
+        console.log(row)
+        return (
+            <BasicModal productInfotoUpdate={{row}} ></BasicModal>
+        );
+      }
+  }
+  ];
+  
+
     const axiosPrivate = useAxiosPrivate()
     const {setProductList, productList} = useContext(productsContext)
     const [isLoading, setIsloading] = React.useState(true)
@@ -56,42 +125,17 @@ export function BasicTable() {
     } 
     
   return (
-    <div> 
-    <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
-      <Table sx={{ maxWidth: 800 }} aria-label="simple table"  key='table'>
-        <TableHead>
-          <TableRow>
-            <TableCell>Nome</TableCell> 
-            <TableCell align="right">Marca</TableCell>
-            <TableCell align="right">Unidade</TableCell>
-            <TableCell align="right">Data de criacao</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>{isLoading && <LinearProgress/>}
-          {productList.map((row: data ) => (
-            <TableRow
-              key={row._id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row" >
-                {row.nome}
-              </TableCell>
-              <TableCell align="right">{row.marca}</TableCell>
-              <TableCell align="right">{row.unidade}</TableCell>
-              <TableCell align="right">{row.createdAt}</TableCell>
-              <TableCell>
-              <Button onClick={()=>DeleteProduct(row._id)}
-              >Deletar</Button>
-              </TableCell>
-              <TableCell>
-                <BasicModal productInfotoUpdate={{row}} ></BasicModal>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
- 
-    </div>
+    <Box sx={{ height: 700, width: '100%' }}>
+      <DataGrid
+        getRowId={(r) => r._id}
+        rows={productList}
+        columns={columns}
+        pageSize={15}
+        components={{Toolbar:CustomToolbar, LoadingOverlay: LinearProgress,}}
+        rowsPerPageOptions={[15]}
+        disableSelectionOnClick
+      />
+    </Box>
+
   );
 }

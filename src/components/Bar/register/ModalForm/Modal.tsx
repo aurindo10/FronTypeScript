@@ -88,27 +88,24 @@ export  function ModalForm({handleClose, productInfotoUpdateOnModal}: any) {
             {...field}
             required
             placeholder = {"Marca"}
-            sx={{paddingRight: '15px'}}
+            sx={{marginRight: '10px'}}
             />}/>
         <Controller
          name="unidade"
          control={control}
-         render={({ field }) => <Select {...field} 
-            sx={{width: '100px'}}
-            required
-            
-            >
-            <MenuItem value={"m"}>metros</MenuItem>
-            <MenuItem value={"uni"}>unidade</MenuItem>
-            <MenuItem value={"kg"}>peso</MenuItem>
-          </Select>}
+         render={({ field }) => <TextField
+         {...field}
+         required
+         placeholder = {"Unidade"}
+         sx={{paddingRight: '10px'}}
+         />}
         />
     
       <Button 
             
             type="submit"
             variant="contained"
-            sx={{ width: '100px', left: "1.5rem", height: "3.2rem" }}
+            sx={{ width: '100px', left: ".5rem", height: "3.2rem" }}
           > Atualizar 
           </Button>
         </Box>

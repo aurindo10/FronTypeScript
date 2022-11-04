@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { ModalForm } from './ModalForm/Modal';
 import { data } from './ProductsTable';
+import { Pencil } from 'phosphor-react';
 
 
 
@@ -28,7 +29,7 @@ export  function BasicModal(props: { productInfotoUpdate: any; }) {
   const info = props.productInfotoUpdate;
   return (
     <div>
-      <Button onClick={handleOpen}>Editar</Button>
+      <Button onClick={handleOpen}><Pencil size={25} /></Button>
       <Modal
         open={open}
         onClose={handleClose}
