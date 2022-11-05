@@ -1,12 +1,10 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Button, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { Trash } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-
-
-
-
-
+import { Formatter } from "../../../lib/Formatter";
 
 
 export function PriceListByIdCotation (){
@@ -15,7 +13,7 @@ export function PriceListByIdCotation (){
     const { idPriceList } = useParams()
     const getData = async ()=>{
         axiosPrivate.get("cotacoes/obtemlistdeprecoporlistadecotacao/"+idPriceList)
-        .then((response)=>setData(response.data))
+        .then((response)=>{setData(response.data), console.log(response.data)})
         .then(response => console.log("Success:", response))
         .catch(error => console.error("Error:", error))};
         useEffect(()=>{
@@ -23,53 +21,80 @@ export function PriceListByIdCotation (){
     
         }, [])
 
+        const columns: GridColDef[] = [
+            {
+              field: 'productName',
+              headerName: 'Nome do Produto',
+              width: 300,
+              editable: false,
+            },
+           
+            {
+                field: 'marca',
+                headerName: 'Marca',
+                width: 80,
+                editable: false,
+              },
+            {
+              field: 'quantidade',
+              headerName: 'Quantidade',
+              type: 'number',
+              width: 110,
+              editable: false,
+            },
+             {
+                field: 'unidade',
+                headerName: 'Unidade',
+                width: 80,
+                editable: false,
+              },
+            {
+              field: 'valorUnitario',
+              headerName: 'Valor Unitario',
+              description: '',
+              sortable: false,
+              width: 110,
+              editable: false,
+              renderCell: (params)=>{
+                return(
+                    <>{Formatter.format(params.row.valorUnitario)}</>
+                )
+              }
+            },
+          ];
+
+          
+        function deleteList (idList: string){axiosPrivate.delete('cotacoes/listdepreco/'+idList)
+          .then(response => console.log("Deletado com Sucesso:", response.data))
+          .catch(error => console.error("Error:", error))
+          setData(data.filter((row: {_id: string}) => row._id !== idList));}
+
+        function  DataToPlotonTable (vendedor: string, empresa: string, idList: string){
+
+ 
+            return (
+                <Box sx={{display: 'flex', gap: 2}}>
+                    <h3>{'Vendedor:  '}{vendedor}</h3>
+                    <h3>{'Empresa:  '}{empresa}</h3>
+                    <Button onClick={()=>deleteList(idList)}><Trash size={25} /></Button>
+                </Box>
+            )
+          }
 return (
-        <div>
+    <Box sx={{ height: 400, width: '45rem' }}>
             
-            {data.map((cotacao:any)=>{return (
-                <div> 
-                    <h2> {"Vendedor:  "+cotacao.vendedor}</h2>
-                    <h3> {"Empresa:  "+cotacao.empresa}</h3>
-                <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
-                    <Table sx={{ maxWidth: 800 }} aria-label="simple table"  key='table'>
-                        <TableHead>
-                        <TableRow>
-                            <TableCell>Nome do Produto</TableCell> 
-                            <TableCell align="right">Unidade</TableCell>
-                            <TableCell align="right">Marca</TableCell>
-                            <TableCell align="right">Quantidade</TableCell>
-                            <TableCell align="right">Valor Unitario</TableCell>
-                            <TableCell align="right">Quantidade Minima</TableCell>  
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {cotacao.listOfProducts.map((row: any ) => (
-                            <TableRow
-                            key={row._id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                            <TableCell component="th" scope="row" >{row.productName} </TableCell>
-                            <TableCell component="th" scope="row" >{row.unidade} </TableCell>
-                            <TableCell component="th" scope="row" >{row.marca} </TableCell>
-                            <TableCell component="th" scope="row" >{row.quantidade} </TableCell>
-                            <TableCell component="th" scope="row" >{row.valorUnitario} </TableCell>
-                            <TableCell component="th" scope="row" >{row.quantidadeMinima} </TableCell>
-                            <TableCell>
-                            {/* <Button onClick={()=>DeleteProduct(row._id)}
-                            >Deletar</Button> */}
-                            </TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                </div>
-                )})}
-                
-
-        </div>
-
+        {data.map((oneList:any)=>{return (
+        <DataGrid 
+        getRowId={(r) => r._id}
+        rows={oneList.listOfProducts}
+        columns={columns}
+        pageSize={15}
+        components={{LoadingOverlay: LinearProgress,
+             Footer:()=>{ return DataToPlotonTable(oneList.vendedor, oneList.empresa, oneList._id);}}}
+        rowsPerPageOptions={[5]}
+        disableSelectionOnClick
+            />
+        )})}  
+    </Box>
     )
-
-
 }

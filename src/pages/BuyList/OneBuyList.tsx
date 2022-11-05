@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { Formatter } from "../../lib/Formatter";
 
 
 interface BuyList {
@@ -101,7 +102,12 @@ export function OneBuyList (){
           description: '',
           sortable: false,
           width: 110,
-          editable: false
+          editable: false,
+          renderCell: (params)=>{
+            return(
+                <>{Formatter.format(params.row.valorUnitario)}</>
+            )
+          }
         },
       ];
       console.log(onListToBuy.listas)
