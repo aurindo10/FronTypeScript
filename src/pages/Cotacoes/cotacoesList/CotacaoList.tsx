@@ -17,6 +17,7 @@ import { SnackbarClipBoard } from './SnackbarClipBoard';
 import { FolderOpen, Plus, Trash, TreeStructure } from 'phosphor-react';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import AlertDialogDemo from '../../../components/Alert/AlertDialog';
 
 
 export interface data{
@@ -137,9 +138,12 @@ export function CotacaoList() {
         editable: false,
         renderCell: (props)=>{
           return (
-              <Button onClick={()=>DeleteProduct(props.row._id)}>
-                   <Trash size={28} />
-              </Button>
+              <AlertDialogDemo deleteFunction={DeleteProduct}
+              typeOfContentToDelete={'Lista'}
+              id={props.row._id}
+              contentOnDialog={'SIM, DELETAR'}
+              >
+              </AlertDialogDemo>
           )
         }
       }

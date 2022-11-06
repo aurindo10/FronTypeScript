@@ -7,6 +7,7 @@ import { useContext} from 'react'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { Trash } from 'phosphor-react';
+import AlertDialogDemo from '../../Alert/AlertDialog';
 
 
 export interface data {
@@ -28,7 +29,13 @@ export function BasicTable() {
       </GridToolbarContainer>
     );
   }
-
+          
+  const DeleteProduct = async (id: string)=>{
+    axiosPrivate.delete("produto/cadastro/"+id)
+    .then(response => console.log("Deletado com Sucesso:", response.data))
+    .catch(error => console.error("Error:", error))
+    setProductList(productList.filter((row: {_id: string}) => row._id !== id));   
+  }
   const columns : GridColDef[] = [
     {
       field: 'nome',
@@ -63,14 +70,14 @@ export function BasicTable() {
         width: 80,
         renderCell: (params: GridRenderCellParams<data>) => {
           
-          const DeleteProduct = async ()=>{
-            axiosPrivate.delete("produto/cadastro/"+params.row._id)
-            .then(response => console.log("Deletado com Sucesso:", response.data))
-            .catch(error => console.error("Error:", error))
-            setProductList(productList.filter((row: {_id: string}) => row._id !== params.row._id));   
-          } 
           return (
-              <Button onClick={()=>{DeleteProduct()}}><Trash size={25} /></Button>
+              <AlertDialogDemo deleteFunction={DeleteProduct} id={params.row._id}
+              typeOfContentToDelete={'produto'}
+              contentOnDialog={'SIM, DELETAR'}
+              >
+                
+                
+                 </AlertDialogDemo>
           );
         }
     },
@@ -117,12 +124,6 @@ export function BasicTable() {
   
   },[]);
 
-    const DeleteProduct = async (id:string)=>{
-      axiosPrivate.delete("produto/cadastro/"+id)
-      .then(response => console.log("Deletado com Sucesso:", response.data))
-      .catch(error => console.error("Error:", error))
-      setProductList(productList.filter((row: {_id: string}) => row._id !== id));   
-    } 
     
   return (
     <Box sx={{ height: 700, width: '100%' }}>

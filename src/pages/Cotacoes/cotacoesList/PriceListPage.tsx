@@ -3,6 +3,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Trash } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import AlertDialog from "../../../components/Alert/AlertDialog";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { Formatter } from "../../../lib/Formatter";
 
@@ -71,12 +72,16 @@ export function PriceListByIdCotation (){
 
         function  DataToPlotonTable (vendedor: string, empresa: string, idList: string){
 
- 
             return (
                 <Box sx={{display: 'flex', gap: 2}}>
                     <h3>{'Vendedor:  '}{vendedor}</h3>
                     <h3>{'Empresa:  '}{empresa}</h3>
-                    <Button onClick={()=>deleteList(idList)}><Trash size={25} /></Button>
+                    <AlertDialog 
+                      deleteFunction={deleteList}
+                      id={idList}
+                      contentOnDialog={'SIM, DELETAR'}
+                      typeOfContentToDelete={'lista cotada'}>
+                    </AlertDialog>
                 </Box>
             )
           }

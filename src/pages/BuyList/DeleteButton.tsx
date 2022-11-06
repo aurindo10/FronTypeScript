@@ -7,6 +7,7 @@ import { Button, Snackbar } from '@mui/material'
 import { useState } from 'react'
 import { ShareNetwork, Trash } from 'phosphor-react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import AlertDialog from '../../components/Alert/AlertDialog';
 
 
 export  function SnackbarDeleteButton (props:any) {
@@ -14,12 +15,12 @@ export  function SnackbarDeleteButton (props:any) {
     const {setallListToBuy, idCotacaoToDelete} = props.state
     const [openOnSucess, setOpenOnSucess] = useState(false)
     const [openOnError, setOpenOnError] = useState(false)
-    const handleDelete = async () => {
+    const handleDelete = async (id: string) => {
       
-       axiosPrivate.delete ("cotacoes/deletalistacomparada/"+idCotacaoToDelete)
+       axiosPrivate.delete ("cotacoes/deletalistacomparada/"+id)
        .then((response)=>{
           if (response.status === 200){
-            setallListToBuy((e: any)=>{return e.filter((row: any)=> row.idCotacao !== idCotacaoToDelete)})
+            setallListToBuy((e: any)=>{return e.filter((row: any)=> row.idCotacao !== id)})
           }
           else {
             setOpenOnError(true)
@@ -32,10 +33,12 @@ export  function SnackbarDeleteButton (props:any) {
   return (
     <Box>
       <Box>
-          <Button onClick={handleDelete} 
-            sx={{ width: '50px', left: "0rem", height: "2.2rem" }}
-            variant="contained"> <Trash size={15} />
-          </Button>
+          <AlertDialog deleteFunction={handleDelete}
+          contentOnDialog={'SIM, DELETAR'}
+          typeOfContentToDelete={'Lista Comparada'}
+          id={idCotacaoToDelete}
+          >
+          </AlertDialog>
       </Box>
       <Snackbar 
         open={openOnError}
