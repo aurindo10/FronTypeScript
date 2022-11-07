@@ -89,7 +89,6 @@ export function BasicTable() {
       width: 80,
       renderCell: (params: GridRenderCellParams<data>) => {
         const {row} = params
-        console.log(row)
         return (
             <BasicModal productInfotoUpdate={{row}} ></BasicModal>
         );
@@ -126,7 +125,7 @@ export function BasicTable() {
 
     
   return (
-    <Box sx={{ height: 700, width: '100%' }}>
+    <Box sx={{ height: 700, width: '55rem', marginTop: '1rem' }}>
       <DataGrid
         getRowId={(r) => r._id}
         rows={productList}

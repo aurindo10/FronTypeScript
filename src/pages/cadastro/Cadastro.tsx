@@ -1,9 +1,9 @@
 import React from 'react'
 import { CadastroContainer } from './style'
 import { BasicTable } from '../../components/Bar/register/ProductsTable'
-import { FormPropsTextFields } from '../../components/Bar/register/ProductRegister'
 import { createContext, useState } from 'react'
 import { data } from '../../components/Bar/register/ProductsTable'
+import DialogDemo from '../../components/Bar/register/ProductRegister2'
 
 
 
@@ -16,7 +16,7 @@ export function Cadastro (){
     return (
         <productsContext.Provider value={{productList, setProductList}}>
             <CadastroContainer>
-                    <FormPropsTextFields></FormPropsTextFields>
+                    <DialogDemo></DialogDemo>
                     <BasicTable></BasicTable>
             </CadastroContainer>
         </productsContext.Provider>
