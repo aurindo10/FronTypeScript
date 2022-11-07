@@ -110,10 +110,8 @@ export function OneBuyList (){
           }
         },
       ];
-      console.log(onListToBuy.listas)
       const listToRender = onListToBuy.listas
       const filteredList = listToRender.filter((e)=>{return e.ProductListToBuy.length > 0})
-      console.log(listToRender)
       const ref = React.createRef();
 
       function DataToPlotonTable (vendedor: string, empresa: string){

@@ -34,3 +34,35 @@ export function MyCustomNumberFormat(props: any) {
     
     />;
   }
+  
+  export function MyCustomNumberFormat02(props: any) {
+    const format = (numStr: any) => {
+      if (numStr === '0' ) return '';
+      return new Intl.NumberFormat("pt-BR", {
+        style: "decimal",
+      }).format(numStr);
+    };
+  
+    return <NumberFormatBase {...props} format={format}  customInput={TextField}
+    sx={{ '& label.Mui-focused':{
+      color: 'black'
+    },
+    '& .MuiInputBase-input': {
+
+      position: 'relative',
+      color: '#1B1B1B',
+      width: '14rem',
+      height: '3rem',
+      padding: '1px 1px',
+      fontSize: '25px',
+      fontFamily: [
+        'Montserrat'
+      ]
+    },
+  
+  }}
+  inputProps={{ inputMode: 'numeric' }}
+    
+    />;
+  }
+  

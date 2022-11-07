@@ -7,7 +7,6 @@ const useLogout = () => {
     const logout = async () => {
         setAuth2({});
         try {
-            console.log('chegou aqui')
             const response = await axios('/refresh/logout', {
                 withCredentials: true
             });

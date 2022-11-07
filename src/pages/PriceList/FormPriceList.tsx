@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 import { ProducName } from './style';
 import { axiosFree } from "../../lib/axios"
 import { useNavigate } from 'react-router-dom';
-import { MyCustomNumberFormat } from './Currency';
+import { MyCustomNumberFormat, MyCustomNumberFormat02 } from './Currency';
 import { 
   CurrencyInput, 
   Currencies, 
@@ -95,20 +95,6 @@ useEffect(()=>{
       }
   } 
 
-  console.log(getValues("valorUnitario"))
-
-  function dslkslds (_: any, maskedValue: any, floatValue: any) {
-    useEffect(()=>{
-
-      setValue("valorUnitario", floatValue)
-
-    },[floatValue])
-  }
-
-
-
-
-
   return (
 
       <Stack 
@@ -124,18 +110,19 @@ useEffect(()=>{
   
       >
         <ProducName>
-            <Box className='produto'>PRODUTO:</Box>
-            <Box sx={{height: '8.4rem'}}>
-              <Box>
-                  <Box className='productName'>{cotacaoState.priceList[cotacaoState.activeStep].productName}</Box>
-                  <Box className='quantidade'> {cotacaoState.priceList[cotacaoState.activeStep].quantidade}{'  '}{cotacaoState.priceList[cotacaoState.activeStep].unidade}</Box>
+          <Box sx={{height:'15rem'}}>
+              <Box className='produto'>PRODUTO:</Box>
+              <Box sx={{height: '8.4rem'}}>
+                <Box>
+                    <Box className='productName'>{cotacaoState.priceList[cotacaoState.activeStep].productName}</Box>
+                    <Box className='quantidade'> {cotacaoState.priceList[cotacaoState.activeStep].quantidade}{'  '}{cotacaoState.priceList[cotacaoState.activeStep].unidade}</Box>
+                </Box>
+                <Box>
+                    <Box className='marca  '>Marca:</Box >
+                    <Box className='marcaName'> {cotacaoState.priceList[cotacaoState.activeStep].marca}</Box>
+                </Box>
               </Box>
-              <Box>
-                  <Box className='marca  '>Marca:</Box >
-                  <Box className='marcaName'> {cotacaoState.priceList[cotacaoState.activeStep].marca}</Box>
-              </Box>
-            </Box>
-            
+          </Box>
         </ProducName>
         <Box sx={{backgroundColor: 'white', borderRadius: '5px'}}>
           <Controller
@@ -150,7 +137,6 @@ useEffect(()=>{
 
             onValueChange={(values: any) => {
               const {formattedValue, value, floatValue} = values;
-              console.log(floatValue/100)
               onChange(floatValue/100)
             }}
             value={props.valorUnitario!*100}
@@ -166,17 +152,16 @@ useEffect(()=>{
           <Controller
               name="quantidadeMinima"
               control={control}
-              render={({field: {onChange, name, value}}) =><NumericFormat
+              render={({field: {onChange, name, value}}) =><MyCustomNumberFormat02
               required
               customInput = {TextField}
-              onValueChange={(values) => {
+              onValueChange={(values: any) => {
                   const {formattedValue, value, floatValue} = values;
                   onChange(floatValue)
+                  console.log(floatValue)
                 }}
 
               value = {props.quantidadeMinima}
-              thousandSeparator="."
-              decimalSeparator=","
               label={'Quantidade Mínima'}
               placeholder = {"QTD Mínima"}
               sx={{ '& label.Mui-focused':{
