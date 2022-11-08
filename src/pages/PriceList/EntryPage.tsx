@@ -11,18 +11,26 @@ import { axiosFree } from "../../lib/axios"
 import { CircularProgress } from '@mui/material';
 import { useState } from 'react';
 import { ArrowFatLinesDown } from 'phosphor-react';
+import * as zod from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type Inputs = {
     nome: string,
     empresa: string
 }
 export function EntryPage (){
+
+    const productSchema = zod.object({
+    nome: zod.string().min(3, 'Vendedor: Informe o seu nome com mais de 3 digitos'),
+    empresa: zod.string().min(3, {message:'Informe o nome da empresa com mais de 3 digitos'}),
+  })
+
     const navigate = useNavigate();
     const [isLoading, setIsloadind] = useState(false)
     const {id} = useParams()
     const {control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>(
         {
-            // resolver: zodResolver(productSchema)
+            resolver: zodResolver(productSchema),
             defaultValues: {
                 nome: '',
                 empresa: ''
@@ -30,6 +38,7 @@ export function EntryPage (){
               }
           }
     ) 
+    console.log()
     const onSubmit: SubmitHandler<Inputs>  = async (info: Inputs) => {
         setIsloadind(true)
            try {
@@ -94,6 +103,8 @@ export function EntryPage (){
                 }}
                 
                     />}/>
+                    {errors.nome?.message && <p style={{color:'white', backgroundColor: "black"}}>{errors.nome?.message}!</p>}
+                    {errors.empresa?.message && <p style={{color:'white', backgroundColor: "black"}}>{errors.empresa?.message}!</p>}
                     {isLoading&&<CircularProgress color="inherit"/>}
                     <Button
                     fullWidth
