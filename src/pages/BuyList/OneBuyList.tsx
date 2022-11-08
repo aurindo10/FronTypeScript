@@ -73,7 +73,7 @@ export function OneBuyList (){
         {
           field: 'productName',
           headerName: 'Nome do Produto',
-          width: 300,
+          width: 360,
           editable: false,
         },
        
@@ -124,17 +124,17 @@ export function OneBuyList (){
         )
       }
 return (
-    <Box sx={{ height: 700, width: '45rem' }}>
+    <Box sx={{ height: 700, width: '47rem' }}>
 
         {filteredList.map((oneList: any)=>{return (
-                        <div style={{ display: 'flex', height: '100%' }}>
+                        <div style={{ display: 'flex', height: '40rem', marginTop:'2rem' }}>
                             <div style={{ flexGrow: 1 }}>
                                 <DataGrid 
                                     key={oneList._id}
                                     getRowId={(r) => r._id}
                                     rows={oneList.ProductListToBuy}
                                     columns={columns}
-                                    pageSize={15}
+                                    pageSize={100}
                                     components={{LoadingOverlay: LinearProgress, Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor,oneList.empresa)}}}}
                                     rowsPerPageOptions={[5]}
                                     disableSelectionOnClick

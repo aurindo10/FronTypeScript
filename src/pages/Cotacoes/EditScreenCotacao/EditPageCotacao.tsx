@@ -1,11 +1,13 @@
 import Button from '@mui/material/Button';
 import { useContext, useEffect } from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { ContacaoContext } from '../CotacaoContext';
 import { AddProductOnListOfCotacao } from './AddProductOnListCota/AddProductOnListCota'
 import { useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import AlertDialogDemo from '../../../components/Alert/AlertDialog';
  
 
 
@@ -38,41 +40,63 @@ export  function EditPageCotacao() {
 
   } 
   const {productsOfCotacao} = cotacaoState
+  const columns : GridColDef[] = [
+    {
+      field: 'name',
+      headerName: 'Nome do Produto',
+      width: 340,
+      editable: false,
+    },  
+    {
+      field: 'unidade',
+      headerName: 'Unidade',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'quantidade',
+      headerName: 'Quantidade',
+      width: 100,
+      editable: false,
+    },
+    {
+      field: 'marca',
+      headerName: 'Marca',
+      width: 130,
+      editable: false,
+      resizable: true
+    },
+    {
+      field: 'Deletar',
+      headerName: 'Deletar',
+      width: 80,
+      editable: false,
+      renderCell: (props)=>{
+        return(
+          <AlertDialogDemo
+           deleteFunction={DeleteProduct}
+           id={props.row._id}
+           typeOfContentToDelete={'Produto'}
+           contentOnDialog={'SIM, DELETAR'}
+          ></AlertDialogDemo>
+        )
+      }
+    },
+
+  ]
 return (
   <div> 
   <AddProductOnListOfCotacao ></AddProductOnListOfCotacao>
-  <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
-    <Table sx={{ maxWidth: 800 }} aria-label="simple table"  key='table'>
-      <TableHead>
-        <TableRow>
-          <TableCell>Nome</TableCell> 
-          <TableCell align="right">Unidade</TableCell>
-          <TableCell align="right">Quantidade</TableCell>
-          <TableCell align="right">Marca</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {productsOfCotacao.map((cell: any ) => (
-          <TableRow
-            key={cell._id}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-          >
-            <TableCell component="th" scope="row" >
-              {cell.name}
-            </TableCell>
-            <TableCell align="right">{cell.unidade}</TableCell>
-            <TableCell align="right">{cell.quantidade}</TableCell>
-            <TableCell align="right">{cell.marca}</TableCell>
-            <TableCell>
-            <Button onClick={()=>DeleteProduct(cell._id)}
-            >Deletar</Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-
+  <DataGrid
+            getRowId={(r) => r._id}
+            rows={productsOfCotacao}
+            columns={columns}
+            pageSize={10}
+            components={{LoadingOverlay: LinearProgress,}}
+            rowsPerPageOptions={[15]}
+            disableSelectionOnClick
+            sx={{height: '40rem', width: '52rem'}}
+          />
   </div>
 );
 }

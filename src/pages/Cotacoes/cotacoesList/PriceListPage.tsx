@@ -1,5 +1,5 @@
 import { Box, Button, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
 import { Trash } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -9,6 +9,16 @@ import { Formatter } from "../../../lib/Formatter";
 
 
 export function PriceListByIdCotation (){
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    );
+  }
     const axiosPrivate = useAxiosPrivate()
     const [data, setData] = useState([])
     const { idPriceList } = useParams()
@@ -26,7 +36,7 @@ export function PriceListByIdCotation (){
             {
               field: 'productName',
               headerName: 'Nome do Produto',
-              width: 300,
+              width: 340,
               editable: false,
               resizable: true
             },
@@ -85,22 +95,24 @@ export function PriceListByIdCotation (){
                       contentOnDialog={'SIM, DELETAR'}
                       typeOfContentToDelete={'lista cotada'}>
                     </AlertDialog>
+                    <CustomToolbar/>
                 </Box>
             )
           }
 return (
-    <Box sx={{ height: 600, width: '45rem' }}>
+    <Box sx={{ height: '40rem', width: '48rem' }}>
             
         {data.map((oneList:any)=>{return (
         <DataGrid 
         getRowId={(r) => r._id}
         rows={oneList.listOfProducts}
         columns={columns}
-        pageSize={15}
+        pageSize={100}
         components={{LoadingOverlay: LinearProgress,
             Toolbar:()=>{ return DataToPlotonTable(oneList.vendedor, oneList.empresa, oneList._id);}
           }}
         rowsPerPageOptions={[5]}
+        sx={{marginTop: '2rem'}}
         disableSelectionOnClick
             />
         )})}  

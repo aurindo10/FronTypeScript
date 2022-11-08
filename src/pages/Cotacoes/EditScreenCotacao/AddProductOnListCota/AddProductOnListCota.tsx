@@ -102,8 +102,8 @@ export  function AddProductOnListOfCotacao () {
   return (
     <Box
     component="span"
-    sx={{ padding: '40px', paddingLeft: '15px' }}> 
-      <form onSubmit={handleSubmit(onSubmit)} style={{flexGrow: 1}} >
+    sx={{paddingLeft: '15px' }}> 
+      <form onSubmit={handleSubmit(onSubmit)} style={{flexGrow: 1, marginBottom: '1rem'}} >
       <div>
         <Box sx={{display: "flex", alignItems: "center" }}>
         
@@ -112,7 +112,7 @@ export  function AddProductOnListOfCotacao () {
             onChange = {handleChange}
             inputValue={watch('name')}
             {...defaultProps}
-            sx={{paddingRight: '30px' , width: '300px'}}
+            sx={{ width: '20rem'}}
             renderInput={(params) =>
               <Controller
               name="name"
@@ -133,7 +133,7 @@ export  function AddProductOnListOfCotacao () {
             required
             label = {'Marca'}
             placeholder = {"Marca"}
-            sx={{paddingRight: '15px'}}
+            sx={{marginRight: '1rem', width: '9rem'}}
             />}/>
         <Controller
             name="quantidade"
@@ -143,7 +143,7 @@ export  function AddProductOnListOfCotacao () {
             required
             placeholder = {"Quantidade"}
             label = {'Quantidade'}
-            sx={{paddingRight: '15px'}}
+            sx={{marginRight: '1rem', width: '5rem'}}
             />}/>
         <Controller
          name="unidade"
@@ -154,14 +154,13 @@ export  function AddProductOnListOfCotacao () {
          required
          label = {'unidade'}
          placeholder = {"Quantidade"}
-         sx={{paddingRight: '15px'}}
+         sx={{marginRight: '1rem', width: '5rem'}}
          />}/>
       <Button 
-            
             type="submit"
             variant="contained"
-            sx={{ width: '100px', left: "1.5rem", height: "3.2rem" }}
-          > Atualizar 
+            sx={{ width: '.6rem', marginLeft: "0.05rem", height: "1.2rem" }}
+          > Add 
           </Button>
         </Box>
         
