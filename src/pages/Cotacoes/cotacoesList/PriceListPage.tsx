@@ -28,6 +28,7 @@ export function PriceListByIdCotation (){
               headerName: 'Nome do Produto',
               width: 300,
               editable: false,
+              resizable: true
             },
            
             {
@@ -35,6 +36,7 @@ export function PriceListByIdCotation (){
                 headerName: 'Marca',
                 width: 80,
                 editable: false,
+                resizable: true
               },
             {
               field: 'quantidade',
@@ -42,6 +44,7 @@ export function PriceListByIdCotation (){
               type: 'number',
               width: 110,
               editable: false,
+              resizable: true
             },
              {
                 field: 'unidade',
@@ -86,7 +89,7 @@ export function PriceListByIdCotation (){
             )
           }
 return (
-    <Box sx={{ height: 400, width: '45rem' }}>
+    <Box sx={{ height: 600, width: '45rem' }}>
             
         {data.map((oneList:any)=>{return (
         <DataGrid 
@@ -95,7 +98,8 @@ return (
         columns={columns}
         pageSize={15}
         components={{LoadingOverlay: LinearProgress,
-             Footer:()=>{ return DataToPlotonTable(oneList.vendedor, oneList.empresa, oneList._id);}}}
+            Toolbar:()=>{ return DataToPlotonTable(oneList.vendedor, oneList.empresa, oneList._id);}
+          }}
         rowsPerPageOptions={[5]}
         disableSelectionOnClick
             />

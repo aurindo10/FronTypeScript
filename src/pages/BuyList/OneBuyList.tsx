@@ -116,24 +116,26 @@ export function OneBuyList (){
 
       function DataToPlotonTable (vendedor: string, empresa: string){
         return (
-            <Box sx={{display: 'flex', gap: 2}}>
+            <Box sx={{gap: 1}}>
                 <h3>{'Vendedor:  '}{vendedor}</h3>
                 <h3>{'Empresa:  '}{empresa}</h3>
+                <CustomToolbar/>
             </Box>
         )
       }
 return (
-    <Box sx={{ height: 400, width: '45rem' }}>
+    <Box sx={{ height: 700, width: '45rem' }}>
 
         {filteredList.map((oneList: any)=>{return (
                         <div style={{ display: 'flex', height: '100%' }}>
                             <div style={{ flexGrow: 1 }}>
                                 <DataGrid 
+                                    key={oneList._id}
                                     getRowId={(r) => r._id}
                                     rows={oneList.ProductListToBuy}
                                     columns={columns}
                                     pageSize={15}
-                                    components={{Toolbar:CustomToolbar, LoadingOverlay: LinearProgress, Footer:()=>{ return DataToPlotonTable(oneList.nomeDoVendedor,oneList.empresa)}}}
+                                    components={{LoadingOverlay: LinearProgress, Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor,oneList.empresa)}}}}
                                     rowsPerPageOptions={[5]}
                                     disableSelectionOnClick
                                         />

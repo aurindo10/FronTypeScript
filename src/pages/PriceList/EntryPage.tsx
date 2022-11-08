@@ -8,6 +8,9 @@ import { Navigate } from "react-router-dom";
 import { render } from 'react-dom';
 import { useNavigate } from "react-router-dom";
 import { axiosFree } from "../../lib/axios"
+import { CircularProgress } from '@mui/material';
+import { useState } from 'react';
+import { ArrowFatLinesDown } from 'phosphor-react';
 
 type Inputs = {
     nome: string,
@@ -15,6 +18,7 @@ type Inputs = {
 }
 export function EntryPage (){
     const navigate = useNavigate();
+    const [isLoading, setIsloadind] = useState(false)
     const {id} = useParams()
     const {control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>(
         {
@@ -27,6 +31,7 @@ export function EntryPage (){
           }
     ) 
     const onSubmit: SubmitHandler<Inputs>  = async (info: Inputs) => {
+        setIsloadind(true)
            try {
             const response = await axiosFree.put("cotacoes/cadastravendedor", JSON.stringify(info))
                 navigate(
@@ -87,7 +92,9 @@ export function EntryPage (){
                     borderBlockColor: 'white',
                 
                 }}
+                
                     />}/>
+                    {isLoading&&<CircularProgress color="inherit"/>}
                     <Button
                     fullWidth
                     type="submit"
@@ -101,12 +108,11 @@ export function EntryPage (){
                     maxWidth: '15rem',
                     minWidth: '10rem',
                     marginLeft: '10rem',
-                    marginRight: '10rem'
-
-
+                marginRight: '10rem'
                 }}
                     > Preencher </Button>
             </Box>
+           
            </form>
            
         </Box>

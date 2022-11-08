@@ -50,16 +50,21 @@ export function CotacaoList() {
           dispatch({type: "SetCotacao", payload: cotacaoState.cotacao!.filter((row: any)=> row._id !== id)}) 
     } 
     const ButtonToGenereteBuyList = (props:any)=>{
-      const HandleCLickGenerate = (idCOtacao:any)=>{
-        const getData = async ()=>{axiosPrivate.get("cotacoes/compara/"+idCOtacao)
+      const HandleCLickGenerate = async (idCOtacao:any)=>{
+       const verifyList =  await axiosPrivate.get("cotacoes/obtemlistdeprecoporlistadecotacao/"+idCOtacao)
+       console.log(verifyList.data.length)
+        if(verifyList.data.length>0){
+        const getData =  ()=>{axiosPrivate.get("cotacoes/compara/"+idCOtacao)
           .then(() => {
 
               alert("Lista Cadastrada com Sucesso")
           })
           .catch(error => alert(error.response.data.msg))};
           getData()
-
     }
+    else{ alert('Nenhum vendedor enviou lista de cotação')}
+  }
+   
       return (
       <Box style={{display : 'inline'}}>
          <Button 
