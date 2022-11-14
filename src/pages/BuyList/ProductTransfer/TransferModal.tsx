@@ -4,6 +4,7 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import './style.css';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { axiosPrivate } from '../../../lib/axios';
+import { Formatter } from '../../../lib/Formatter';
 
 interface data {
   vendedor: string,
@@ -18,14 +19,14 @@ export const TransferModal = (props: any) => {
   const handleclick = async ()=>{
     try {
     const response = await axiosPrivate.get('transferproduct/'+idProduct+'/'+idCotacao)
-    setColumns(response.data.map((e: any)=>{
+    const list = response.data.map((e: any)=>{
         return {
           vendedor: e.vendedor,
           productName: e.productName,
           valorUnitario: e.valorUnitario,
           buyListSum: e.buyListSum
       }})
-    )
+      setColumns(list.filter((e: any)=>{return e.valorUnitario>0}))
 
   }
   catch(err){
@@ -43,13 +44,13 @@ export const TransferModal = (props: any) => {
     <Dialog.Portal>
       <Dialog.Overlay className="DialogOverlay" />
       <Dialog.Content className="DialogContent">
-        <div>
+        <div className='container'>
           {columns.map((e:any)=>{return (
-            <div>
-              <div>{'Nome do Vendedor: '}{e.vendedor}</div>
-              <div>{'Nome do Produto: '}{e.productName}</div>
-              <div>{'Valor: '}{e.valorUnitario}</div>
-              <div>{'Valor total da Lista de Compra: '}{e.buyListSum}</div>
+            <div className='boxcontainer'>
+              <div className='vendedor'>{e.vendedor}</div>
+              <div className='produto'>{'Produto: '}<p>{e.productName}</p></div>
+              <div className='valor'>{'Valor: '}{Formatter.format( e.valorUnitario)}</div>
+              <div className='total'>{'Total: '}{Formatter.format(e.buyListSum)}</div>
             </div>
           )})}
         </div>

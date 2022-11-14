@@ -25,11 +25,12 @@ input {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90vw;
-  max-width: 450px;
+  width: 100vw;
+  max-width: 500px;
   max-height: 85vh;
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: auto;
 }
 .DialogContent:focus {
   outline: none;
@@ -152,4 +153,34 @@ input {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.boxcontainer{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+  overflow: auto;
+  border-radius: 15px;
+  
+}
+.total {
+  text-align: justify;
+
+}
+.produto{
+  font-size: .8rem;
+}
+
+p{
+  margin-top: .2rem;
+}
+.vendedor {
+  max-width: 5rem;
 }
