@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Formatter } from "../../lib/Formatter";
-
+import { TransferModal } from './ProductTransfer/TransferModal'
 
 interface BuyList {
+    idCotacao:'',
     _id: string,
     listas: [{
             nomeDoVendedor: string,
@@ -30,6 +31,7 @@ export function OneBuyList (){
     const axiosPrivate = useAxiosPrivate()
     const {idbuylist} = useParams()
     const [onListToBuy, setonListToBuy] = useState<BuyList>({
+        idCotacao:'',
         _id: '',
         listas: [{
                 nomeDoVendedor: "",
@@ -76,7 +78,17 @@ export function OneBuyList (){
           width: 360,
           editable: false,
         },
-       
+        {
+          field: 'transfer',
+          headerName: 'Transferir',
+          width: 130,
+          editable: false,
+          renderCell: (params)=>{
+            return(
+              <TransferModal idProduct={params.row.product_id} idCotacao={onListToBuy.idCotacao}></TransferModal>
+            )
+          }
+        },
         {
             field: 'marca',
             headerName: 'Marca',
