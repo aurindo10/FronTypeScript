@@ -1,10 +1,11 @@
 import { Box, Button, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { DataGrid, GridColDef, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridFooter, GridFooterPlaceholder, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, GridValueGetterParams } from "@mui/x-data-grid";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Formatter } from "../../lib/Formatter";
+import { priceFormatter } from "../../Utils/Formatter";
 import { TransferModal } from './ProductTransfer/TransferModal'
 
 interface BuyList {
@@ -135,10 +136,36 @@ export function OneBuyList (){
             </Box>
         )
       }
-return (
-    <Box sx={{ height: 700, width: '47rem' }}>
+      
+function Suml (props: any) {
+      const [totalPrice, setTotalPrice] = useState<{oneListId: string,productsSum: number}[]>([{oneListId: '',productsSum:0}]);
+      useEffect(()=>{
+        const sumFinal = filteredList.map((oneList: any)=>{
+          return {
+            oneListId: oneList._id,
+            productsSum: oneList.ProductListToBuy.map((eachPriceOfProduct: any)=>{ 
+              return eachPriceOfProduct.valorUnitario*eachPriceOfProduct.quantidade}).reduce((a: any,b: any)=>{
+                return (a+b)
+            }, 0)}})
+            const total =  sumFinal.filter((i: any)=>{
+                return  i.oneListId==props
+              })
+            setTotalPrice(total)
 
-        {filteredList.map((oneList: any)=>{return (
+      },[])
+          return (<div style={{ textAlign: 'right'}}>
+          <div style={{marginRight: '1rem'}}>{'Soma Total: '}</div>
+          <div style={{marginRight: '1rem'}}>{priceFormatter.format(totalPrice[0].productsSum)}</div> 
+          <GridFooter/>
+          </div>)
+        }
+
+return (
+    <Box sx={{ height: 700, width: '55rem' }}>
+
+        {filteredList.map((oneList: any)=>{
+          
+          return (
                         <div style={{ display: 'flex', height: '40rem', marginTop:'2rem' }}>
                             <div style={{ flexGrow: 1 }}>
                                 <DataGrid 
@@ -147,7 +174,10 @@ return (
                                     rows={oneList.ProductListToBuy}
                                     columns={columns}
                                     pageSize={100}
-                                    components={{LoadingOverlay: LinearProgress, Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor,oneList.empresa)}}}}
+                                    components={{LoadingOverlay: LinearProgress,
+                                      Footer: ()=>{
+                                        return Suml(oneList._id)},
+                                      Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor,oneList.empresa)}}}}
                                     rowsPerPageOptions={[5]}
                                     disableSelectionOnClick
                                         />
