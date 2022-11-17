@@ -5,6 +5,7 @@ import './style.css';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { axiosPrivate } from '../../../lib/axios';
 import { Formatter } from '../../../lib/Formatter';
+import { ButtonToTransfer } from './FinalTransfer';
 
 interface data {
   vendedor: string,
@@ -14,19 +15,21 @@ interface data {
 }[];
 
 export const TransferModal = (props: any) => {
-  const {idProduct, idCotacao} = props;
+  const {idProduct, onListToBuy, idProductfromCotacaoComparada, vendedorId} = props;
   const [columns, setColumns] = useState<data[]>([]);
   const handleclick = async ()=>{
     try {
-    const response = await axiosPrivate.get('transferproduct/'+idProduct+'/'+idCotacao)
+    const response = await axiosPrivate.get('transferproduct/'+idProduct+'/'+onListToBuy.idCotacao)
     const list = response.data.map((e: any)=>{
         return {
           vendedor: e.vendedor,
           productName: e.productName,
           valorUnitario: e.valorUnitario,
-          buyListSum: e.buyListSum
+          buyListSum: e.buyListSum,
+          vendedorId: e.vendedorID
       }})
       setColumns(list.filter((e: any)=>{return e.valorUnitario>0}))
+      console.log(list) 
 
   }
   catch(err){
@@ -51,6 +54,13 @@ export const TransferModal = (props: any) => {
               <div className='produto'>{'Produto: '}<p>{e.productName}</p></div>
               <div className='valor'>{'Valor: '}{Formatter.format( e.valorUnitario)}</div>
               <div className='total'>{'Total: '}{Formatter.format(e.buyListSum)}</div>
+              <ButtonToTransfer 
+                  onListToBuy= {onListToBuy} 
+                  idProductfromCotacaoComparada={idProductfromCotacaoComparada}
+                  sellerInsideCotacao = {e}
+                  vendedorId={vendedorId}
+                  >
+              </ButtonToTransfer>
             </div>
           )})}
         </div>

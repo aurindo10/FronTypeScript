@@ -85,8 +85,15 @@ export function OneBuyList (){
           width: 130,
           editable: false,
           renderCell: (params)=>{
+            console.log(params)
             return(
-              <TransferModal idProduct={params.row.product_id} idCotacao={onListToBuy.idCotacao}></TransferModal>
+              <TransferModal 
+                idProduct={params.row.product_id}
+                idProductfromCotacaoComparada = {params.row._id}
+                onListToBuy={onListToBuy}
+                vendedorId = {params.row.idsellerfinal}
+                >
+               </TransferModal>
             )
           }
         },
@@ -124,6 +131,7 @@ export function OneBuyList (){
         },
       ];
       const listToRender = onListToBuy.listas
+
       const filteredList = listToRender.filter((e)=>{return e.ProductListToBuy.length > 0})
       const ref = React.createRef();
 
@@ -164,20 +172,20 @@ return (
     <Box sx={{ height: 700, width: '55rem' }}>
 
         {filteredList.map((oneList: any)=>{
-          
+          console.log(oneList._id)
           return (
                         <div style={{ display: 'flex', height: '40rem', marginTop:'2rem' }}>
                             <div style={{ flexGrow: 1 }}>
                                 <DataGrid 
                                     key={oneList._id}
                                     getRowId={(r) => r._id}
-                                    rows={oneList.ProductListToBuy}
+                                    rows={oneList.ProductListToBuy.map((e:any)=>{return {...e, idsellerfinal: oneList._id}})}
                                     columns={columns}
                                     pageSize={100}
                                     components={{LoadingOverlay: LinearProgress,
                                       Footer: ()=>{
                                         return Suml(oneList._id)},
-                                      Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor,oneList.empresa)}}}}
+                                      Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor, oneList.empresa)}}}}
                                     rowsPerPageOptions={[5]}
                                     disableSelectionOnClick
                                         />
