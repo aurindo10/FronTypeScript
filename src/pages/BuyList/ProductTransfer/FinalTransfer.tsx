@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
-import { useContext } from "react";
+import { Button, CircularProgress } from "@mui/material";
+import { useContext, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { ContacaoContext } from "../../Cotacoes/CotacaoContext";
 
@@ -9,9 +9,11 @@ export const ButtonToTransfer = (props: any)=>{
 
     const {onListToBuy, setonListToBuy} = useContext(ContacaoContext)
     const {idProductfromCotacaoComparada, sellerInsideCotacao, vendedorId} = props
+    const [isLoading, setIsLoading] = useState(false)
 
     const axiosPrivate = useAxiosPrivate()
     const HandleClick = async ()=>{
+        setIsLoading(true)
         const idseller = onListToBuy.listas.filter((list: any)=>{
             return list.nomeDoVendedor == sellerInsideCotacao.vendedor
         })
@@ -30,8 +32,12 @@ export const ButtonToTransfer = (props: any)=>{
     }
 }
     return (
-        <Button variant="contained" onClick={HandleClick}
-        sx={{marginRight: '1rem', fontSize: '0.7rem'}}
-        >Transferir</Button>
+        <div>
+        {isLoading ?<CircularProgress/>:
+                <Button variant="contained" onClick={HandleClick}
+                sx={{marginRight: '1rem', fontSize: '0.7rem'}}
+                >Transferir</Button>
+        }
+        </div>
     )
 }
