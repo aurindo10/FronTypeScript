@@ -41,7 +41,7 @@ export const TransferModal = (props: any) => {
   <Dialog.Root>
     <Dialog.Trigger asChild>
       <button className="Button violet" onClick={handleclick}>
-        Transferir
+        Verificar
       </button>
     </Dialog.Trigger>
     <Dialog.Portal>

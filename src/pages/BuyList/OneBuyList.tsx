@@ -1,12 +1,15 @@
 import { Box, Button, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { DataGrid, GridColDef, GridFooter, GridFooterPlaceholder, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, GridValueGetterParams } from "@mui/x-data-grid";
-import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Formatter } from "../../lib/Formatter";
 import { priceFormatter } from "../../Utils/Formatter";
 import { TransferModal } from './ProductTransfer/TransferModal'
+import React, { useContext } from 'react';
+
+import { ContacaoContext } from "../Cotacoes/CotacaoContext";
+
 
 interface BuyList {
     idCotacao:'',
@@ -29,28 +32,9 @@ interface BuyList {
 
 
 export function OneBuyList (){
+    const {onListToBuy, setonListToBuy} = useContext(ContacaoContext)
     const axiosPrivate = useAxiosPrivate()
     const {idbuylist} = useParams()
-    const [onListToBuy, setonListToBuy] = useState<BuyList>({
-        idCotacao:'',
-        _id: '',
-        listas: [{
-                nomeDoVendedor: "",
-                empresa: "",
-                ProductListToBuy: [               
-                     {
-                    _id: "",
-                    productName: "",
-                    marca: '',
-                    unidade:"" ,
-                    quantidade: 0,
-                    valorUnitario: 0,
-                    quantidadeMinima:0
-                     }
-                 ]
-                }]
-            })
-
 
     const getData = async ()=>{ axiosPrivate.get("cotacoes/obtemlistacomparada/"+idbuylist)
         .then((response)=>setonListToBuy(response.data[0]))
@@ -85,7 +69,6 @@ export function OneBuyList (){
           width: 130,
           editable: false,
           renderCell: (params)=>{
-            console.log(params)
             return(
               <TransferModal 
                 idProduct={params.row.product_id}
@@ -132,7 +115,7 @@ export function OneBuyList (){
       ];
       const listToRender = onListToBuy.listas
 
-      const filteredList = listToRender.filter((e)=>{return e.ProductListToBuy.length > 0})
+      const filteredList = listToRender.filter((e:any)=>{return e.ProductListToBuy.length > 0})
       const ref = React.createRef();
 
       function DataToPlotonTable (vendedor: string, empresa: string){
@@ -172,7 +155,6 @@ return (
     <Box sx={{ height: 700, width: '55rem' }}>
 
         {filteredList.map((oneList: any)=>{
-          console.log(oneList._id)
           return (
                         <div style={{ display: 'flex', height: '40rem', marginTop:'2rem' }}>
                             <div style={{ flexGrow: 1 }}>
