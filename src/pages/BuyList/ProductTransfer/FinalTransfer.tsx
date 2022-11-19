@@ -27,6 +27,7 @@ export const ButtonToTransfer = (props: any)=>{
         const responseFromDelete = await axiosPrivate.post('transferproduct/'+onListToBuy._id+'/'+SellerIdToBeUpdate[0]._id+'/'+idProductfromCotacaoComparada)
         if (responseFromDelete.status==200){
             console.log('deletado com sucesso')
+            console.log(responseFromDelete.data)
             setonListToBuy(responseFromDelete.data)
         }
     }

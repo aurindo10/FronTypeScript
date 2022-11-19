@@ -1,5 +1,5 @@
-import { Box, Button, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { DataGrid, GridColDef, GridFooter, GridFooterPlaceholder, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, GridValueGetterParams } from "@mui/x-data-grid";
+import { AlertProps, Box, Button, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { DataGrid, GridColDef, GridFooter, GridFooterPlaceholder, GridRowModel, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -92,7 +92,7 @@ export function OneBuyList (){
           headerName: 'Quantidade',
           type: 'number',
           width: 110,
-          editable: false,
+          editable: true,
         },
          {
             field: 'unidade',
@@ -151,7 +151,26 @@ function Suml (props: any) {
           <GridFooter/>
           </div>)
         }
-
+        const [snackbar, setSnackbar] = React.useState<Pick<
+        AlertProps,
+        'children' | 'severity'
+      > | null>(null);
+        const processRowUpdate = React.useCallback(
+          async (newRow: GridRowModel) => {
+            const responseFromUpdate = await axiosPrivate.put('transferproduct/update/'+idbuylist+'/'+newRow.idsellerfinal
+            +'/'+newRow._id,
+            JSON.stringify(newRow)
+            )
+            console.log(responseFromUpdate)
+            const response = '' ;
+            setSnackbar({ children: 'User successfully saved', severity: 'success' });
+            return response;
+          },
+          [],
+        );
+        const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+          setSnackbar({ children: error.message, severity: 'error' });
+        }, []);
 return (
     <Box sx={{ height: 700, width: '55rem' }}>
       
@@ -166,6 +185,9 @@ return (
                                     rows={oneList.ProductListToBuy.map((e:any)=>{return {...e, idsellerfinal: oneList._id}})}
                                     columns={columns}
                                     pageSize={100}
+                                    processRowUpdate={processRowUpdate}
+                                    onProcessRowUpdateError={handleProcessRowUpdateError}
+                                    experimentalFeatures={{ newEditingApi: true }}
                                     components={{LoadingOverlay: LinearProgress,
                                       Footer: ()=>{
                                         return Suml(oneList._id)},

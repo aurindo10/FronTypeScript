@@ -48,7 +48,7 @@ return(
               </TableCell>
               <TableCell align="right">{row.createdAt}</TableCell>
                 <TableCell>
-                    <NavLink to={"/buylist/onebuylist/"+row.idCotacao}>
+                    <NavLink to={"/buylist/onebuylist/"+row._id}>
                           <Button>Verificar Lista</Button>
                     </NavLink>
                 </TableCell>
