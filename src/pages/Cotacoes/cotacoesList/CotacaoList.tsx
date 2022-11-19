@@ -30,14 +30,16 @@ export interface data{
 
 
 export function CotacaoList() {
+    const [isLoading, setIsLoading] = React.useState(true)
     const {cotacaoState, dispatch} = useContext(ContacaoContext)
     const {cotacao} = cotacaoState
     const axiosPrivate = useAxiosPrivate()
     const getData = async ()=>{
       axiosPrivate.get("produto/cotacoes")
     .then((response)=>dispatch({type: "SetCotacao", payload: response.data}))
-    .then(response => console.log("Success:", response))
+    .then(response =>{ console.log("Success:", response),setIsLoading(false)})
     .catch(error => console.error("Error:", error))};
+    
     
     React.useEffect(()=>{
         getData()
@@ -156,6 +158,8 @@ export function CotacaoList() {
     ]
     
   return (
+        <div>
+          {isLoading?<LinearProgress sx={{ width: '47rem' }}/>:
           <Box sx={{ height: 700, width: '47rem' }}>
           <DataGrid
             getRowId={(r) => r._id}
@@ -166,6 +170,7 @@ export function CotacaoList() {
             rowsPerPageOptions={[15]}
             disableSelectionOnClick
           />
-        </Box>
+        </Box>}
+        </div>
   );
 }

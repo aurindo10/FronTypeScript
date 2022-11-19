@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { ContacaoContext } from '../CotacaoContext';
 import { AddProductOnListOfCotacao } from './AddProductOnListCota/AddProductOnListCota'
@@ -19,13 +19,14 @@ const inicialState = {
 
 
 export  function EditPageCotacao() {
+  const [isLoading, setIsLoading] = useState(true)
   const axiosPrivate = useAxiosPrivate()
   const location = useLocation()
   const {idList} = useParams()
   const {cotacaoState, dispatch} = useContext(ContacaoContext)
   const getData = async ()=>{ axiosPrivate.get("produto/cotacoes/"+idList)
   .then((response)=>dispatch({type: "SetProductsOfCotacao", payload: response.data.products }))
-  .then(response => console.log("Success:", response))
+  .then(response => {console.log("Success:", response), setIsLoading(false)})
   .catch(error => console.error("Error:", error))};
   
 
@@ -87,6 +88,7 @@ export  function EditPageCotacao() {
 return (
   <div> 
   <AddProductOnListOfCotacao ></AddProductOnListOfCotacao>
+  {isLoading?<LinearProgress sx={{ width: '53rem' }}/>:
   <DataGrid
             getRowId={(r) => r._id}
             rows={productsOfCotacao}
@@ -96,7 +98,7 @@ return (
             rowsPerPageOptions={[15]}
             disableSelectionOnClick
             sx={{height: '40rem', width: '52rem'}}
-          />
+          />}
   </div>
 );
 }

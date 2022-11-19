@@ -21,11 +21,12 @@ export function PriceListByIdCotation (){
   }
     const axiosPrivate = useAxiosPrivate()
     const [data, setData] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const { idPriceList } = useParams()
     const getData = async ()=>{
         axiosPrivate.get("cotacoes/obtemlistdeprecoporlistadecotacao/"+idPriceList)
         .then((response)=>{setData(response.data), console.log(response.data)})
-        .then(response => console.log("Success:", response))
+        .then(response => {console.log("Success:", response), setIsLoading(false)})
         .catch(error => console.error("Error:", error))};
         useEffect(()=>{
             getData()
@@ -100,10 +101,10 @@ export function PriceListByIdCotation (){
             )
           }
 return (
-    <Box sx={{ height: '40rem', width: '48rem' }}>
-            
+  <div>{isLoading?<LinearProgress sx={{width: '47rem'}} />:
+    <Box sx={{ height: '40rem', width: '48rem' }}>   
         {data.map((oneList:any)=>{return (
-        <DataGrid 
+        <DataGrid
         getRowId={(r) => r._id}
         rows={oneList.listOfProducts}
         columns={columns}
@@ -117,5 +118,6 @@ return (
             />
         )})}  
     </Box>
+  }</div>
     )
 }

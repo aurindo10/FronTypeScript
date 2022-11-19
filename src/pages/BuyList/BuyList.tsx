@@ -1,4 +1,4 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Trash } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -11,11 +11,12 @@ import { SnackbarDeleteButton } from "./DeleteButton";
 
 
 export function BuyList (){
+    const [isLoading, setIsLoading] = useState(true)
     const [allListToBuy, setallListToBuy] = useState([{}])
     const axiosPrivate = useAxiosPrivate()
     const getData = async ()=>{axiosPrivate.get("cotacoes/obtemtodaslistacomparadas")
       .then((response)=>setallListToBuy(response.data))
-        .then(response => console.log("Success:", response))
+        .then(response => {console.log("Success:", response), setIsLoading(false)})
           .catch(error => console.error("Error:", error))};
 
     useEffect(()=>{
@@ -28,6 +29,7 @@ return(
     
     <div> 
     <TableContainer component={Paper} sx={{ maxWidth: 800 }} key='tablecontainer'>
+      {isLoading?<LinearProgress/>:
       <Table sx={{ maxWidth: 1000 }} aria-label="simple table"  key='table'>
         <TableHead>
           <TableRow>
@@ -59,7 +61,7 @@ return(
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table>}
     </TableContainer>
  
     </div>

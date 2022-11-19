@@ -32,13 +32,14 @@ interface BuyList {
 
 
 export function OneBuyList (){
+    const [isLoading, setIsLoading] = React.useState(true)
     const {onListToBuy, setonListToBuy} = useContext(ContacaoContext)
     const axiosPrivate = useAxiosPrivate()
     const {idbuylist} = useParams()
 
     const getData = async ()=>{ axiosPrivate.get("cotacoes/obtemlistacomparada/"+idbuylist)
         .then((response)=>setonListToBuy(response.data[0]))
-            .then(response => console.log("Success:", response))
+            .then(response => {console.log("Success:", response), setIsLoading(false)})
                 .catch(error => console.error("Error:", error))};
 
     useEffect(()=>{
@@ -153,11 +154,12 @@ function Suml (props: any) {
 
 return (
     <Box sx={{ height: 700, width: '55rem' }}>
-
+      
         {filteredList.map((oneList: any)=>{
           return (
                         <div style={{ display: 'flex', height: '40rem', marginTop:'2rem' }}>
                             <div style={{ flexGrow: 1 }}>
+                            {isLoading?<LinearProgress />:
                                 <DataGrid 
                                     key={oneList._id}
                                     getRowId={(r) => r._id}
@@ -170,11 +172,12 @@ return (
                                       Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor, oneList.empresa)}}}}
                                     rowsPerPageOptions={[5]}
                                     disableSelectionOnClick
-                                        />
+                                        />}
                             </div>
 
                         </div>
             )})}
+                                      
     </Box>
 
 

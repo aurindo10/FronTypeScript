@@ -19,6 +19,7 @@ export interface data {
 }
 
 export function BasicTable() {
+  const [isLoading, setIsLoading] = React.useState(true)
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -99,7 +100,6 @@ export function BasicTable() {
 
     const axiosPrivate = useAxiosPrivate()
     const {setProductList, productList} = useContext(productsContext)
-    const [isLoading, setIsloading] = React.useState(true)
   React.useEffect(()=>{
       let isMounted = true;
       const controller = new AbortController();
@@ -109,7 +109,7 @@ export function BasicTable() {
             const response = await axiosPrivate.get("/produto/productslist/",
             {signal: controller.signal})
             isMounted && setProductList(response.data);
-            setIsloading(false)
+            setIsLoading(false)
 
       }catch(err) {
              console.log(err)  
@@ -126,6 +126,7 @@ export function BasicTable() {
     
   return (
     <Box sx={{ height: 700, width: '55rem', marginTop: '1rem' }}>
+    {isLoading?<LinearProgress />:
       <DataGrid
         getRowId={(r) => r._id}
         rows={productList}
@@ -134,7 +135,7 @@ export function BasicTable() {
         components={{Toolbar:CustomToolbar, LoadingOverlay: LinearProgress,}}
         rowsPerPageOptions={[15]}
         disableSelectionOnClick
-      />
+      />}
     </Box>
 
   );
