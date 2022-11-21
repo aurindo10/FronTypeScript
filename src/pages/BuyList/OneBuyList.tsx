@@ -44,7 +44,6 @@ export function OneBuyList (){
 
     useEffect(()=>{
         getData()
-
     }, [])
     function CustomToolbar() {
         return (
@@ -128,29 +127,7 @@ export function OneBuyList (){
             </Box>
         )
       }
-      
-function Suml (props: any) {
-      const [totalPrice, setTotalPrice] = useState<{oneListId: string,productsSum: number}[]>([{oneListId: '',productsSum:0}]);
-      useEffect(()=>{
-        const sumFinal = filteredList.map((oneList: any)=>{
-          return {
-            oneListId: oneList._id,
-            productsSum: oneList.ProductListToBuy.map((eachPriceOfProduct: any)=>{ 
-              return eachPriceOfProduct.valorUnitario*eachPriceOfProduct.quantidade}).reduce((a: any,b: any)=>{
-                return (a+b)
-            }, 0)}})
-            const total =  sumFinal.filter((i: any)=>{
-                return  i.oneListId==props
-              })
-            setTotalPrice(total)
-
-      },[])
-          return (<div style={{ textAlign: 'right'}}>
-          <div style={{marginRight: '1rem'}}>{'Soma Total: '}</div>
-          <div style={{marginRight: '1rem'}}>{priceFormatter.format(totalPrice[0].productsSum)}</div> 
-          <GridFooter/>
-          </div>)
-        }
+    
         const [snackbar, setSnackbar] = React.useState<Pick<
         AlertProps,
         'children' | 'severity'
@@ -161,7 +138,6 @@ function Suml (props: any) {
             +'/'+newRow._id,
             JSON.stringify(newRow)
             )
-            console.log(responseFromUpdate)
             const response = '' ;
             setSnackbar({ children: 'User successfully saved', severity: 'success' });
             return response;
@@ -170,14 +146,38 @@ function Suml (props: any) {
         );
         const handleProcessRowUpdateError = React.useCallback((error: Error) => {
           setSnackbar({ children: error.message, severity: 'error' });
-        }, []);
-        const [totalPrice, setTotalPrice] = useState(0);
+        }, []); 
+
+        
 return (
     <Box sx={{ height: 700, width: '55rem' }}>
       
         {filteredList.map((oneList: any)=>{
+         
           return (
-                        <div style={{ display: 'flex', height: '40rem', marginTop:'2rem' }}>
+                       <FullList oneList={oneList} processRowUpdate={processRowUpdate} handleProcessRowUpdateError={handleProcessRowUpdateError}
+                        columns={columns} isLoading = {isLoading} DataToPlotonTable={DataToPlotonTable}></FullList> 
+            )})}
+                                      
+    </Box>
+
+
+
+)}
+
+export function FullList (props: any){
+  const [totalPrice, setTotalPrice] = useState(0)
+  const {oneList, processRowUpdate,  columns, handleProcessRowUpdateError, isLoading, DataToPlotonTable} = props
+  function Suml () {
+    
+    return  (<div style={{ textAlign: 'right'}}>
+    <div style={{marginRight: '1rem'}}>{'Soma Total: '}</div>
+    <div style={{marginRight: '1rem'}}>{priceFormatter.format(totalPrice)}</div> 
+    <GridFooter/>
+    </div>)
+  }
+    return (
+      <div style={{ display: 'flex', height: '40rem', marginTop:'2rem' }}>
                             <div style={{ flexGrow: 1 }}>
                             {isLoading?<LinearProgress />:
                                 <DataGrid 
@@ -189,40 +189,75 @@ return (
                                     processRowUpdate={processRowUpdate}
                                     onProcessRowUpdateError={handleProcessRowUpdateError}
                                     experimentalFeatures={{ newEditingApi: true }}
-                                    // components={{LoadingOverlay: LinearProgress,
-                                    //   Footer: ()=>{
-                                    //     return Suml(oneList._id)},
-                                    //   Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor, oneList.empresa)}}}}
+                                    components={{LoadingOverlay: LinearProgress,
+                                      Footer: ()=>{
+                                        return Suml()},
+                                      Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor, oneList.empresa)}}}}
                                     rowsPerPageOptions={[5]}
-                                    onStateChange={(state)=>{
+                                                              onStateChange={(state)=>{
                                       const visibleRows = Object.entries(state.rows.idRowsLookup)
                                       const info =  visibleRows.map((e:any)=>{
                                         return  (e[1])  
                                       })
-                                      console.log(state)
-                                      console.log(info)
-                                          const sumFinal = info.map((oneList: any)=>{
+                                      if(Object.entries(state.editRows).length>0){
+                                      const idToupdate = Object.entries(state.editRows)
+                                      const productsToUpdate =  idToupdate.map((ite:any)=>{
+                                        return {
+                                          idd: ite[0],
+                                          quantidade: ite[1].quantidade.value}
+                                      })
+                                      const infoWithDataEdited = info.map((item: any)=>{
+                                        let qtd = item.quantidade
+                                        const daslkdas = productsToUpdate.filter((e)=>{
+                                          return item._id==e.idd
+                                        })
+                                        if(daslkdas[0]){
+                                        if(item._id==daslkdas[0].idd)
+                                        {
+                                          qtd=daslkdas[0].quantidade
+                                        }
+                                        {
+                                          return {
+                                            ...item, quantidade: qtd
+                                          }
+                                        }
+                                      }
+                                      return {
+                                        ...item
+                                      }
+                                      
+
+                                      })
+                                          const sumFinal = infoWithDataEdited.map((oneList: any)=>{
                                             return oneList.valorUnitario*oneList.quantidade}).reduce((a: any,b: any)=>{
                                                   return (a+b)
                                               }, 0)
-                                              // const total =  sumFinal.filter((i: any)=>{
-                                              //     return  i.oneListId==oneList._id
-                                              //   })
-                                              console.log(sumFinal)
-                                              setTotalPrice(sumFinal)
-                                    }}
+                                              setTotalPrice(sumFinal)  } 
+
+                                              else {
+                                                const visibleRows = Object.entries(state.rows.idRowsLookup)
+                                      const info =  visibleRows.map((e:any)=>{
+                                        return  (e[1])  
+                                      })
+                                      if(Object.entries(state.editRows)){
+        
+                                      const sumFinal = info.map((oneList: any)=>{
+                                        return oneList.valorUnitario*oneList.quantidade}).reduce((a: any,b: any)=>{
+                                              return (a+b)
+                                          }, 0)
+                                          setTotalPrice(sumFinal)
+                                              }
+                                    }}}
                                     disableSelectionOnClick
                                         />}
                             </div>
-                                    <div>{priceFormatter.format(totalPrice)}</div>
                         </div>
-            )})}
-                                      
-    </Box>
 
 
 
-)
+    )
+
+
 
 
 
