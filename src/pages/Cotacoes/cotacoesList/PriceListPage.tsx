@@ -12,9 +12,9 @@ export function PriceListByIdCotation (){
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
+        <GridToolbarColumnsButton nonce={undefined} onResize={undefined} onResizeCapture={undefined} />
+        <GridToolbarFilterButton nonce={undefined} onResize={undefined} onResizeCapture={undefined} />
+        <GridToolbarDensitySelector nonce={undefined} onResize={undefined} onResizeCapture={undefined} />
         <GridToolbarExport />
       </GridToolbarContainer>
     );
