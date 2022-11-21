@@ -49,9 +49,9 @@ export function OneBuyList (){
     function CustomToolbar() {
         return (
           <GridToolbarContainer>
-            <GridToolbarColumnsButton />
-            <GridToolbarFilterButton />
-            <GridToolbarDensitySelector />
+            <GridToolbarColumnsButton nonce={undefined} onResize={undefined} onResizeCapture={undefined} />
+            <GridToolbarFilterButton nonce={undefined} onResize={undefined} onResizeCapture={undefined} />
+            <GridToolbarDensitySelector nonce={undefined} onResize={undefined} onResizeCapture={undefined} />
             <GridToolbarExport />
           </GridToolbarContainer>
         );
@@ -171,6 +171,7 @@ function Suml (props: any) {
         const handleProcessRowUpdateError = React.useCallback((error: Error) => {
           setSnackbar({ children: error.message, severity: 'error' });
         }, []);
+        const [totalPrice, setTotalPrice] = useState(0);
 return (
     <Box sx={{ height: 700, width: '55rem' }}>
       
@@ -188,15 +189,32 @@ return (
                                     processRowUpdate={processRowUpdate}
                                     onProcessRowUpdateError={handleProcessRowUpdateError}
                                     experimentalFeatures={{ newEditingApi: true }}
-                                    components={{LoadingOverlay: LinearProgress,
-                                      Footer: ()=>{
-                                        return Suml(oneList._id)},
-                                      Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor, oneList.empresa)}}}}
+                                    // components={{LoadingOverlay: LinearProgress,
+                                    //   Footer: ()=>{
+                                    //     return Suml(oneList._id)},
+                                    //   Toolbar:()=>{ {return DataToPlotonTable(oneList.nomeDoVendedor, oneList.empresa)}}}}
                                     rowsPerPageOptions={[5]}
+                                    onStateChange={(state)=>{
+                                      const visibleRows = Object.entries(state.rows.idRowsLookup)
+                                      const info =  visibleRows.map((e:any)=>{
+                                        return  (e[1])  
+                                      })
+                                      console.log(state)
+                                      console.log(info)
+                                          const sumFinal = info.map((oneList: any)=>{
+                                            return oneList.valorUnitario*oneList.quantidade}).reduce((a: any,b: any)=>{
+                                                  return (a+b)
+                                              }, 0)
+                                              // const total =  sumFinal.filter((i: any)=>{
+                                              //     return  i.oneListId==oneList._id
+                                              //   })
+                                              console.log(sumFinal)
+                                              setTotalPrice(sumFinal)
+                                    }}
                                     disableSelectionOnClick
                                         />}
                             </div>
-
+                                    <div>{priceFormatter.format(totalPrice)}</div>
                         </div>
             )})}
                                       
