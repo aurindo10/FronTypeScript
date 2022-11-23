@@ -28,7 +28,8 @@ const productSchema = zod.object({
   name: zod.string().min(3, 'Informe o nome do produto'),
   marca: zod.string().min(1, 'Informe o nome da marca'),
   unidade:zod.string().min(1, 'Informe o nome da marca'),
-  quantidade:zod.string().min(1, 'Informe o nome da marca')
+  quantidade:zod.string().min(1, 'erro'),
+  produto_id: zod.string().min(0, 'erro 2')
 })
 
 export  function AddProductOnListOfCotacao () {
@@ -45,6 +46,7 @@ export  function AddProductOnListOfCotacao () {
     produto_id:''});
   const { control, handleSubmit, reset, watch, formState: { errors }, setValue, getValues} = useForm<Inputs>({
     resolver: zodResolver(productSchema),
+    
     defaultValues: {
       _id: '',
       name: '',
@@ -67,8 +69,30 @@ export  function AddProductOnListOfCotacao () {
 
   },[]);
 
-  const [sds, setdsds] = useState('')
+  type InputsToUpateProduct = {
+    _id: string,
+  nome: string,
+  marca: string,
+  unidade: string,
+  
+  };
   const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
+
+    if(data.produto_id==''){
+      const update:InputsToUpateProduct = {
+        _id:'',
+        nome: data.name,
+        marca:data.marca,
+        unidade: data.unidade
+      }
+      const response = await axiosPrivate.post("produto/cadastro", JSON.stringify(update))
+      console.log(response.status)
+      if(response.status==200){
+        getData()
+      }
+      console.log('esse produto n esta cadastrado')
+    }
+
     axiosPrivate.post("produto/cadastrodelista/"+location.state.idd, 
      JSON.stringify(data)).then((info)=>
       {dispatch({type:'UPDATE_ONE_COTACAO', payload: info.data})})
@@ -98,7 +122,7 @@ export  function AddProductOnListOfCotacao () {
       }
     }    
     
- 
+  
   return (
     <Box
     component="span"
@@ -142,6 +166,7 @@ export  function AddProductOnListOfCotacao () {
             {...field}
             required
             placeholder = {"Quantidade"}
+            type='number'
             label = {'Quantidade'}
             sx={{marginRight: '1rem', width: '5rem'}}
             />}/>

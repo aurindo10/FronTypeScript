@@ -202,7 +202,6 @@ const DialogDemo = () => {
         .catch(error => console.error("Error:", error))
         setOpen(false)
         reset()
-
       }
     return (
         
