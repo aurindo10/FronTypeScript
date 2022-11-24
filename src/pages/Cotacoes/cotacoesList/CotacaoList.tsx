@@ -18,6 +18,7 @@ import { FolderOpen, Plus, Trash, TreeStructure } from 'phosphor-react';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AlertDialogDemo from '../../../components/Alert/AlertDialog';
+import { BasicSelect } from '../cotacaoRegister/Select';
 
 
 export interface data{
@@ -43,7 +44,6 @@ export function CotacaoList() {
     
     React.useEffect(()=>{
         getData()
-
     },[]);
     const DeleteProduct = async (id:string)=>{
       axiosPrivate.delete ("produto/cotacoes/"+id)
@@ -54,7 +54,6 @@ export function CotacaoList() {
     const ButtonToGenereteBuyList = (props:any)=>{
       const HandleCLickGenerate = async (idCOtacao:any)=>{
        const verifyList =  await axiosPrivate.get("cotacoes/obtemlistdeprecoporlistadecotacao/"+idCOtacao)
-       console.log(verifyList.data.length)
         if(verifyList.data.length>0){
         const getData =  ()=>{axiosPrivate.get("cotacoes/compara/"+idCOtacao)
           .then(() => {
@@ -139,6 +138,17 @@ export function CotacaoList() {
         }
       },
       {
+        field: 'status',
+        headerName: 'Status',
+        width: 200,
+        editable: false,
+        renderCell: (props)=>{
+          return (
+            <BasicSelect idCotacaoo={props.row._id} statusFromServer= {props.row.status}></BasicSelect>
+          )
+        }
+      },
+      {
         field: 'deletar',
         headerName: 'Deletar',
         width: 80,
@@ -160,7 +170,7 @@ export function CotacaoList() {
   return (
         <div>
           {isLoading?<LinearProgress sx={{ width: '47rem' }}/>:
-          <Box sx={{ height: 700, width: '47rem' }}>
+          <Box sx={{ height: 700, width: '60rem' }}>
           <DataGrid
             getRowId={(r) => r._id}
             rows={cotacao}

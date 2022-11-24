@@ -8,17 +8,16 @@ import * as zod from 'zod'
 import { ContacaoContext } from '../CotacaoContext';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
-const inicialState = {
-  cotacao: [{}],
-  productsOfCotacao: [{}]
-}
 
 type Inputs = {
     cotacaoName: string,
+    sellerAmount: string
+
 };
 
 const productSchema = zod.object({
   cotacaoName: zod.string().min(3, 'Informe o nome da cotacao'),
+  sellerAmount: zod.string().min(1)
 })
 
 export  function CotacaoRegister() {
@@ -28,18 +27,19 @@ export  function CotacaoRegister() {
     resolver: zodResolver(productSchema),
     defaultValues: {
         cotacaoName: '',
+        sellerAmount: ''
     }
   });
  
-  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {axiosPrivate.post("produto/cadastrodelista", 
+  const onSubmit: SubmitHandler<Inputs>  = async (data: Inputs) => {
+    axiosPrivate.post("produto/cadastrodelista", 
         JSON.stringify(data)).then((info)=>{
         dispatch({type:'UPDATE_COTACAO',  payload: info.data})})
       .catch(error => console.error("Error:", error))
       reset()
     }
       
-  return (
-     
+  return (    
     <Box
     component="span"
     sx={{ padding: '40px', paddingLeft: '15px' }}> 
@@ -55,15 +55,22 @@ export  function CotacaoRegister() {
             placeholder = {"Nome da Cotação"}
             sx={{paddingRight: '15px'}}
             />}/>
-
+        <Controller
+            name="sellerAmount"
+            control={control}
+            render={({ field }) =><TextField
+            {...field}
+            required
+            type='number'
+            placeholder = {"0"}
+            sx={{paddingRight: '15px', width: '6rem'}}
+            />}/>
       <Button 
-            
-            type="submit"
+            type="submit" 
             variant="contained"
             sx={{ width: '100px', left: "1.5rem", height: "3.2rem" }}
           > Cadastrar 
           </Button>
-          
         </Box>
         
     </div>
