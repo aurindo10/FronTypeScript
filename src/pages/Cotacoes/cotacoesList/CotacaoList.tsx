@@ -142,14 +142,17 @@ export function CotacaoList() {
       {
         field: 'status',
         headerName: 'Status',
-        width: 220,
+        width: 250,
         editable: false,
         renderCell: (props)=>{
           return (
-            <Box ><BasicSelect idCotacaoo={props.row._id} statusFromServer= {props.row.status}></BasicSelect></Box> 
+            <Box ><BasicSelect idCotacaoo={props.row._id} statusFromServer= {props.row.status}
+            sellerAmount={props.row?.sellerAmount|0}
+            ></BasicSelect></Box> 
           )
         }
       },
+
       {
         field: 'deletar',
         headerName: 'Deletar',
@@ -172,7 +175,7 @@ export function CotacaoList() {
   return (
         <div>
           {isLoading?<LinearProgress sx={{ width: '47rem' }}/>:
-          <Box sx={{ height: 700, width: '60rem' }}>
+          <Box sx={{ height: 700, width: '62.8rem' }}>
           <DataGrid
             getRowId={(r) => r._id}
             rows={cotacao}

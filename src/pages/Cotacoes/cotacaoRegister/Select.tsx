@@ -12,7 +12,8 @@ import { axiosPrivate } from '../../../lib/axios';
 type Color = 'yellow' |'green'| 'red' | '#606060'
 export function BasicSelect(props: any) {
     const [color, setColor] = React.useState<Color>('#606060')
-    const {idCotacaoo, statusFromServer} = props
+    const [numberOfListSend, setNumberOfListSend] = React.useState(0)
+    const {idCotacaoo, statusFromServer, sellerAmount} = props
     const [status, setStatus] = React.useState('');
 type data = {
     status: string
@@ -39,7 +40,7 @@ type data = {
         console.log(response.status)
     };
   };
-  React.useEffect(()=>{
+  React.useEffect( ()=>{
     setStatus(statusFromServer as string)
     switch(statusFromServer){
       case 'Editando': setColor('#606060');
@@ -51,11 +52,22 @@ type data = {
       case 'Finalizada': setColor('green');
       break;
     }
+    async function getData(){
+    const response = await axiosPrivate.get("cotacoes/obtemlistdeprecoporlistadecotacao/"+idCotacaoo)
+    console.log(response.data)
+    let counter = 0;
+    for (const obj of response.data) {
+      if (obj.cotacao_id) counter++;
+    }
+    setNumberOfListSend(counter)
+  }
+  getData()
+
   }, [])
 
 
   return (
-    <Box sx={{ width: 200, height: '1.8rem', display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ width: 220, height: '1.8rem', display: 'flex', alignItems: 'center' }}>
       <FormControl fullWidth sx={{ display: 'flex', alignItems: 'center'}}>
         <InputLabel id="demo-simple-select-label">Status</InputLabel>
         <Select
@@ -84,6 +96,7 @@ type data = {
         marginLeft: ''
       }}></Box>
       </Box>
+      <span style={{marginLeft:'.3rem'}}>{numberOfListSend}/{sellerAmount}</span>
     </Box>
   );
 }
