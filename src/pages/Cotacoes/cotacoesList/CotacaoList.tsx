@@ -19,6 +19,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import AlertDialogDemo from '../../../components/Alert/AlertDialog';
 import { BasicSelect } from '../cotacaoRegister/Select';
+import { constants } from 'fs/promises';
 
 
 export interface data{
@@ -30,17 +31,18 @@ export interface data{
 
 
 
+
 export function CotacaoList() {
     const [isLoading, setIsLoading] = React.useState(true)
     const {cotacaoState, dispatch} = useContext(ContacaoContext)
     const {cotacao} = cotacaoState
     const axiosPrivate = useAxiosPrivate()
+
     const getData = async ()=>{
       axiosPrivate.get("produto/cotacoes")
     .then((response)=>dispatch({type: "SetCotacao", payload: response.data}))
     .then(response =>{ console.log("Success:", response),setIsLoading(false)})
     .catch(error => console.error("Error:", error))};
-    
     
     React.useEffect(()=>{
         getData()
@@ -140,11 +142,11 @@ export function CotacaoList() {
       {
         field: 'status',
         headerName: 'Status',
-        width: 200,
+        width: 220,
         editable: false,
         renderCell: (props)=>{
           return (
-            <BasicSelect idCotacaoo={props.row._id} statusFromServer= {props.row.status}></BasicSelect>
+            <Box ><BasicSelect idCotacaoo={props.row._id} statusFromServer= {props.row.status}></BasicSelect></Box> 
           )
         }
       },
